@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import copy
 
 
 class Placement:
@@ -32,26 +33,69 @@ class Placement:
     #         raise (Exception("invalid dist parameter for vm to host allocation"))
 
     def _get_tenant_vm_to_host_map(self):
-        self.tenant_vm_to_host_map = [None] * self.tenants.num_tenants
-        available_hosts = [i for i in range(self.tenants.num_hosts)]
-        selected_host_counts = [0] * self.tenants.num_hosts
-
         if self.dist == 'uniform':
+            self.tenant_vm_to_host_map = [None] * self.tenants.num_tenants
+            available_hosts = [i for i in range(self.tenants.num_hosts)]
+            selected_hosts_counts = [0] * self.tenants.num_hosts
+
             for i in range(self.tenants.num_tenants):
                 self.tenant_vm_to_host_map[i] = pd.Series(
                     np.random.choice(a=available_hosts,
                                      size=self.tenants.vm_map[i], replace=False))
 
                 for _, value in self.tenant_vm_to_host_map[i].iteritems():
-                    selected_host_counts[value] += 1
+                    selected_hosts_counts[value] += 1
 
-                max_host_count = max(selected_host_counts)
+                max_host_count = max(selected_hosts_counts)
                 if max_host_count == self.tenants.max_vms_per_host:
-                    removed_hosts = [j for j, host_count in enumerate(selected_host_counts)
+                    removed_hosts = [j for j, host_count in enumerate(selected_hosts_counts)
                                      if host_count == max_host_count]
                     available_hosts = list(set(available_hosts) - set(removed_hosts))
-                    for removed_host in removed_hosts:
-                        selected_host_counts[removed_host] = -1
+                    for removed_host in sorted(removed_hosts, reverse=True):
+                        selected_hosts_counts[removed_host] = -1
+        elif self.dist == 'colocate':
+            self.tenant_vm_to_host_map = [None] * self.tenants.num_tenants
+            available_leafs = [i for i in range(self.network.num_leafs)]
+
+            available_hosts_per_leaf = [None] * self.network.num_leafs
+            selected_hosts_counts_per_leaf = [None] * self.network.num_leafs
+            for i in range(self.network.num_leafs):
+                available_hosts_per_leaf[i] = [(i * self.network.num_hosts_per_leaf) + j
+                                               for j in range(self.network.num_hosts_per_leaf)]
+                selected_hosts_counts_per_leaf[i] = [0] * self.network.num_hosts_per_leaf
+
+            for i in range(self.tenants.num_tenants):
+                self.tenant_vm_to_host_map[i] = pd.Series([None] * self.tenants.vm_map[i])
+
+                running_index = 0
+                running_count = self.tenants.vm_map[i]
+                while running_count > 0:
+                    selected_leaf = np.random.choice(a=available_leafs, size=1)[0]
+                    selected_leaf_hosts_count = len(available_hosts_per_leaf[selected_leaf])
+
+                    if int(running_count/selected_leaf_hosts_count) > 0:
+                        for j in range(selected_leaf_hosts_count):
+                            self.tenant_vm_to_host_map[i][running_index] = available_hosts_per_leaf[selected_leaf][j]
+                            selected_hosts_counts_per_leaf[selected_leaf][j] += 1
+                            running_index += 1
+                        running_count -= selected_leaf_hosts_count
+                    else:
+                        for j in range(running_count):
+                            self.tenant_vm_to_host_map[i][running_index] = available_hosts_per_leaf[selected_leaf][j]
+                            selected_hosts_counts_per_leaf[selected_leaf][j] += 1
+                            running_index += 1
+                        running_count = 0
+
+                    max_host_count = max(selected_hosts_counts_per_leaf[selected_leaf])
+                    if max_host_count == self.tenants.max_vms_per_host:
+                        removed_hosts = [j for j, host_count in enumerate(selected_hosts_counts_per_leaf[selected_leaf])
+                                         if host_count == max_host_count]
+                        for removed_host in sorted(removed_hosts, reverse=True):
+                            del available_hosts_per_leaf[selected_leaf][removed_host]
+                            del selected_hosts_counts_per_leaf[selected_leaf][removed_host]
+
+                        if len(available_hosts_per_leaf[selected_leaf]) == 0:
+                            available_leafs.remove(selected_leaf)
         else:
             raise (Exception("invalid dist parameter for vm to host allocation"))
 
