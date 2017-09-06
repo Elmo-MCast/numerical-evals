@@ -31,9 +31,8 @@ class Tenants:
         self._get_group_to_vm_map()
 
     def _get_vm_map(self):
-        avg_vms = 1.0 * (self.max_vms_per_host * self.num_hosts) / self.num_tenants
-
         if self.vm_dist == 'geom':  # ... using geometric distribution as discrete exponential distribution
+            avg_vms = 1.0 * (self.max_vms_per_host * self.num_hosts) / self.num_tenants
             self.vm_map = pd.Series(stats.geom.rvs(size=self.num_tenants, loc=self.min_vms, p=(1.0 / avg_vms)))
         elif self.vm_dist == 'expon':  # ... using geometric distribution as discrete exponential distribution
             self.vm_map = pd.Series(np.int64(np.floor(
