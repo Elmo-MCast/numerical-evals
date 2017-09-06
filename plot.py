@@ -27,3 +27,8 @@ class Plot:
         ax = sb.kdeplot(self.data.leafs_for_all_tenants, cumulative=True)
         ax.set(xlabel='Leafs (all tenants)', ylabel='CDF')
         self.plt.show()
+
+    def pdf_leafs_for_all_tenants(self):
+        ax = self.data.leafs_for_all_tenants.plot(kind='density')
+        ax.set(xlabel='Leafs (all tenants)', ylabel='PDF')
+        self.plt.show()
