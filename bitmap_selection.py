@@ -110,4 +110,4 @@ def dp_algorithm(switch_bitmaps, num_bitmaps):
 if __name__ == "__main__":
     sample_switch_bitmaps = ["1000", "1100", "1000", "1000", "1111", "1110", "1100",
                              "1111", "1000", "1111", "1110", "1110", "1110"]
-    print(dp_algorithm(sample_switch_bitmaps, 5))
+    print(dp_algorithm(sample_switch_bitmaps, 4))

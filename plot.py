@@ -13,9 +13,9 @@ class Data:
     def _get_leafs_for_all_tenants(self):
         self.leafs_for_all_tenants = pd.Series()
 
-        for i in range(self.cloud.tenants.num_tenants):
+        for t in range(self.cloud.tenants.num_tenants):
             self.leafs_for_all_tenants = self.leafs_for_all_tenants.append(
-                self.cloud.placement.tenant_group_to_leaf_count[i], ignore_index=True)
+                self.cloud.placement.tenant_groups_to_leaf_count[t], ignore_index=True)
 
 
 class Plot:
