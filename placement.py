@@ -27,7 +27,6 @@ class Placement:
         self.tenant_groups_leafs_to_bitmask_map = None
         self._get_tenant_groups_leafs_to_bitmask_map()
 
-
     def _get_tenant_vms_to_host_map(self):
         if self.dist == 'uniform':
             self.tenant_vms_to_host_map = [None] * self.tenants.num_tenants
