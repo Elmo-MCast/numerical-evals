@@ -41,8 +41,8 @@ cloud = Cloud(num_leafs=48,
               min_group_size=5,
               group_size_dist='uniform',
               placement_dist='uniform',
-              num_bitmasks=10,
-              generate_bitmasks=True)
+              num_bitmaps=10,
+              generate_bitmaps=True)
 
 data = Data(cloud)
 

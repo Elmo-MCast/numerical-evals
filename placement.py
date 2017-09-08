@@ -4,11 +4,11 @@ from bitstring import BitArray
 
 
 class Placement:
-    def __init__(self, network, tenants, dist='uniform', num_bitmasks=32, generate_bitmasks=False):
+    def __init__(self, network, tenants, dist='uniform', num_bitmaps=32, generate_bitmaps=False):
         self.dist = dist
         self.network = network
         self.tenants = tenants
-        self.num_bitmasks = num_bitmasks
+        self.num_bitmaps = num_bitmaps
 
         self.tenant_vms_to_host_map = None
         self._get_tenant_vms_to_host_map()
@@ -22,12 +22,12 @@ class Placement:
         self.tenant_groups_to_leaf_count = None
         self._get_tenant_groups_to_leaf_count()
 
-        if generate_bitmasks:
+        if generate_bitmaps:
             self.tenant_groups_leafs_to_hosts_map = None
             self._get_tenant_groups_leafs_to_hosts_map()
 
-            self.tenant_groups_leafs_to_bitmask_map = None
-            self._get_tenant_groups_leafs_to_bitmask_map()
+            self.tenant_groups_leafs_to_bitmap_map = None
+            self._get_tenant_groups_leafs_to_bitmap_map()
 
     def _get_tenant_vms_to_host_map(self):
         if self.dist == 'uniform':
@@ -135,7 +135,7 @@ class Placement:
             for g in range(self.tenants.tenant_group_count_map[t]):
                 _leafs_to_hosts_dict = dict()
 
-                if self.tenant_groups_to_leaf_count[t][g] > self.num_bitmasks:
+                if self.tenant_groups_to_leaf_count[t][g] > self.num_bitmaps:
                     for _, vm in self.tenants.tenant_groups_to_vms_map[t][g].iteritems():
                         if self.tenant_vms_to_leaf_map[t][vm] in _leafs_to_hosts_dict:
                             _leafs_to_hosts_dict[self.tenant_vms_to_leaf_map[t][vm]] |= {self.tenant_vms_to_host_map[t][vm]}
@@ -146,22 +146,22 @@ class Placement:
 
             self.tenant_groups_leafs_to_hosts_map[t] = _groups_leafs_to_hosts_map
 
-    def _get_tenant_groups_leafs_to_bitmask_map(self):
-        self.tenant_groups_leafs_to_bitmask_map = [None] * self.tenants.num_tenants
+    def _get_tenant_groups_leafs_to_bitmap_map(self):
+        self.tenant_groups_leafs_to_bitmap_map = [None] * self.tenants.num_tenants
 
         for t in range(self.tenants.num_tenants):
-            _groups_leafs_to_bitmask_map = [None] * self.tenants.tenant_group_count_map[t]
+            _groups_leafs_to_bitmap_map = [None] * self.tenants.tenant_group_count_map[t]
 
             for g in range(self.tenants.tenant_group_count_map[t]):
-                _leafs_to_bitmask_dict = dict()
+                _leafs_to_bitmap_dict = dict()
 
-                if self.tenant_groups_to_leaf_count[t][g] > self.num_bitmasks:
+                if self.tenant_groups_to_leaf_count[t][g] > self.num_bitmaps:
                     for l in self.tenant_groups_leafs_to_hosts_map[t][g]:
-                        _leafs_to_bitmask_dict[l] = BitArray(self.network.num_hosts_per_leaf)
+                        _leafs_to_bitmap_dict[l] = BitArray(self.network.num_hosts_per_leaf)
 
                         for h in self.tenant_groups_leafs_to_hosts_map[t][g][l]:
-                            _leafs_to_bitmask_dict[l][h % self.network.num_hosts_per_leaf] = 1
+                            _leafs_to_bitmap_dict[l][h % self.network.num_hosts_per_leaf] = 1
 
-                _groups_leafs_to_bitmask_map[g] = _leafs_to_bitmask_dict
+                _groups_leafs_to_bitmap_map[g] = _leafs_to_bitmap_dict
 
-            self.tenant_groups_leafs_to_bitmask_map[t] = _groups_leafs_to_bitmask_map
+            self.tenant_groups_leafs_to_bitmap_map[t] = _groups_leafs_to_bitmap_map
