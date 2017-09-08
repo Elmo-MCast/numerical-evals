@@ -4,10 +4,11 @@ from bitstring import BitArray
 
 
 class Placement:
-    def __init__(self, network, tenants, dist='uniform'):
+    def __init__(self, network, tenants, dist='uniform', num_bitmasks=32):
         self.dist = dist
         self.network = network
         self.tenants = tenants
+        self.num_bitmasks = num_bitmasks
 
         self.tenant_vms_to_host_map = None
         self._get_tenant_vms_to_host_map()
@@ -21,11 +22,11 @@ class Placement:
         self.tenant_groups_to_leaf_count = None
         self._get_tenant_groups_to_leaf_count()
 
-        self.tenant_groups_leafs_to_hosts_map = None
-        self._get_tenant_groups_leafs_to_hosts_map()
-
-        self.tenant_groups_leafs_to_bitmask_map = None
-        self._get_tenant_groups_leafs_to_bitmask_map()
+        # self.tenant_groups_leafs_to_hosts_map = None
+        # self._get_tenant_groups_leafs_to_hosts_map()
+        #
+        # self.tenant_groups_leafs_to_bitmask_map = None
+        # self._get_tenant_groups_leafs_to_bitmask_map()
 
     def _get_tenant_vms_to_host_map(self):
         if self.dist == 'uniform':
@@ -133,11 +134,12 @@ class Placement:
             for g in range(self.tenants.tenant_group_count_map[t]):
                 _leafs_to_hosts_dict = dict()
 
-                for _, vm in self.tenants.tenant_groups_to_vms_map[t][g].iteritems():
-                    if self.tenant_vms_to_leaf_map[t][vm] in _leafs_to_hosts_dict:
-                        _leafs_to_hosts_dict[self.tenant_vms_to_leaf_map[t][vm]] |= {self.tenant_vms_to_host_map[t][vm]}
-                    else:
-                        _leafs_to_hosts_dict[self.tenant_vms_to_leaf_map[t][vm]] = {self.tenant_vms_to_host_map[t][vm]}
+                if self.tenant_groups_to_leaf_count[t][g] > self.num_bitmasks:
+                    for _, vm in self.tenants.tenant_groups_to_vms_map[t][g].iteritems():
+                        if self.tenant_vms_to_leaf_map[t][vm] in _leafs_to_hosts_dict:
+                            _leafs_to_hosts_dict[self.tenant_vms_to_leaf_map[t][vm]] |= {self.tenant_vms_to_host_map[t][vm]}
+                        else:
+                            _leafs_to_hosts_dict[self.tenant_vms_to_leaf_map[t][vm]] = {self.tenant_vms_to_host_map[t][vm]}
 
                 _groups_leafs_to_hosts_map[g] = _leafs_to_hosts_dict
 
@@ -152,11 +154,12 @@ class Placement:
             for g in range(self.tenants.tenant_group_count_map[t]):
                 _leafs_to_bitmask_dict = dict()
 
-                for l in self.tenant_groups_leafs_to_hosts_map[t][g]:
-                    _leafs_to_bitmask_dict[l] = BitArray(self.network.num_hosts_per_leaf)
+                if self.tenant_groups_to_leaf_count[t][g] > self.num_bitmasks:
+                    for l in self.tenant_groups_leafs_to_hosts_map[t][g]:
+                        _leafs_to_bitmask_dict[l] = BitArray(self.network.num_hosts_per_leaf)
 
-                    for h in self.tenant_groups_leafs_to_hosts_map[t][g][l]:
-                        _leafs_to_bitmask_dict[l][h % self.network.num_hosts_per_leaf] = 1
+                        for h in self.tenant_groups_leafs_to_hosts_map[t][g][l]:
+                            _leafs_to_bitmask_dict[l][h % self.network.num_hosts_per_leaf] = 1
 
                 _groups_leafs_to_bitmask_map[g] = _leafs_to_bitmask_dict
 

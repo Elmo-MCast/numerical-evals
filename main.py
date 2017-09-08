@@ -39,7 +39,8 @@ cloud = Cloud(num_leafs=48,
               num_groups=1000,
               min_group_size=5,
               group_size_dist='uniform',
-              placement_dist='uniform')
+              placement_dist='uniform',
+              num_bitmasks=10)
 
 # cloud = Cloud(num_leafs=48,
 #               num_hosts_per_leaf=48,

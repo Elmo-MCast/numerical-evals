@@ -45,6 +45,7 @@ def dp_algorithm(switch_bitmaps, num_bitmaps):
 
     if DEBUG:
         print(bitmaps_num, bitmaps)
+    print(bitmaps)
 
     max_demand = Q * W * 2
     if DEBUG:
@@ -110,4 +111,10 @@ def dp_algorithm(switch_bitmaps, num_bitmaps):
 if __name__ == "__main__":
     sample_switch_bitmaps = ["1000", "1100", "1000", "1000", "1111", "1110", "1100",
                              "1111", "1000", "1111", "1110", "1110", "1110"]
+
+    # sample_switch_bitmaps = ["1000", "1100", "1000", "1000", "1110", "1100",
+    #                          "1000", "1110", "1110", "1110"]
+
     print(dp_algorithm(sample_switch_bitmaps, 4))
+
+    print(len(sample_switch_bitmaps))
