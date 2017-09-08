@@ -19,39 +19,27 @@ def ones(bitmap):
     return count
 
 
-def organize_bitmaps(input_bitmaps):
-    "reorder the bits to follow the algorithm assumptions"
-    if (input_bitmaps == []):
-        return
-    Q = len(input_bitmaps)
-    W = len(input_bitmaps[0])
-    cnt = [len([j for j in range(Q) if input_bitmaps[j][i] == "1"])  for i in range(W)]
-
-    perm = []
-    while (len(perm) < W):
-        max_cnt = 0
-        for i in range(W):
-            if cnt[i] > max_cnt:
-                ind = i
-                max_cnt = cnt[i]
-        nax_cnt = 0
-        perm.append(ind)
-        cnt[ind] = 0
-
-    output_bitmaps = []
-    for j in range(Q):
-        bitmap = ""
-        for i in range(W):
-            bitmap += input_bitmaps[j][perm[i]]
-        output_bitmaps.append(bitmap)
-    output_bitmaps.sort()
-    return output_bitmaps, perm
-
 if __name__ == "__main__":
-    sample_switch_bitmaps = ["1000", "1100", "1000", "1000", "1111", "1110", "1100",
-                             "1111", "1000", "1111", "1110", "1110", "1110"]
+    # sample_switch_bitmaps = ["1000", "1100", "1000", "1000", "1111", "1110", "1100",
+    #                          "1111", "1000", "1111", "1110", "1110", "1110"]
 
     # sample_switch_bitmaps = ["1000", "1100", "1000", "1000", "1110", "1100",
     #                          "1000", "1110", "1110", "1110"]
+
+    sample_switch_bitmaps = {
+        1: BitArray('0b1000'),
+        2: BitArray('0b1100'),
+        3: BitArray('0b1000'),
+        4: BitArray('0b1000'),
+        5: BitArray('0b1111'),
+        6: BitArray('0b1110'),
+        7: BitArray('0b1100'),
+        8: BitArray('0b1111'),
+        9: BitArray('0b1000'),
+        10: BitArray('0b1111'),
+        11: BitArray('0b1110'),
+        12: BitArray('0b1110'),
+        13: BitArray('0b1110')
+    }
 
     print(organize_bitmaps(sample_switch_bitmaps))

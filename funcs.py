@@ -25,6 +25,7 @@ def organize_bitmaps(input_bitmaps):
             bitmap += input_bitmaps[j][perm[i]]
         output_bitmaps.append(bitmap)
     output_bitmaps.sort()
+    input_bitmaps.sort()
     return output_bitmaps, perm
 
 def ones(str):
@@ -98,7 +99,7 @@ def DP_ALGO(switch_bitmaps, num_group_bitmaps):
 # switch_bitmaps = ["1000","1100","1000","1000","1111", "1110","1100","1111","1000","1111","1110","1110","1110"]
 
 if __name__ == "__main__":
-    sample_switch_bitmaps = ["1000", "1100", "1000", "1000", "1111", "1110", "1100",
+    sample_switch_bitmaps = ["1001", "1100", "1000", "1000", "1111", "1110", "1100",
                              "1111", "1000", "1111", "1110", "1110", "1110"]
 
     # sample_switch_bitmaps = ["1000", "1100", "1000", "1000", "1110", "1100",
