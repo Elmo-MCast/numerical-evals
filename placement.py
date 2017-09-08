@@ -4,7 +4,7 @@ from bitstring import BitArray
 
 
 class Placement:
-    def __init__(self, network, tenants, dist='uniform', num_bitmasks=32):
+    def __init__(self, network, tenants, dist='uniform', num_bitmasks=32, generate_bitmasks=False):
         self.dist = dist
         self.network = network
         self.tenants = tenants
@@ -22,11 +22,12 @@ class Placement:
         self.tenant_groups_to_leaf_count = None
         self._get_tenant_groups_to_leaf_count()
 
-        # self.tenant_groups_leafs_to_hosts_map = None
-        # self._get_tenant_groups_leafs_to_hosts_map()
-        #
-        # self.tenant_groups_leafs_to_bitmask_map = None
-        # self._get_tenant_groups_leafs_to_bitmask_map()
+        if generate_bitmasks:
+            self.tenant_groups_leafs_to_hosts_map = None
+            self._get_tenant_groups_leafs_to_hosts_map()
+
+            self.tenant_groups_leafs_to_bitmask_map = None
+            self._get_tenant_groups_leafs_to_bitmask_map()
 
     def _get_tenant_vms_to_host_map(self):
         if self.dist == 'uniform':

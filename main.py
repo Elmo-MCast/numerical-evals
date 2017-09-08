@@ -1,4 +1,5 @@
 from cloud import *
+from plot import *
 
 
 # Statistical evaluation ...
@@ -41,6 +42,8 @@ cloud = Cloud(num_leafs=48,
               group_size_dist='uniform',
               placement_dist='uniform',
               num_bitmasks=10)
+
+data = Data(cloud)
 
 # cloud = Cloud(num_leafs=48,
 #               num_hosts_per_leaf=48,

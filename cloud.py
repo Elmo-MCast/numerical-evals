@@ -16,7 +16,8 @@ class Cloud:
                  min_group_size=5,
                  group_size_dist='uniform',
                  placement_dist='uniform',
-                 num_bitmasks=32):
+                 num_bitmasks=32,
+                 generate_bitmasks=False):
 
         self.network = Network(num_leafs=num_leafs, num_hosts_per_leaf=num_hosts_per_leaf)
 
@@ -28,4 +29,4 @@ class Cloud:
                                group_size_dist=group_size_dist)
 
         self.placement = Placement(network=self.network, tenants=self.tenants, dist=placement_dist,
-                                   num_bitmasks=num_bitmasks)
+                                   num_bitmasks=num_bitmasks, generate_bitmasks=generate_bitmasks)
