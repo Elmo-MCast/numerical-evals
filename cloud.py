@@ -1,6 +1,7 @@
 from network import *
 from tenants import *
 from placement import *
+from optimization import *
 
 
 class Cloud:
@@ -30,3 +31,5 @@ class Cloud:
 
         self.placement = Placement(network=self.network, tenants=self.tenants, dist=placement_dist,
                                    num_bitmasks=num_bitmasks, generate_bitmasks=generate_bitmasks)
+
+        self.optimization = Optimization(network=self.network, tenants=self.tenants, placement=self.placement)
