@@ -4,7 +4,6 @@ from functools import reduce
 import pandas as pd
 import numpy as np
 from scipy import stats
-import time
 
 
 class Tenants:
@@ -97,8 +96,6 @@ class Tenants:
                 for i in range(self.num_chunks):
                     groups_sizes_map_threads[i].join()
 
-                time.sleep(5)
-
                 self.tenant_groups_sizes_map = reduce(operator.concat, groups_sizes_map_chunks)
         else:
             raise (Exception("invalid dist parameter for group size allocation"))
@@ -141,7 +138,5 @@ class Tenants:
 
             for i in range(self.num_chunks):
                 tenant_groups_to_vms_map_threads[i].join()
-
-            time.sleep(5)
 
             self.tenant_groups_to_vms_map = reduce(operator.concat, tenant_groups_to_vms_map_chunks)

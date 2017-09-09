@@ -2,7 +2,6 @@ from threading import Thread
 import operator
 from functools import reduce
 import pandas as pd
-import time
 
 
 class Network:
@@ -54,8 +53,6 @@ class Network:
 
             for i in range(self.num_chunks):
                 leaf_to_hosts_map_threads[i].join()
-
-            time.sleep(5)
 
             self.leaf_to_hosts_map = reduce(operator.concat, leaf_to_hosts_map_chunks)
 

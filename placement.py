@@ -4,7 +4,6 @@ from functools import reduce
 import pandas as pd
 import numpy as np
 from bitstring import BitArray
-import time
 
 
 class Placement:
@@ -139,8 +138,6 @@ class Placement:
 
             for i in range(self.num_chunks):
                 tenant_vms_to_leaf_map_threads[i].join()
-
-            time.sleep(5)
 
             self.tenant_vms_to_leaf_map = reduce(operator.concat, tenant_vms_to_leaf_map_chunks)
 
