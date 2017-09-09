@@ -30,6 +30,8 @@ class Tenants:
                 raise Exception("number of threads should be a multiple of tenants count")
             self.chunk_size = int(self.num_tenants / self.num_chunks)
 
+            # print('tenants: no. of chunks %s' % self.num_chunks)
+
         self.tenant_vm_count_map = None
         self._get_tenant_vm_count_map()
 

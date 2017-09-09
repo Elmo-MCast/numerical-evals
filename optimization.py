@@ -18,6 +18,8 @@ class Optimization:
                 raise Exception("number of threads should be a multiple of tenants count")
             self.chunk_size = int(self.tenants.num_tenants / self.num_chunks)
 
+            # print('optimization: no. of chunks %s' % self.num_chunks)
+
         self.tenant_groups_categories_to_bitmap_map = None
         self.tenant_groups_leafs_to_category_map = None
         self.tenant_groups_to_redundancy_map = None

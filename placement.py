@@ -22,6 +22,8 @@ class Placement:
                 raise Exception("number of threads should be a multiple of tenants count")
             self.chunk_size = int(self.tenants.num_tenants / self.num_chunks)
 
+            # print('placement: no. of chunks %s' % self.num_chunks)
+
         self.tenant_vms_to_host_map = None
         self._get_tenant_vms_to_host_map()
 

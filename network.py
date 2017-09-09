@@ -18,6 +18,8 @@ class Network:
                 raise Exception("number of threads should be a multiple of leafs count")
             self.chunk_size = int(self.num_leafs / self.num_chunks)
 
+            # print('network: no. of chunks %s' % self.num_chunks)
+
         self.leaf_to_hosts_map = None
         self._get_leaf_to_hosts_map()
 

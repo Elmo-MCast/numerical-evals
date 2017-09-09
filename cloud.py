@@ -33,6 +33,8 @@ class Cloud:
                                multi_threaded=multi_threaded, num_threads=num_threads)
 
         self.placement = Placement(network=self.network, tenants=self.tenants, dist=placement_dist,
-                                   num_bitmaps=num_bitmaps, generate_bitmaps=generate_bitmaps)
+                                   num_bitmaps=num_bitmaps, generate_bitmaps=generate_bitmaps,
+                                   multi_threaded=multi_threaded, num_threads=num_threads)
 
-        self.optimization = Optimization(network=self.network, tenants=self.tenants, placement=self.placement)
+        self.optimization = Optimization(network=self.network, tenants=self.tenants, placement=self.placement,
+                                         multi_threaded=multi_threaded, num_threads=num_threads)
