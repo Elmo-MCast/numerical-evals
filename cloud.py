@@ -13,7 +13,7 @@ class Cloud:
                  min_vms_per_tenant=10,
                  max_vms_per_tenant=5000,
                  vm_dist='expon',
-                 num_groups=10000,
+                 num_groups=100000,
                  min_group_size=5,
                  group_size_dist='uniform',
                  placement_dist='uniform',

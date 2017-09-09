@@ -20,7 +20,7 @@ np.random.seed(seed=0)
 cloud = Cloud(num_leafs=1056,
               num_hosts_per_leaf=48,
               max_vms_per_host=20,
-              num_tenants=3000,
+              num_tenants=500,
               min_vms_per_tenant=10,
               max_vms_per_tenant=5000,
               vm_dist='expon',
@@ -58,9 +58,9 @@ cloud = Cloud(num_leafs=1056,
 #               placement_dist='uniform',
 #               num_bitmaps=10,
 #               generate_bitmaps=True,
-#               multi_threaded=True,
+#               multi_threaded=False,
 #               num_threads=4)
-#
+
 # data = Data(cloud)
 
 # cloud = Cloud(num_leafs=48,
