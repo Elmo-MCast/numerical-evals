@@ -31,10 +31,10 @@ class Placement:
         self.tenant_groups_to_leafs_map = None
         self._get_tenant_groups_to_leafs_map()
 
-        print('placement: passed this point.')
-
         self.tenant_groups_to_leaf_count = None
         self._get_tenant_groups_to_leaf_count()
+
+        print('placement: passed this point.')
 
         if generate_bitmaps:
             self.tenant_groups_leafs_to_hosts_map = None
@@ -183,16 +183,45 @@ class Placement:
 
             self.tenant_groups_to_leafs_map = reduce(operator.concat, tenant_groups_to_leafs_map_chunks)
 
-    def _get_tenant_groups_to_leaf_count(self):
-        self.tenant_groups_to_leaf_count = [None] * self.tenants.num_tenants
+    def _get_tenant_groups_to_leaf_count_chunk(self, tenant_groups_to_leaf_count_chunks, chunk_id, chunk_size):
+        base_index = chunk_id * chunk_size
+        tenant_groups_to_leaf_count = [None] * chunk_size
 
-        for t in range(self.tenants.num_tenants):
+        for t in range(base_index, base_index + chunk_size):
             _groups_to_leaf_count = [None] * self.tenants.tenant_group_count_map[t]
 
             for g in range(self.tenants.tenant_group_count_map[t]):
                 _groups_to_leaf_count[g] = len(self.tenant_groups_to_leafs_map[t][g])
 
-            self.tenant_groups_to_leaf_count[t] = pd.Series(_groups_to_leaf_count)
+            tenant_groups_to_leaf_count[t % chunk_size] = pd.Series(_groups_to_leaf_count)
+
+        tenant_groups_to_leaf_count_chunks[chunk_id] = tenant_groups_to_leaf_count
+
+    def _get_tenant_groups_to_leaf_count(self):
+        if not self.multi_threaded:
+            self.tenant_groups_to_leaf_count = [None] * self.tenants.num_tenants
+
+            for t in range(self.tenants.num_tenants):
+                _groups_to_leaf_count = [None] * self.tenants.tenant_group_count_map[t]
+
+                for g in range(self.tenants.tenant_group_count_map[t]):
+                    _groups_to_leaf_count[g] = len(self.tenant_groups_to_leafs_map[t][g])
+
+                self.tenant_groups_to_leaf_count[t] = pd.Series(_groups_to_leaf_count)
+        else:
+            tenant_groups_to_leaf_count_chunks = [None] * self.num_chunks
+            tenant_groups_to_leaf_count_threads = [None] * self.num_chunks
+
+            for i in range(self.num_chunks):
+                tenant_groups_to_leaf_count_threads[i] = Thread(
+                    target=self._get_tenant_groups_to_leaf_count_chunk,
+                    args=(tenant_groups_to_leaf_count_chunks, i, self.chunk_size))
+                tenant_groups_to_leaf_count_threads[i].start()
+
+            for i in range(self.num_chunks):
+                tenant_groups_to_leaf_count_threads[i].join()
+
+            self.tenant_groups_to_leaf_count = reduce(operator.concat, tenant_groups_to_leaf_count_chunks)
 
     def _get_tenant_groups_leafs_to_hosts_map(self):
         self.tenant_groups_leafs_to_hosts_map = [None] * self.tenants.num_tenants
