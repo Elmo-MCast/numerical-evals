@@ -1,3 +1,5 @@
+from joblib import Parallel, delayed
+import multiprocessing
 import pandas as pd
 import numpy as np
 from scipy import stats
@@ -8,6 +10,7 @@ class Tenants:
                  num_hosts=1056 * 48, max_vms_per_host=20,
                  num_tenants=3000, min_vms=10, max_vms=5000, vm_dist='expon',
                  num_groups=100000, min_group_size=5, group_size_dist='uniform'):
+        self._num_cores = multiprocessing.cpu_count() - 1
         self.num_tenants = num_tenants
         self.num_hosts = num_hosts
         self.max_vms_per_host = max_vms_per_host
@@ -51,25 +54,28 @@ class Tenants:
         self.tenant_group_count_map = pd.Series(
             np.int64(np.floor((self.tenant_vm_count_map / self.tenant_vm_count_map.sum()) * self.num_groups)))
 
-    def _get_groups_sizes_map(self):
-        self.tenant_groups_sizes_map = [None] * self.num_tenants
+    def _get_groups_sizes_map_0(self, t):
+        return pd.Series(stats.randint.rvs(low=self.min_group_size,
+                                           high=self.tenant_vm_count_map[t],
+                                           size=self.tenant_group_count_map[t]))
 
+    def _get_groups_sizes_map(self):
         if self.group_size_dist == 'uniform':
-            for t in range(self.num_tenants):
-                self.tenant_groups_sizes_map[t] = pd.Series(stats.randint.rvs(low=self.min_group_size,
-                                                                              high=self.tenant_vm_count_map[t],
-                                                                              size=self.tenant_group_count_map[t]))
+            self.tenant_groups_sizes_map = Parallel(n_jobs=self._num_cores)(delayed(self._get_groups_sizes_map_0)(t)
+                                                                            for t in range(self.num_tenants))
         else:
             raise (Exception("invalid dist parameter for group size allocation"))
 
+    def _get_tenant_groups_to_vms_map_1(self, t, g):
+        return pd.Series(stats.randint.rvs(low=0,
+                                           high=self.tenant_vm_count_map[t],
+                                           size=self.tenant_groups_sizes_map[t][g]))
+
+    def _get_tenant_groups_to_vms_map_0(self, t):
+        return Parallel(n_jobs=1)(delayed(self._get_tenant_groups_to_vms_map_1)(t, g)
+                                  for g in range(self.tenant_group_count_map[t]))
+
     def _get_tenant_groups_to_vms_map(self):
-        self.tenant_groups_to_vms_map = [None] * self.num_tenants
-
-        for t in range(self.num_tenants):
-            _groups_to_vms_map = [None] * self.tenant_group_count_map[t]
-
-            for g in range(self.tenant_group_count_map[t]):
-                _groups_to_vms_map[g] = pd.Series(stats.randint.rvs(low=0,
-                                                                    high=self.tenant_vm_count_map[t],
-                                                                    size=self.tenant_groups_sizes_map[t][g]))
-            self.tenant_groups_to_vms_map[t] = _groups_to_vms_map
+        self.tenant_groups_to_vms_map = Parallel(n_jobs=self._num_cores)(
+            delayed(self._get_tenant_groups_to_vms_map_0)(t)
+            for t in range(self.num_tenants))

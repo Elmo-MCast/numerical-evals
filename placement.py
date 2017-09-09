@@ -1,3 +1,5 @@
+from joblib import Parallel, delayed
+import multiprocessing
 import pandas as pd
 import numpy as np
 from bitstring import BitArray
@@ -5,6 +7,7 @@ from bitstring import BitArray
 
 class Placement:
     def __init__(self, network, tenants, dist='uniform', num_bitmaps=32, generate_bitmaps=False):
+        self._num_cores = multiprocessing.cpu_count() - 1
         self.dist = dist
         self.network = network
         self.tenants = tenants
@@ -96,24 +99,27 @@ class Placement:
         else:
             raise (Exception("invalid dist parameter for vm to host allocation"))
 
-    def _get_tenant_vms_to_leaf_map(self):
-        self.tenant_vms_to_leaf_map = [None] * self.tenants.num_tenants
+    def _get_tenant_vms_to_leaf_map_0(self, t):
+        return pd.Series([self.network.host_to_leaf_map[host]
+                          for _, host in self.tenant_vms_to_host_map[t].iteritems()])
 
-        for t in range(self.tenants.num_tenants):
-            self.tenant_vms_to_leaf_map[t] = pd.Series([self.network.host_to_leaf_map[host]
-                                                        for _, host in self.tenant_vms_to_host_map[t].iteritems()])
+    def _get_tenant_vms_to_leaf_map(self):
+        self.tenant_vms_to_leaf_map = Parallel(n_jobs=self._num_cores)(delayed(self._get_tenant_vms_to_leaf_map_0)(t)
+                                                                       for t in range(self.tenants.num_tenants))
+
+    def _get_tenant_groups_to_leafs_map_0(self, t):
+        _groups_to_leaf_map = [None] * self.tenants.tenant_group_count_map[t]
+
+        for g in range(self.tenants.tenant_group_count_map[t]):
+            _groups_to_leaf_map[g] = pd.Series(list(
+                {self.tenant_vms_to_leaf_map[t][vm]
+                 for _, vm in self.tenants.tenant_groups_to_vms_map[t][g].iteritems()}))
+        return _groups_to_leaf_map
 
     def _get_tenant_groups_to_leafs_map(self):
-        self.tenant_groups_to_leafs_map = [None] * self.tenants.num_tenants
-
-        for t in range(self.tenants.num_tenants):
-            _groups_to_leaf_map = [None] * self.tenants.tenant_group_count_map[t]
-
-            for g in range(self.tenants.tenant_group_count_map[t]):
-                _groups_to_leaf_map[g] = pd.Series(list(
-                    {self.tenant_vms_to_leaf_map[t][vm]
-                     for _, vm in self.tenants.tenant_groups_to_vms_map[t][g].iteritems()}))
-            self.tenant_groups_to_leafs_map[t] = _groups_to_leaf_map
+        self.tenant_groups_to_leafs_map = Parallel(n_jobs=self._num_cores)(
+            delayed(self._get_tenant_groups_to_leafs_map_0)(t)
+            for t in range(self.tenants.num_tenants))
 
     def _get_tenant_groups_to_leaf_count(self):
         self.tenant_groups_to_leaf_count = [None] * self.tenants.num_tenants
