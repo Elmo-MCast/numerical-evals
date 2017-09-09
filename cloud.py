@@ -18,8 +18,11 @@ class Cloud:
                  group_size_dist='uniform',
                  placement_dist='uniform',
                  num_bitmaps=32,
-                 generate_bitmaps=False):
-        self.network = Network(num_leafs=num_leafs, num_hosts_per_leaf=num_hosts_per_leaf)
+                 generate_bitmaps=False,
+                 multi_threaded=True,
+                 num_threads=4):
+        self.network = Network(num_leafs=num_leafs, num_hosts_per_leaf=num_hosts_per_leaf,
+                               multi_threaded=multi_threaded, num_threads=num_threads)
 
         self.tenants = Tenants(num_hosts=self.network.num_hosts,
                                max_vms_per_host=max_vms_per_host,
