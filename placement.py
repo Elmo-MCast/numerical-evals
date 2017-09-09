@@ -34,14 +34,14 @@ class Placement:
         self.tenant_groups_to_leaf_count = None
         self._get_tenant_groups_to_leaf_count()
 
-        print('placement: passed this point.')
-
         if generate_bitmaps:
             self.tenant_groups_leafs_to_hosts_map = None
             self._get_tenant_groups_leafs_to_hosts_map()
 
             self.tenant_groups_leafs_to_bitmap_map = None
             self._get_tenant_groups_leafs_to_bitmap_map()
+
+        print('placement: initialized.')
 
     def _get_tenant_vms_to_host_map(self):
         if self.dist == 'uniform':
@@ -223,10 +223,12 @@ class Placement:
 
             self.tenant_groups_to_leaf_count = reduce(operator.concat, tenant_groups_to_leaf_count_chunks)
 
-    def _get_tenant_groups_leafs_to_hosts_map(self):
-        self.tenant_groups_leafs_to_hosts_map = [None] * self.tenants.num_tenants
+    def _get_tenant_groups_leafs_to_hosts_map_chunk(self, tenant_groups_leafs_to_hosts_map_chunks,
+                                                    chunk_id, chunk_size):
+        base_index = chunk_id * chunk_size
+        tenant_groups_leafs_to_hosts_map = [None] * chunk_size
 
-        for t in range(self.tenants.num_tenants):
+        for t in range(base_index, base_index + chunk_size):
             _groups_leafs_to_hosts_map = [None] * self.tenants.tenant_group_count_map[t]
 
             for g in range(self.tenants.tenant_group_count_map[t]):
@@ -243,12 +245,53 @@ class Placement:
 
                 _groups_leafs_to_hosts_map[g] = _leafs_to_hosts_dict
 
-            self.tenant_groups_leafs_to_hosts_map[t] = _groups_leafs_to_hosts_map
+            tenant_groups_leafs_to_hosts_map[t % chunk_size] = _groups_leafs_to_hosts_map
 
-    def _get_tenant_groups_leafs_to_bitmap_map(self):
-        self.tenant_groups_leafs_to_bitmap_map = [None] * self.tenants.num_tenants
+        tenant_groups_leafs_to_hosts_map_chunks[chunk_id] = tenant_groups_leafs_to_hosts_map
 
-        for t in range(self.tenants.num_tenants):
+    def _get_tenant_groups_leafs_to_hosts_map(self):
+        if not self.multi_threaded:
+            self.tenant_groups_leafs_to_hosts_map = [None] * self.tenants.num_tenants
+
+            for t in range(self.tenants.num_tenants):
+                _groups_leafs_to_hosts_map = [None] * self.tenants.tenant_group_count_map[t]
+
+                for g in range(self.tenants.tenant_group_count_map[t]):
+                    _leafs_to_hosts_dict = dict()
+
+                    if self.tenant_groups_to_leaf_count[t][g] > self.num_bitmaps:
+                        for _, vm in self.tenants.tenant_groups_to_vms_map[t][g].iteritems():
+                            if self.tenant_vms_to_leaf_map[t][vm] in _leafs_to_hosts_dict:
+                                _leafs_to_hosts_dict[self.tenant_vms_to_leaf_map[t][vm]] |= {
+                                    self.tenant_vms_to_host_map[t][vm]}
+                            else:
+                                _leafs_to_hosts_dict[self.tenant_vms_to_leaf_map[t][vm]] = {
+                                    self.tenant_vms_to_host_map[t][vm]}
+
+                    _groups_leafs_to_hosts_map[g] = _leafs_to_hosts_dict
+
+                self.tenant_groups_leafs_to_hosts_map[t] = _groups_leafs_to_hosts_map
+        else:
+            tenant_groups_leafs_to_hosts_map_chunks = [None] * self.num_chunks
+            tenant_groups_leafs_to_hosts_map_threads = [None] * self.num_chunks
+
+            for i in range(self.num_chunks):
+                tenant_groups_leafs_to_hosts_map_threads[i] = Thread(
+                    target=self._get_tenant_groups_leafs_to_hosts_map_chunk,
+                    args=(tenant_groups_leafs_to_hosts_map_chunks, i, self.chunk_size))
+                tenant_groups_leafs_to_hosts_map_threads[i].start()
+
+            for i in range(self.num_chunks):
+                tenant_groups_leafs_to_hosts_map_threads[i].join()
+
+            self.tenant_groups_leafs_to_hosts_map = reduce(operator.concat, tenant_groups_leafs_to_hosts_map_chunks)
+
+    def _get_tenant_groups_leafs_to_bitmap_map_chunk(self, tenant_groups_leafs_to_bitmap_map_chunks,
+                                                     chunk_id, chunk_size):
+        base_index = chunk_id * chunk_size
+        tenant_groups_leafs_to_bitmap_map = [None] * chunk_size
+
+        for t in range(base_index, base_index + chunk_size):
             _groups_leafs_to_bitmap_map = [None] * self.tenants.tenant_group_count_map[t]
 
             for g in range(self.tenants.tenant_group_count_map[t]):
@@ -267,4 +310,45 @@ class Placement:
 
                 _groups_leafs_to_bitmap_map[g] = _leafs_to_bitmap_dict
 
-            self.tenant_groups_leafs_to_bitmap_map[t] = _groups_leafs_to_bitmap_map
+            tenant_groups_leafs_to_bitmap_map[t % chunk_size] = _groups_leafs_to_bitmap_map
+
+        tenant_groups_leafs_to_bitmap_map_chunks[chunk_id] = tenant_groups_leafs_to_bitmap_map
+
+    def _get_tenant_groups_leafs_to_bitmap_map(self):
+        if not self.multi_threaded:
+            self.tenant_groups_leafs_to_bitmap_map = [None] * self.tenants.num_tenants
+
+            for t in range(self.tenants.num_tenants):
+                _groups_leafs_to_bitmap_map = [None] * self.tenants.tenant_group_count_map[t]
+
+                for g in range(self.tenants.tenant_group_count_map[t]):
+                    _leafs_to_bitmap_dict = dict()
+
+                    if self.tenant_groups_to_leaf_count[t][g] > self.num_bitmaps:
+                        for l in self.tenant_groups_leafs_to_hosts_map[t][g]:
+                            _leafs_to_bitmap_dict[l] = dict()
+
+                            _leafs_to_bitmap_dict[l]['actual'] = BitArray(self.network.num_hosts_per_leaf)
+                            for h in self.tenant_groups_leafs_to_hosts_map[t][g][l]:
+                                _leafs_to_bitmap_dict[l]['actual'][h % self.network.num_hosts_per_leaf] = 1
+
+                            _leafs_to_bitmap_dict[l]['sorted'] = BitArray(
+                                sorted(_leafs_to_bitmap_dict[l]['actual'], reverse=True))
+
+                    _groups_leafs_to_bitmap_map[g] = _leafs_to_bitmap_dict
+
+                self.tenant_groups_leafs_to_bitmap_map[t] = _groups_leafs_to_bitmap_map
+        else:
+            tenant_groups_leafs_to_bitmap_map_chunks = [None] * self.num_chunks
+            tenant_groups_leafs_to_bitmap_map_threads = [None] * self.num_chunks
+
+            for i in range(self.num_chunks):
+                tenant_groups_leafs_to_bitmap_map_threads[i] = Thread(
+                    target=self._get_tenant_groups_leafs_to_bitmap_map_chunk,
+                    args=(tenant_groups_leafs_to_bitmap_map_chunks, i, self.chunk_size))
+                tenant_groups_leafs_to_bitmap_map_threads[i].start()
+
+            for i in range(self.num_chunks):
+                tenant_groups_leafs_to_bitmap_map_threads[i].join()
+
+            self.tenant_groups_leafs_to_bitmap_map = reduce(operator.concat, tenant_groups_leafs_to_bitmap_map_chunks)
