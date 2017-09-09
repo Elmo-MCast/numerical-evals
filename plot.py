@@ -117,18 +117,21 @@ class Plot:
 
     def cdf_min_bitmaps_for_all_tenants(self):
         ax = sb.kdeplot(self.data.min_bitmaps_for_all_tenants, cumulative=True)
-        ax.set(xlabel="Minimum bitmaps for all groups using %s bitmaps (all leafs)" % self.data.cloud.placement.num_bitmaps,
-               ylabel='CDF')
+        ax.set(
+            xlabel="Minimum bitmaps for all groups using %s bitmaps (all leafs)" % self.data.cloud.placement.num_bitmaps,
+            ylabel='CDF')
         self.plt.show()
 
     def pdf_min_bitmaps_for_all_tenants(self):
         ax = self.data.min_bitmaps_for_all_tenants.plot(kind='density')
-        ax.set(xlabel="Minimum bitmaps for all groups using %s bitmaps (all leafs)" % self.data.cloud.placement.num_bitmaps,
-               ylabel='PDF')
+        ax.set(
+            xlabel="Minimum bitmaps for all groups using %s bitmaps (all leafs)" % self.data.cloud.placement.num_bitmaps,
+            ylabel='PDF')
         self.plt.show()
 
     def hist_min_bitmaps_for_all_tenants(self):
         ax = self.data.min_bitmaps_for_all_tenants.plot(kind='hist')
-        ax.set(xlabel="Minimum bitmaps for all groups using %s bitmaps (all leafs)" % self.data.cloud.placement.num_bitmaps,
-               ylabel='Frequency')
+        ax.set(
+            xlabel="Minimum bitmaps for all groups using %s bitmaps (all leafs)" % self.data.cloud.placement.num_bitmaps,
+            ylabel='Frequency')
         self.plt.show()
