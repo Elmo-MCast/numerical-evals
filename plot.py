@@ -15,6 +15,12 @@ class Data:
         self.rules_for_all_leafs = None
         self._get_rules_for_all_leafs()
 
+        self.redundancy_for_all_tenants = None
+        self._get_redundancy_for_all_tenants()
+
+        self.min_bitmaps_for_all_tenants = None
+        self._get_min_bitmaps_for_all_tenants()
+
     def _get_leafs_for_all_tenants(self):
         self.leafs_for_all_tenants = pd.Series()
 
@@ -38,6 +44,25 @@ class Data:
                         self.rules_for_all_leafs[l] += 1
 
         self.rules_for_all_leafs = pd.Series(self.rules_for_all_leafs)
+
+    def _get_redundancy_for_all_tenants(self):
+        self.redundancy_for_all_tenants = pd.Series()
+
+        for t in range(self.cloud.tenants.num_tenants):
+            for g in range(self.cloud.tenants.tenant_group_count_map[t]):
+                if self.cloud.optimization.tenant_groups_to_redundancy_map[t][g] is not None:
+                    self.redundancy_for_all_tenants = self.redundancy_for_all_tenants.append(
+                        pd.Series(self.cloud.optimization.tenant_groups_to_redundancy_map[t][g]), ignore_index=True)
+
+    def _get_min_bitmaps_for_all_tenants(self):
+        self.min_bitmaps_for_all_tenants = pd.Series()
+
+        for t in range(self.cloud.tenants.num_tenants):
+            for g in range(self.cloud.tenants.tenant_group_count_map[t]):
+                if self.cloud.optimization.tenant_groups_to_min_bitmap_count[t][g] is not None:
+                    self.min_bitmaps_for_all_tenants = self.min_bitmaps_for_all_tenants.append(
+                        pd.Series(self.cloud.optimization.tenant_groups_to_min_bitmap_count[t][g]), ignore_index=True)
+
 
 class Plot:
     def __init__(self, plt, data):
@@ -75,4 +100,35 @@ class Plot:
         ax = sb.kdeplot(self.data.rules_for_all_leafs, cumulative=True)
         ax.set(xlabel="Number of rules using %s bitmaps (all leafs)" % self.data.cloud.placement.num_bitmaps,
                ylabel='CDF')
+        self.plt.show()
+
+    def cdf_redundancy_for_all_tenants(self):
+        ax = sb.kdeplot(self.data.redundancy_for_all_tenants, cumulative=True)
+        ax.set(xlabel="Redundancy for all groups using %s bitmaps (all leafs)" % self.data.cloud.placement.num_bitmaps,
+               ylabel='CDF')
+        self.plt.show()
+
+    def hist_redundancy_for_all_tenants(self):
+        ax = self.data.redundancy_for_all_tenants.plot(kind='hist')
+        ax.set(
+            xlabel="Redundancy for all groups using %s bitmaps (all leafs)" % self.data.cloud.placement.num_bitmaps,
+            ylabel='Frequency')
+        self.plt.show()
+
+    def cdf_min_bitmaps_for_all_tenants(self):
+        ax = sb.kdeplot(self.data.min_bitmaps_for_all_tenants, cumulative=True)
+        ax.set(xlabel="Minimum bitmaps for all groups using %s bitmaps (all leafs)" % self.data.cloud.placement.num_bitmaps,
+               ylabel='CDF')
+        self.plt.show()
+
+    def pdf_min_bitmaps_for_all_tenants(self):
+        ax = self.data.min_bitmaps_for_all_tenants.plot(kind='density')
+        ax.set(xlabel="Minimum bitmaps for all groups using %s bitmaps (all leafs)" % self.data.cloud.placement.num_bitmaps,
+               ylabel='PDF')
+        self.plt.show()
+
+    def hist_min_bitmaps_for_all_tenants(self):
+        ax = self.data.min_bitmaps_for_all_tenants.plot(kind='hist')
+        ax.set(xlabel="Minimum bitmaps for all groups using %s bitmaps (all leafs)" % self.data.cloud.placement.num_bitmaps,
+               ylabel='Frequency')
         self.plt.show()
