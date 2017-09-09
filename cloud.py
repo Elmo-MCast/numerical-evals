@@ -29,7 +29,8 @@ class Cloud:
                                num_tenants=num_tenants,
                                min_vms=min_vms_per_tenant, max_vms=max_vms_per_tenant, vm_dist=vm_dist,
                                num_groups=num_groups, min_group_size=min_group_size,
-                               group_size_dist=group_size_dist)
+                               group_size_dist=group_size_dist,
+                               multi_threaded=multi_threaded, num_threads=num_threads)
 
         self.placement = Placement(network=self.network, tenants=self.tenants, dist=placement_dist,
                                    num_bitmaps=num_bitmaps, generate_bitmaps=generate_bitmaps)

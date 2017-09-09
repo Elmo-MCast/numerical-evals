@@ -1,7 +1,8 @@
 from threading import Thread
-import pandas as pd
 import operator
 from functools import reduce
+import pandas as pd
+import time
 
 
 class Network:
@@ -12,11 +13,19 @@ class Network:
         self.multi_threaded = multi_threaded
         self.num_threads = num_threads
 
+        if self.multi_threaded:
+            self.num_chunks = self.num_threads
+            if self.num_leafs % self.num_chunks != 0:
+                raise Exception("number of threads should be a multiple of leafs count")
+            self.chunk_size = int(self.num_leafs / self.num_chunks)
+
         self.leaf_to_hosts_map = None
         self._get_leaf_to_hosts_map()
 
         self.host_to_leaf_map = None
         self._get_host_to_leaf_map()
+
+        print('network: initialized.')
 
     def _get_leaf_to_hosts_map_chunk(self, leaf_to_hosts_map_chunks, chunk_id, chunk_size):
         base_index = chunk_id * chunk_size
@@ -35,21 +44,18 @@ class Network:
                 self.leaf_to_hosts_map[l] = pd.Series([(l * self.num_hosts_per_leaf) + h
                                                        for h in range(self.num_hosts_per_leaf)])
         else:
-            num_chunks = self.num_threads
-            if self.num_leafs % num_chunks != 0:
-                raise Exception("number of threads should be a multiple of leafs count")
-            chunk_size = int(self.num_leafs / num_chunks)
+            leaf_to_hosts_map_chunks = [None] * self.num_chunks
+            leaf_to_hosts_map_threads = [None] * self.num_chunks
 
-            leaf_to_hosts_map_chunks = [None] * num_chunks
-            leaf_to_hosts_map_threads = [None] * num_chunks
-
-            for i in range(num_chunks):
+            for i in range(self.num_chunks):
                 leaf_to_hosts_map_threads[i] = Thread(target=self._get_leaf_to_hosts_map_chunk,
-                                                      args=(leaf_to_hosts_map_chunks, i, chunk_size))
+                                                      args=(leaf_to_hosts_map_chunks, i, self.chunk_size))
                 leaf_to_hosts_map_threads[i].start()
 
-            for i in range(num_chunks):
+            for i in range(self.num_chunks):
                 leaf_to_hosts_map_threads[i].join()
+
+            time.sleep(5)
 
             self.leaf_to_hosts_map = reduce(operator.concat, leaf_to_hosts_map_chunks)
 

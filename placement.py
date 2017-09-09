@@ -1,20 +1,35 @@
+from threading import Thread
+import operator
+from functools import reduce
 import pandas as pd
 import numpy as np
 from bitstring import BitArray
+import time
 
 
 class Placement:
-    def __init__(self, network, tenants, dist='uniform', num_bitmaps=32, generate_bitmaps=False):
+    def __init__(self, network, tenants, dist='uniform', num_bitmaps=32, generate_bitmaps=False,
+                 multi_threaded=True, num_threads=2):
         self.dist = dist
         self.network = network
         self.tenants = tenants
         self.num_bitmaps = num_bitmaps
+        self.multi_threaded = multi_threaded
+        self.num_threads = num_threads
+
+        if self.multi_threaded:
+            self.num_chunks = self.num_threads
+            if self.tenants.num_tenants % self.num_chunks != 0:
+                raise Exception("number of threads should be a multiple of tenants count")
+            self.chunk_size = int(self.tenants.num_tenants / self.num_chunks)
 
         self.tenant_vms_to_host_map = None
         self._get_tenant_vms_to_host_map()
 
         self.tenant_vms_to_leaf_map = None
         self._get_tenant_vms_to_leaf_map()
+
+        print('placement: passed this point.')
 
         self.tenant_groups_to_leafs_map = None
         self._get_tenant_groups_to_leafs_map()
@@ -96,12 +111,38 @@ class Placement:
         else:
             raise (Exception("invalid dist parameter for vm to host allocation"))
 
-    def _get_tenant_vms_to_leaf_map(self):
-        self.tenant_vms_to_leaf_map = [None] * self.tenants.num_tenants
+    def _get_tenant_vms_to_leaf_map_chunk(self, tenant_vms_to_leaf_map_chunks, chunk_id, chunk_size):
+        base_index = chunk_id * chunk_size
+        tenant_vms_to_leaf_map = [None] * chunk_size
 
-        for t in range(self.tenants.num_tenants):
-            self.tenant_vms_to_leaf_map[t] = pd.Series([self.network.host_to_leaf_map[host]
-                                                        for _, host in self.tenant_vms_to_host_map[t].iteritems()])
+        for t in range(base_index, base_index + chunk_size):
+            tenant_vms_to_leaf_map[t % chunk_size] = pd.Series(
+                [self.network.host_to_leaf_map[host] for _, host in self.tenant_vms_to_host_map[t].iteritems()])
+
+        tenant_vms_to_leaf_map_chunks[chunk_id] = tenant_vms_to_leaf_map
+
+    def _get_tenant_vms_to_leaf_map(self):
+        if not self.multi_threaded:
+            self.tenant_vms_to_leaf_map = [None] * self.tenants.num_tenants
+
+            for t in range(self.tenants.num_tenants):
+                self.tenant_vms_to_leaf_map[t] = pd.Series([self.network.host_to_leaf_map[host]
+                                                            for _, host in self.tenant_vms_to_host_map[t].iteritems()])
+        else:
+            tenant_vms_to_leaf_map_chunks = [None] * self.num_chunks
+            tenant_vms_to_leaf_map_threads = [None] * self.num_chunks
+
+            for i in range(self.num_chunks):
+                tenant_vms_to_leaf_map_threads[i] = Thread(target=self._get_tenant_vms_to_leaf_map_chunk,
+                                                           args=(tenant_vms_to_leaf_map_chunks, i, self.chunk_size))
+                tenant_vms_to_leaf_map_threads[i].start()
+
+            for i in range(self.num_chunks):
+                tenant_vms_to_leaf_map_threads[i].join()
+
+            time.sleep(5)
+
+            self.tenant_vms_to_leaf_map = reduce(operator.concat, tenant_vms_to_leaf_map_chunks)
 
     def _get_tenant_groups_to_leafs_map(self):
         self.tenant_groups_to_leafs_map = [None] * self.tenants.num_tenants
