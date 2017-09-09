@@ -19,7 +19,6 @@ class Cloud:
                  placement_dist='uniform',
                  num_bitmaps=32,
                  generate_bitmaps=False):
-
         self.network = Network(num_leafs=num_leafs, num_hosts_per_leaf=num_hosts_per_leaf)
 
         self.tenants = Tenants(num_hosts=self.network.num_hosts,

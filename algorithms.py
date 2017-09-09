@@ -1,6 +1,7 @@
 from bitstring import BitArray
 from collections import OrderedDict
 
+
 # Collection of Algorithms
 
 
@@ -47,7 +48,7 @@ def _dp(bitmaps, max_bitmaps):  # dynamic programming algorithm
                 R[q][g] = 0
                 Y[q][g] = Y[q][g - 1] + [0]
                 continue
-            for j in range(1 , q +1):
+            for j in range(1, q + 1):
                 r = R[q - j][g - 1]
                 r += sum([bitmaps_count[q - 1] - bitmaps_count[q - k] for k in range(1, j + 1)])
                 if r <= R[q][g]:
@@ -87,7 +88,6 @@ def dynmaic(leafs_to_bitmap_map, max_bitmaps):
 
 
 if __name__ == "__main__":
-
     sample_leaf_bitmaps_maps = {
         1: {'actual': BitArray('0b0001'),
             'sorted': BitArray('0b1000')},

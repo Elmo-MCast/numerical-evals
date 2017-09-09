@@ -1,7 +1,6 @@
 from cloud import *
 from plot import *
 
-
 # Statistical evaluation ...
 
 np.random.seed(seed=0)

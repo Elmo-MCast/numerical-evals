@@ -138,9 +138,11 @@ class Placement:
                 if self.tenant_groups_to_leaf_count[t][g] > self.num_bitmaps:
                     for _, vm in self.tenants.tenant_groups_to_vms_map[t][g].iteritems():
                         if self.tenant_vms_to_leaf_map[t][vm] in _leafs_to_hosts_dict:
-                            _leafs_to_hosts_dict[self.tenant_vms_to_leaf_map[t][vm]] |= {self.tenant_vms_to_host_map[t][vm]}
+                            _leafs_to_hosts_dict[self.tenant_vms_to_leaf_map[t][vm]] |= {
+                                self.tenant_vms_to_host_map[t][vm]}
                         else:
-                            _leafs_to_hosts_dict[self.tenant_vms_to_leaf_map[t][vm]] = {self.tenant_vms_to_host_map[t][vm]}
+                            _leafs_to_hosts_dict[self.tenant_vms_to_leaf_map[t][vm]] = {
+                                self.tenant_vms_to_host_map[t][vm]}
 
                 _groups_leafs_to_hosts_map[g] = _leafs_to_hosts_dict
 
@@ -163,7 +165,8 @@ class Placement:
                         for h in self.tenant_groups_leafs_to_hosts_map[t][g][l]:
                             _leafs_to_bitmap_dict[l]['actual'][h % self.network.num_hosts_per_leaf] = 1
 
-                        _leafs_to_bitmap_dict[l]['sorted'] = BitArray(sorted(_leafs_to_bitmap_dict[l]['actual'], reverse=True))
+                        _leafs_to_bitmap_dict[l]['sorted'] = BitArray(
+                            sorted(_leafs_to_bitmap_dict[l]['actual'], reverse=True))
 
                 _groups_leafs_to_bitmap_map[g] = _leafs_to_bitmap_dict
 
