@@ -1,7 +1,7 @@
-from simulation.network import *
-from simulation.optimization import *
-from simulation.placement import *
-from simulation.tenants import *
+from simulation.network import Network
+from simulation.optimization import Optimization
+from simulation.placement import Placement
+from simulation.tenants import Tenants
 
 
 class Cloud:
@@ -19,16 +19,19 @@ class Cloud:
                  placement_dist='uniform',
                  num_bitmaps=32,
                  generate_bitmaps=False):
-        self.network = Network(num_leafs=num_leafs, num_hosts_per_leaf=num_hosts_per_leaf)
+        data = dict()
 
-        self.tenants = Tenants(num_hosts=self.network.num_hosts,
-                               max_vms_per_host=max_vms_per_host,
-                               num_tenants=num_tenants,
-                               min_vms=min_vms_per_tenant, max_vms=max_vms_per_tenant, vm_dist=vm_dist,
-                               num_groups=num_groups, min_group_size=min_group_size,
-                               group_size_dist=group_size_dist)
+        Network(data=data, num_leafs=num_leafs, num_hosts_per_leaf=num_hosts_per_leaf)
 
-        self.placement = Placement(network=self.network, tenants=self.tenants, dist=placement_dist,
-                                   num_bitmaps=num_bitmaps, generate_bitmaps=generate_bitmaps)
+        Tenants(data=data,
+                num_hosts=data['network']['num_hosts'],
+                max_vms_per_host=max_vms_per_host,
+                num_tenants=num_tenants,
+                min_vms=min_vms_per_tenant, max_vms=max_vms_per_tenant, vm_dist=vm_dist,
+                num_groups=num_groups, min_group_size=min_group_size,
+                group_size_dist=group_size_dist)
 
-        self.optimization = Optimization(network=self.network, tenants=self.tenants, placement=self.placement)
+        Placement(data=data, dist=placement_dist,
+                  num_bitmaps=num_bitmaps, generate_bitmaps=generate_bitmaps)
+
+        # self.optimization = Optimization(network=self.network, tenants=self.tenants, placement=self.placement)
