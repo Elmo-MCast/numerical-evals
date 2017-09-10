@@ -1,6 +1,6 @@
 import numpy as np
-from alternate.cloud import initialize as Cloud
-from alternate.data import initialize as Data
+from mutli_processed.cloud import initialize as Cloud
+from mutli_processed.data import initialize as Data
 
 # Statistical evaluation ...
 

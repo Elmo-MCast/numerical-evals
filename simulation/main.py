@@ -1,5 +1,5 @@
-from primary.cloud import *
-from primary.plot import Data
+from simulation.cloud import *
+from simulation.plot import Data
 
 # Statistical evaluation ...
 
@@ -57,9 +57,7 @@ cloud = Cloud(num_leafs=48,
               group_size_dist='uniform',
               placement_dist='uniform',
               num_bitmaps=10,
-              generate_bitmaps=True,
-              multi_threaded=False,
-              num_threads=4)
+              generate_bitmaps=True)
 
 data = Data(cloud)
 

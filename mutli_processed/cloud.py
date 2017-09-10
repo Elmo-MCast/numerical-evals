@@ -1,7 +1,7 @@
-import alternate.network as network
-import alternate.tenants as tenants
-import alternate.placement as placement
-import alternate.optimization as optimization
+import mutli_processed.network as network
+import mutli_processed.tenants as tenants
+import mutli_processed.placement as placement
+import mutli_processed.optimization as optimization
 
 
 def initialize(num_leafs=1056,

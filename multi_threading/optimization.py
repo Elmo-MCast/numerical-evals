@@ -1,7 +1,7 @@
 from threading import Thread
 import operator
 from functools import reduce
-from primary import algorithms
+from multi_threading import algorithms
 
 
 class Optimization:
