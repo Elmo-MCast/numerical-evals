@@ -58,7 +58,8 @@ def _dp(bitmaps, max_bitmaps):  # dynamic programming algorithm
             leaf_to_category_list[x] = g
         c += Y[Q][G][g - 1]
 
-    min_bitmaps = -1
+    # min_bitmaps = -1
+    min_bitmaps = max_bitmaps
     r = R[Q][G]
     if r == 0:
         min_bitmaps = max(leaf_to_category_list)
