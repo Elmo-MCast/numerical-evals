@@ -124,15 +124,23 @@ def initialize(num_hosts=1056 * 48, max_vms_per_host=20,
     _tenant_vm_count_map = _get_tenant_vm_count_map(vm_dist, max_vms_per_host, num_hosts, num_tenants,
                                                     min_vms, max_vms)
 
+    print('tenants[tenant_vm_count_map]: initialized.')
+
     _tenant_group_count_map = _get_tenant_group_count_map(_tenant_vm_count_map, num_groups)
+
+    print('tenants[tenant_group_count_map]: initialized.')
 
     _tenant_groups_sizes_map = _get_tenant_groups_sizes_map(group_size_dist, multi_threaded, num_tenants,
                                                             min_group_size, _tenant_vm_count_map,
                                                             _tenant_group_count_map, num_chunks, chunk_size)
 
+    print('tenants[tenant_groups_sizes_map]: initialized.')
+
     _tenant_groups_to_vms_map = _get_tenant_groups_to_vms_map(multi_threaded, num_tenants, _tenant_group_count_map,
                                                               _tenant_vm_count_map, _tenant_groups_sizes_map,
                                                               num_chunks, chunk_size)
+
+    print('tenants[tenant_groups_to_vms_map]: initialized.')
 
     print('tenants: initialized.')
 

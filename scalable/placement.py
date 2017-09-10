@@ -334,14 +334,22 @@ def initialize(network, tenants, dist='uniform', num_bitmaps=32, generate_bitmap
 
     _tenant_vms_to_host_map = _get_tenant_vms_to_host_map(dist, network, tenants)
 
+    print('placement[tenant_vms_to_host_map]: initialized.')
+
     _tenant_vms_to_leaf_map = _get_tenant_vms_to_leaf_map(multi_threaded, network, tenants, _tenant_vms_to_host_map,
                                                           num_chunks, chunk_size)
+
+    print('placement[tenant_vms_to_leaf_map]: initialized.')
 
     _tenant_groups_to_leafs_map = _get_tenant_groups_to_leafs_map(multi_threaded, tenants, _tenant_vms_to_leaf_map,
                                                                   num_chunks, chunk_size)
 
+    print('placement[tenant_groups_to_leafs_map]: initialized.')
+
     _tenant_groups_to_leaf_count = _get_tenant_groups_to_leaf_count(multi_threaded, tenants,
                                                                     _tenant_groups_to_leafs_map, num_chunks, chunk_size)
+
+    print('placement[tenant_groups_to_leaf_count]: initialized.')
 
     if generate_bitmaps:
         _tenant_groups_leafs_to_hosts_map = _get_tenant_groups_leafs_to_hosts_map(multi_threaded, tenants,
@@ -351,11 +359,15 @@ def initialize(network, tenants, dist='uniform', num_bitmaps=32, generate_bitmap
                                                                                   _tenant_vms_to_host_map, num_chunks,
                                                                                   chunk_size)
 
+        print('placement[tenant_groups_leafs_to_hosts_map]: initialized.')
+
         _tenant_groups_leafs_to_bitmap_map = _get_tenant_groups_leafs_to_bitmap_map(multi_threaded, network, tenants,
                                                                                     _tenant_groups_to_leaf_count,
                                                                                     num_bitmaps,
                                                                                     _tenant_groups_leafs_to_hosts_map,
                                                                                     num_chunks, chunk_size)
+
+        print('placement[tenant_groups_leafs_to_bitmap_map]: initialized.')
 
     else:
         _tenant_groups_leafs_to_hosts_map = None

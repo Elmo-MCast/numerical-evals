@@ -58,7 +58,11 @@ def initialize(num_leafs=1056, num_hosts_per_leaf=48, multi_threaded=True, num_t
     _leaf_to_hosts_map = _get_leaf_to_hosts_map(multi_threaded, num_leafs, num_hosts_per_leaf,
                                                 num_chunks, chunk_size)
 
+    print('network[leaf_to_hosts_map]: initialized.')
+
     _host_to_leaf_map = _get_host_to_leaf_map(num_leafs, num_hosts_per_leaf)
+
+    print('network[host_to_leaf_map]: initialized.')
 
     print('network: initialized.')
 
