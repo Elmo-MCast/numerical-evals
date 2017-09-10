@@ -2,41 +2,22 @@ from simulation import algorithms
 
 
 class Optimization:
-    def __init__(self, network, tenants, placement):
-        self.network = network
-        self.tenants = tenants
-        self.placement = placement
-
-        self.tenant_groups_categories_to_bitmap_map = None
-        self.tenant_groups_leafs_to_category_map = None
-        self.tenant_groups_to_redundancy_map = None
-        self.tenant_groups_to_min_bitmap_count = None
+    def __init__(self, data):
+        self.data = data
+        self.network = self.data['network']
+        self.network_maps = self.network['maps']
+        self.tenants = self.data['tenants']
+        self.tenants_maps = self.tenants['maps']
+        self.placement = self.data['placement']
 
         self._optimize()
 
-        print('optimization: initialized.')
+        print('optimization: complete.')
 
     def _optimize(self):
-        self.tenant_groups_categories_to_bitmap_map = [None] * self.tenants.num_tenants
-        self.tenant_groups_leafs_to_category_map = [None] * self.tenants.num_tenants
-        self.tenant_groups_to_redundancy_map = [None] * self.tenants.num_tenants
-        self.tenant_groups_to_min_bitmap_count = [None] * self.tenants.num_tenants
-
-        for t in range(self.tenants.num_tenants):
-            _groups_categories_to_bitmap_map = [None] * self.tenants.tenant_group_count_map[t]
-            _groups_leafs_to_category_map = [None] * self.tenants.tenant_group_count_map[t]
-            _groups_to_redundancy_map = [None] * self.tenants.tenant_group_count_map[t]
-            _groups_to_min_bitmap_count = [None] * self.tenants.tenant_group_count_map[t]
-
-            for g in range(self.tenants.tenant_group_count_map[t]):
-                if self.placement.tenant_groups_to_leaf_count[t][g] > self.placement.num_bitmaps:
-                    (_groups_categories_to_bitmap_map[g], _groups_leafs_to_category_map[g],
-                     _groups_to_redundancy_map[g], _groups_to_min_bitmap_count[g]) = \
-                        algorithms.dynmaic(
-                            self.placement.tenant_groups_leafs_to_bitmap_map[t][g],
-                            self.placement.num_bitmaps)
-
-            self.tenant_groups_categories_to_bitmap_map[t] = _groups_categories_to_bitmap_map
-            self.tenant_groups_leafs_to_category_map[t] = _groups_leafs_to_category_map
-            self.tenant_groups_to_redundancy_map[t] = _groups_to_redundancy_map
-            self.tenant_groups_to_min_bitmap_count[t] = _groups_to_min_bitmap_count
+        for t in range(self.tenants['num_tenants']):
+            for g in range(self.tenants_maps[t]['group_count']):
+                if self.tenants_maps[t]['groups_map'][g]['leaf_count'] > self.placement['num_bitmaps']:
+                    algorithms.dynmaic(
+                        data=self.tenants_maps[t]['groups_map'][g],
+                        max_bitmaps=self.placement['num_bitmaps'])

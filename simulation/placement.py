@@ -147,6 +147,6 @@ class Placement:
                             self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['bitmap']['actual'][
                                 h % self.network['num_hosts_per_leaf']] = 1
 
-                        # self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['bitmap']['sorted'] = \
-                        #     BitArray(sorted(self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['bitmap']['actual'],
-                        #                     reverse=True))
+                        self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['bitmap']['sorted'] = \
+                            BitArray(sorted(self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['bitmap']['actual'],
+                                            reverse=True))

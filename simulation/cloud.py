@@ -34,4 +34,4 @@ class Cloud:
         Placement(data=data, dist=placement_dist,
                   num_bitmaps=num_bitmaps, generate_bitmaps=generate_bitmaps)
 
-        # self.optimization = Optimization(network=self.network, tenants=self.tenants, placement=self.placement)
+        Optimization(data=data)
