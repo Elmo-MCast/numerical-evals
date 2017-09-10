@@ -12,9 +12,11 @@ class Data:
         self._get_leafs_for_all_tenants()
         self._get_percentage_hist_of_groups_covered_with_varying_bitmaps()
         self._get_rules_for_all_leafs()
+        self._get_rules_for_all_leafs_post_dp()
         self._get_redundancy_for_all_tenants()
         self._get_min_bitmaps_for_all_tenants()
         self._get_rules_for_all_groups()
+        self._get_rules_for_all_groups_post_dp()
 
     def _get_leafs_for_all_tenants(self):
         self.leafs_for_all_tenants = []
@@ -41,6 +43,18 @@ class Data:
                         self.rules_for_all_leafs[l] += 1
 
         self.rules_for_all_leafs = pd.Series(self.rules_for_all_leafs)
+
+    def _get_rules_for_all_leafs_post_dp(self):
+        self.rules_for_all_leafs_post_dp = [0] * self.network['num_leafs']
+
+        for t in range(self.tenants['num_tenants']):
+            for g in range(self.tenants_maps[t]['group_count']):
+                if self.tenants_maps[t]['groups_map'][g]['leaf_count'] > self.placement['num_bitmaps']:
+                    for l in self.tenants_maps[t]['groups_map'][g]['leafs']:
+                        if self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['has_rule']:
+                            self.rules_for_all_leafs_post_dp[l] += 1
+
+        self.rules_for_all_leafs_post_dp = pd.Series(self.rules_for_all_leafs_post_dp)
 
     def _get_redundancy_for_all_tenants(self):
         self.redundancy_for_all_tenants = []
@@ -73,6 +87,21 @@ class Data:
                         self.rules_for_all_groups[len(self.rules_for_all_groups) - 1] += 1
 
         self.rules_for_all_groups = pd.Series(self.rules_for_all_groups)
+
+    def _get_rules_for_all_groups_post_dp(self):
+        self.rules_for_all_groups_post_dp = []
+
+        for t in range(self.tenants['num_tenants']):
+            for g in range(self.tenants_maps[t]['group_count']):
+                self.rules_for_all_groups_post_dp += [0]
+                if self.tenants_maps[t]['groups_map'][g]['leaf_count'] > self.placement['num_bitmaps']:
+                    for l in self.tenants_maps[t]['groups_map'][g]['leafs']:
+                        if self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['has_rule']:
+                            self.rules_for_all_groups_post_dp[len(self.rules_for_all_groups_post_dp) - 1] += 1
+
+        self.rules_for_all_groups_post_dp = pd.Series(self.rules_for_all_groups_post_dp)
+
+
 
 class Plot:
     def __init__(self, plt, data):

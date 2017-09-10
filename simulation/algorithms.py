@@ -66,19 +66,62 @@ def _dp(bitmaps, max_bitmaps):  # dynamic programming algorithm
     return category_bitmaps, leaf_to_category_list, r, min_bitmaps
 
 
-def dynmaic(data, max_bitmaps):
+def _post_dp(max_bitmaps, min_bitmaps, category_bitmaps, leaf_to_category_list, leaf_to_has_rule_list):
+    category_to_leafs_map = dict()
+    for v, k in enumerate(leaf_to_category_list):
+        if k in category_to_leafs_map:
+            category_to_leafs_map[k].append(v)
+        else:
+            category_to_leafs_map[k] = [v]
+    category_to_leafs_tuple = sorted(category_to_leafs_map.items(), key=lambda item: len(item[1]))
+
+    _min_bitmaps = min_bitmaps
+    _unused_bitmaps = max_bitmaps - min_bitmaps
+    for category, l_offsets in category_to_leafs_tuple:
+        l_offsets_length = len(l_offsets)
+
+        if l_offsets_length == 1:
+            leaf_to_has_rule_list[l_offsets[0]] = False
+        else:
+            for i in range(l_offsets_length):
+                if _unused_bitmaps > 0:
+                    if (i + 1) == l_offsets_length:
+                        leaf_to_has_rule_list[l_offsets[i]] = False
+                    else:
+                        category_bitmaps += [category_bitmaps[category - 1]]
+                        leaf_to_category_list[l_offsets[i]] = len(category_bitmaps)
+                        leaf_to_has_rule_list[l_offsets[i]] = False
+                        _unused_bitmaps -= 1
+                        _min_bitmaps += 1
+                else:
+                    if (i + 1) == l_offsets_length:
+                        leaf_to_has_rule_list[l_offsets[i]] = False
+                    break
+
+    return _min_bitmaps
+
+
+def dynmaic(data, max_bitmaps, post_process=True):
     leafs_map = data['leafs_map']
     ordered_leafs_list = sorted(leafs_map.items(), key=lambda item: item[1]['bitmap']['sorted'].bin)
     input_bitmaps = [x['bitmap']['sorted'] for _, x in ordered_leafs_list]
 
     category_bitmaps, leaf_to_category_list, r, min_bitmaps = _dp(input_bitmaps, max_bitmaps)
+    category_bitmaps = category_bitmaps[:min_bitmaps]
 
-    data['category_bitmaps'] = category_bitmaps[:min_bitmaps]
+    leaf_to_has_rule_list = [True] * len(leaf_to_category_list)
+
+    if post_process:
+        min_bitmaps = _post_dp(max_bitmaps, min_bitmaps, category_bitmaps, leaf_to_category_list,
+                               leaf_to_has_rule_list)
+
+    data['category_bitmaps'] = category_bitmaps
     data['r'] = r
     data['min_bitmaps'] = min_bitmaps
 
     for i, (l, _) in enumerate(ordered_leafs_list):
         leafs_map[l]['category'] = leaf_to_category_list[i] - 1
+        leafs_map[l]['has_rule'] = leaf_to_has_rule_list[i]
 
 
 if __name__ == "__main__":
@@ -87,10 +130,24 @@ if __name__ == "__main__":
                       BitArray('0b1110'), BitArray('0b1110'), BitArray('0b1110'), BitArray('0b1110'),
                       BitArray('0b1111'), BitArray('0b1111'), BitArray('0b1111')]
 
-    category_bitmaps, leaf_to_category_list, r, min_bitmaps = _dp(sample_bitmaps, 10)
+    max_bitmaps = 32
 
-    print(category_bitmaps[:min_bitmaps])
+    category_bitmaps, leaf_to_category_list, r, min_bitmaps = _dp(sample_bitmaps, max_bitmaps)
+    category_bitmaps = category_bitmaps[:min_bitmaps]
+
+    leaf_to_has_rule_list = [True] * len(leaf_to_category_list)
+
+    print(category_bitmaps)
     print(r)
     print(leaf_to_category_list)
+    print(leaf_to_has_rule_list)
     print(min_bitmaps)
-    print(len(sample_bitmaps))
+
+    min_bitmaps = _post_dp(max_bitmaps, min_bitmaps, category_bitmaps,
+                           leaf_to_category_list, leaf_to_has_rule_list)
+
+    print(category_bitmaps)
+    print(r)
+    print(leaf_to_category_list)
+    print(leaf_to_has_rule_list)
+    print(min_bitmaps)

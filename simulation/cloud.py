@@ -18,7 +18,8 @@ class Cloud:
                  group_size_dist='uniform',
                  placement_dist='uniform',
                  num_bitmaps=32,
-                 generate_bitmaps=False):
+                 generate_bitmaps=False,
+                 post_process=False):
         self.data = dict()
 
         Network(data=self.data, num_leafs=num_leafs, num_hosts_per_leaf=num_hosts_per_leaf)
@@ -33,4 +34,4 @@ class Cloud:
         Placement(data=self.data, dist=placement_dist,
                   num_bitmaps=num_bitmaps, generate_bitmaps=generate_bitmaps)
 
-        Optimization(data=self.data)
+        Optimization(data=self.data, post_process=post_process)
