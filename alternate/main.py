@@ -1,6 +1,6 @@
 import numpy as np
-from scalable.cloud import initialize as Cloud
-from scalable.data import initialize as Data
+from alternate.cloud import initialize as Cloud
+from alternate.data import initialize as Data
 
 # Statistical evaluation ...
 

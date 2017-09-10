@@ -1,7 +1,7 @@
-import scalable.network as network
-import scalable.tenants as tenants
-import scalable.placement as placement
-import scalable.optimization as optimization
+import alternate.network as network
+import alternate.tenants as tenants
+import alternate.placement as placement
+import alternate.optimization as optimization
 
 
 def initialize(num_leafs=1056,

@@ -1,5 +1,5 @@
-from threaded.cloud import *
-from threaded.plot import Data
+from primary.cloud import *
+from primary.plot import Data
 
 # Statistical evaluation ...
 

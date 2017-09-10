@@ -1,7 +1,7 @@
 import operator
 from functools import reduce
 from multiprocessing import Pool
-from scalable import algorithms
+from alternate import algorithms
 
 
 def _optimize_chunk(tenants, placement, chunk_id, chunk_size):
