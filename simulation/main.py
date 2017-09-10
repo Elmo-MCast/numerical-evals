@@ -1,6 +1,6 @@
 import numpy as np
 from simulation.cloud import *
-from simulation.plot import Data
+from simulation.plot import *
 
 # Statistical evaluation ...
 
@@ -34,3 +34,4 @@ cloud = Cloud(num_leafs=48,
               num_bitmaps=10,
               generate_bitmaps=True)
 
+data = Data(cloud)

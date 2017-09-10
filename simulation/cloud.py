@@ -19,19 +19,18 @@ class Cloud:
                  placement_dist='uniform',
                  num_bitmaps=32,
                  generate_bitmaps=False):
-        data = dict()
+        self.data = dict()
 
-        Network(data=data, num_leafs=num_leafs, num_hosts_per_leaf=num_hosts_per_leaf)
+        Network(data=self.data, num_leafs=num_leafs, num_hosts_per_leaf=num_hosts_per_leaf)
 
-        Tenants(data=data,
-                num_hosts=data['network']['num_hosts'],
+        Tenants(data=self.data,
                 max_vms_per_host=max_vms_per_host,
                 num_tenants=num_tenants,
                 min_vms=min_vms_per_tenant, max_vms=max_vms_per_tenant, vm_dist=vm_dist,
                 num_groups=num_groups, min_group_size=min_group_size,
                 group_size_dist=group_size_dist)
 
-        Placement(data=data, dist=placement_dist,
+        Placement(data=self.data, dist=placement_dist,
                   num_bitmaps=num_bitmaps, generate_bitmaps=generate_bitmaps)
 
-        Optimization(data=data)
+        Optimization(data=self.data)

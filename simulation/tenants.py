@@ -7,13 +7,11 @@ from scipy import stats
 
 
 class Tenants:
-    def __init__(self, data,
-                 num_hosts=1056 * 48, max_vms_per_host=20,
-                 num_tenants=3000, min_vms=10, max_vms=5000, vm_dist='expon',
+    def __init__(self, data, max_vms_per_host=20, num_tenants=3000, min_vms=10, max_vms=5000, vm_dist='expon',
                  num_groups=100000, min_group_size=5, group_size_dist='uniform'):
         self.data = data
         self.num_tenants = num_tenants
-        self.num_hosts = num_hosts
+        self.num_hosts = self.data['network']['num_hosts']
         self.max_vms_per_host = max_vms_per_host
         self.min_vms = min_vms
         self.max_vms = max_vms
@@ -23,7 +21,7 @@ class Tenants:
         self.group_size_dist = group_size_dist
 
         self.data['tenants'] = {'num_tenants': num_tenants,
-                                'num_hosts': num_hosts,
+                                'num_hosts': self.num_hosts,
                                 'max_vms_per_host': max_vms_per_host,
                                 'min_vms': min_vms,
                                 'max_vms': max_vms,
@@ -114,7 +112,5 @@ class Tenants:
 if __name__ == "__main__":
     data = dict()
 
-    o_tenants = Tenants(data=data,
-                        num_hosts=48 * 48, max_vms_per_host=20,
-                        num_tenants=100, min_vms=10, max_vms=100, vm_dist='expon',
+    o_tenants = Tenants(data=data, max_vms_per_host=20, num_tenants=100, min_vms=10, max_vms=100, vm_dist='expon',
                         num_groups=1000, min_group_size=5, group_size_dist='uniform')

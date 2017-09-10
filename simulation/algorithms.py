@@ -68,8 +68,8 @@ def _dp(bitmaps, max_bitmaps):  # dynamic programming algorithm
 
 def dynmaic(data, max_bitmaps):
     leafs_map = data['leafs_map']
-    ordered_leafs_map = OrderedDict(sorted(leafs_map.items(), key=lambda item: item[1]['bitmap']['sorted'].bin))
-    input_bitmaps = [v['bitmap']['sorted'] for _, v in ordered_leafs_map.items()]
+    ordered_leafs_list = sorted(leafs_map.items(), key=lambda item: item[1]['bitmap']['sorted'].bin)
+    input_bitmaps = [x['bitmap']['sorted'] for _, x in ordered_leafs_list]
 
     category_bitmaps, leaf_to_category_list, r, min_bitmaps = _dp(input_bitmaps, max_bitmaps)
 
@@ -77,7 +77,5 @@ def dynmaic(data, max_bitmaps):
     data['r'] = r
     data['min_bitmaps'] = min_bitmaps
 
-    for l in ordered_leafs_map:
-        leafs_map[l]['category'] = leaf_to_category_list[list(ordered_leafs_map.keys()).index(l)]
-
-    pass
+    for i, (l, _) in enumerate(ordered_leafs_list):
+        leafs_map[l]['category'] = leaf_to_category_list[i]
