@@ -14,6 +14,7 @@ class Data:
         self._get_rules_for_all_leafs()
         self._get_redundancy_for_all_tenants()
         self._get_min_bitmaps_for_all_tenants()
+        self._get_rules_for_all_groups()
 
     def _get_leafs_for_all_tenants(self):
         self.leafs_for_all_tenants = []
@@ -61,6 +62,17 @@ class Data:
 
         self.min_bitmaps_for_all_tenants = pd.Series(self.min_bitmaps_for_all_tenants)
 
+    def _get_rules_for_all_groups(self):
+        self.rules_for_all_groups = []
+
+        for t in range(self.tenants['num_tenants']):
+            for g in range(self.tenants_maps[t]['group_count']):
+                self.rules_for_all_groups += [0]
+                if self.tenants_maps[t]['groups_map'][g]['leaf_count'] > self.placement['num_bitmaps']:
+                    for _ in self.tenants_maps[t]['groups_map'][g]['leafs']:
+                        self.rules_for_all_groups[len(self.rules_for_all_groups) - 1] += 1
+
+        self.rules_for_all_groups = pd.Series(self.rules_for_all_groups)
 
 class Plot:
     def __init__(self, plt, data):

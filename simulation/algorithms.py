@@ -1,5 +1,4 @@
 from bitstring import BitArray
-from collections import OrderedDict
 
 
 # 1. Dynamic Programming
@@ -79,4 +78,19 @@ def dynmaic(data, max_bitmaps):
     data['min_bitmaps'] = min_bitmaps
 
     for i, (l, _) in enumerate(ordered_leafs_list):
-        leafs_map[l]['category'] = leaf_to_category_list[i]
+        leafs_map[l]['category'] = leaf_to_category_list[i] - 1
+
+
+if __name__ == "__main__":
+    sample_bitmaps = [BitArray('0b1000'), BitArray('0b1000'), BitArray('0b1000'), BitArray('0b1000'),
+                      BitArray('0b1100'), BitArray('0b1100'),
+                      BitArray('0b1110'), BitArray('0b1110'), BitArray('0b1110'), BitArray('0b1110'),
+                      BitArray('0b1111'), BitArray('0b1111'), BitArray('0b1111')]
+
+    category_bitmaps, leaf_to_category_list, r, min_bitmaps = _dp(sample_bitmaps, 10)
+
+    print(category_bitmaps[:min_bitmaps])
+    print(r)
+    print(leaf_to_category_list)
+    print(min_bitmaps)
+    print(len(sample_bitmaps))
