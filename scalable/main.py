@@ -1,0 +1,37 @@
+import numpy as np
+from scalable.cloud import initialize
+
+# Statistical evaluation ...
+
+np.random.seed(seed=0)
+
+cloud = initialize(num_leafs=48,
+                   num_hosts_per_leaf=48,
+                   max_vms_per_host=20,
+                   num_tenants=128,
+                   min_vms_per_tenant=10,
+                   max_vms_per_tenant=100,
+                   vm_dist='expon',
+                   num_groups=1000,
+                   min_group_size=5,
+                   group_size_dist='uniform',
+                   placement_dist='uniform',
+                   num_bitmaps=10,
+                   generate_bitmaps=True,
+                   num_threads=8)
+
+# cloud = initialize(num_leafs=1056,
+#                    num_hosts_per_leaf=48,
+#                    max_vms_per_host=20,
+#                    num_tenants=3000,
+#                    min_vms_per_tenant=10,
+#                    max_vms_per_tenant=5000,
+#                    vm_dist='expon',
+#                    num_groups=100000,
+#                    min_group_size=5,
+#                    group_size_dist='uniform',
+#                    placement_dist='uniform',
+#                    num_bitmaps=16,
+#                    generate_bitmaps=True,
+#                    multi_threaded=True,
+#                    num_threads=2)

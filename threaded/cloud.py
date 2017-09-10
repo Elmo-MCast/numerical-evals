@@ -1,7 +1,7 @@
-from network import *
-from tenants import *
-from placement import *
-from optimization import *
+from threaded.network import *
+from threaded.optimization import *
+from threaded.placement import *
+from threaded.tenants import *
 
 
 class Cloud:
