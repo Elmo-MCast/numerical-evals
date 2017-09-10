@@ -1,4 +1,4 @@
-from original import algorithms
+from archive.original import algorithms
 
 
 class Optimization:
