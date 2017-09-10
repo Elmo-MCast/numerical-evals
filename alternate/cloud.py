@@ -34,8 +34,9 @@ def initialize(num_leafs=1056,
                                       num_bitmaps=num_bitmaps, generate_bitmaps=generate_bitmaps,
                                       multi_threaded=multi_threaded, num_threads=num_threads)
 
-    _optimization = optimization.initialize(tenants=_tenants, placement=_placement, multi_threaded=multi_threaded,
-                                            num_threads=num_threads)
+    _optimization = None
+    # _optimization = optimization.initialize(tenants=_tenants, placement=_placement, multi_threaded=multi_threaded,
+    #                                         num_threads=num_threads)
 
     print('cloud: initialization complete!')
 

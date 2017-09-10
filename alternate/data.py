@@ -62,13 +62,16 @@ def initialize(cloud):
 
     _rules_for_all_leafs = _get_rules_for_all_leafs(cloud)
 
-    _redundancy_for_all_tenants = _get_redundancy_for_all_tenants(cloud)
+    # _redundancy_for_all_tenants = _get_redundancy_for_all_tenants(cloud)
 
-    print('placement: initialized.')
+    # _min_bitmaps_for_all_tenants = _get_min_bitmaps_for_all_tenants(cloud)
+
+    print('data: initialized.')
 
     return {'leafs_for_all_tenants': _leafs_for_all_tenants,
             'percentage_hist_of_groups_covered_with_varying_bitmaps':
                 _percentage_hist_of_groups_covered_with_varying_bitmaps,
             'rules_for_all_leafs': _rules_for_all_leafs,
-            'redundancy_for_all_tenants': _redundancy_for_all_tenants,
+            # 'redundancy_for_all_tenants': _redundancy_for_all_tenants,
+            # 'min_bitmaps_for_all_tenants': _min_bitmaps_for_all_tenants,
             'cloud': cloud}
