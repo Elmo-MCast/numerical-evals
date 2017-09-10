@@ -116,7 +116,7 @@ def initialize(num_hosts=1056 * 48, max_vms_per_host=20,
             raise Exception("number of threads should be a multiple of tenants count")
         chunk_size = int(num_tenants / num_chunks)
 
-        # print('tenants: no. of chunks %s' % self.num_chunks)
+        print('tenants: no. of chunks %s' % num_chunks)
     else:
         num_chunks = 0
         chunk_size = 0

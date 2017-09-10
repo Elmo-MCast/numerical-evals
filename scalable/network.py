@@ -50,7 +50,7 @@ def initialize(num_leafs=1056, num_hosts_per_leaf=48, multi_threaded=True, num_t
             raise Exception("number of threads should be a multiple of leafs count")
         chunk_size = int(num_leafs / num_chunks)
 
-        # print('network: no. of chunks %s' % self.num_chunks)
+        print('network: no. of chunks %s' % num_chunks)
     else:
         num_chunks = 0
         chunk_size = 0

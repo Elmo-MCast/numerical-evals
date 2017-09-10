@@ -327,7 +327,7 @@ def initialize(network, tenants, dist='uniform', num_bitmaps=32, generate_bitmap
             raise Exception("number of threads should be a multiple of tenants count")
         chunk_size = int(tenants['num_tenants'] / num_chunks)
 
-        # print('placement: no. of chunks %s' % self.num_chunks)
+        print('placement: no. of chunks %s' % num_chunks)
     else:
         num_chunks = 0
         chunk_size = 0
