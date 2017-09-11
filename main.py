@@ -7,6 +7,8 @@ SEED = int(sys.argv[1])
 NUM_BITMAPS = int(sys.argv[2])
 LOGS_DIR = sys.argv[3]
 
+NUM_GROUPS = 1000000
+
 print('--- Running with seed %s, no. of bitmaps: %s ---\n' % (SEED, NUM_BITMAPS))
 
 np.random.seed(seed=SEED)
@@ -18,7 +20,7 @@ cloud = Cloud(num_leafs=1056,
               min_vms_per_tenant=10,
               max_vms_per_tenant=5000,
               vm_dist='expon',
-              num_groups=100000,
+              num_groups=NUM_GROUPS,
               min_group_size=5,
               group_size_dist='uniform',
               placement_dist='colocate',
@@ -28,7 +30,7 @@ cloud = Cloud(num_leafs=1056,
 
 data = Data(cloud)
 
-_dir = LOGS_DIR + '/num_bitmaps_%s__seed_%s' % (NUM_BITMAPS, SEED)
+_dir = LOGS_DIR + '/num_bitmaps_%s__seed_%s__num_groups_%s' % (NUM_BITMAPS, SEED, NUM_GROUPS)
 os.makedirs(_dir, exist_ok=True)
 
 log = Log(data, log_dir=_dir)
