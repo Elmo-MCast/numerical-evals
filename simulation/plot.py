@@ -13,7 +13,7 @@ class Data:
         self._get_percentage_hist_of_groups_covered_with_varying_bitmaps()
         self._get_rules_for_all_leafs()
         self._get_rules_for_all_leafs_post_dp()
-        self._get_redundancy_for_all_tenants()
+        self._get_redundancy_for_all_groups_in_all_tenants()
         self._get_min_bitmaps_for_all_tenants()
         self._get_rules_for_all_groups()
         self._get_rules_for_all_groups_post_dp()
@@ -56,15 +56,15 @@ class Data:
 
         self.rules_for_all_leafs_post_dp = pd.Series(self.rules_for_all_leafs_post_dp)
 
-    def _get_redundancy_for_all_tenants(self):
-        self.redundancy_for_all_tenants = []
+    def _get_redundancy_for_all_groups_in_all_tenants(self):
+        self.redundancy_for_all_groups_in_all_tenants = []
 
         for t in range(self.tenants['num_tenants']):
             for g in range(self.tenants_maps[t]['group_count']):
                 if self.tenants_maps[t]['groups_map'][g]['leaf_count'] > self.placement['num_bitmaps']:
-                    self.redundancy_for_all_tenants += [self.tenants_maps[t]['groups_map'][g]['r']]
+                    self.redundancy_for_all_groups_in_all_tenants += [self.tenants_maps[t]['groups_map'][g]['r']]
 
-        self.redundancy_for_all_tenants = pd.Series(self.redundancy_for_all_tenants)
+        self.redundancy_for_all_groups_in_all_tenants = pd.Series(self.redundancy_for_all_groups_in_all_tenants)
 
     def _get_min_bitmaps_for_all_tenants(self):
         self.min_bitmaps_for_all_tenants = []
@@ -100,7 +100,6 @@ class Data:
                             self.rules_for_all_groups_post_dp[len(self.rules_for_all_groups_post_dp) - 1] += 1
 
         self.rules_for_all_groups_post_dp = pd.Series(self.rules_for_all_groups_post_dp)
-
 
 
 class Plot:
@@ -141,14 +140,14 @@ class Plot:
                ylabel='CDF')
         self.plt.show()
 
-    def cdf_redundancy_for_all_tenants(self):
-        ax = sb.kdeplot(self.data.redundancy_for_all_tenants, cumulative=True)
+    def cdf_redundancy_for_all_groups_in_all_tenants(self):
+        ax = sb.kdeplot(self.data.redundancy_for_all_groups_in_all_tenants, cumulative=True)
         ax.set(xlabel="Redundancy for all groups using %s bitmaps (all leafs)" % self.data.placement['num_bitmaps'],
                ylabel='CDF')
         self.plt.show()
 
-    def hist_redundancy_for_all_tenants(self):
-        ax = self.data.redundancy_for_all_tenants.plot(kind='hist')
+    def hist_redundancy_for_all_groups_in_all_tenants(self):
+        ax = self.data.redundancy_for_all_groups_in_all_tenants.plot(kind='hist')
         ax.set(
             xlabel="Redundancy for all groups using %s bitmaps (all leafs)" % self.data.placement['num_bitmaps'],
             ylabel='Frequency')
@@ -174,3 +173,35 @@ class Plot:
             xlabel="Minimum bitmaps for all groups using %s bitmaps (all leafs)" % self.data.placement['num_bitmaps'],
             ylabel='Frequency')
         self.plt.show()
+
+
+class Log:
+    def __init__(self, data, log_dir):
+        self.data = data
+        self.log_dir = log_dir
+
+        self.log_rules_for_all_leafs()
+        self.log_rules_for_all_leafs_post_dp()
+        self.log_rules_for_all_groups()
+        self.log_rules_for_all_groups_post_dp()
+        self.log_redundancy_for_all_groups_in_all_tenants()
+
+        print('log: complete.')
+
+    def log_rules_for_all_leafs(self):
+        self.data.rules_for_all_leafs.to_csv(self.log_dir + '/rules_for_all_leafs.csv')
+
+    def log_rules_for_all_leafs_post_dp(self):
+        self.data.rules_for_all_leafs_post_dp.to_csv(self.log_dir + '/rules_for_all_leafs_post_dp.csv')
+
+    def log_rules_for_all_groups(self):
+        self.data.rules_for_all_groups.where(self.data.rules_for_all_groups > 0).dropna().to_csv(
+            self.log_dir + '/rules_for_all_groups.csv')
+
+    def log_rules_for_all_groups_post_dp(self):
+        self.data.rules_for_all_groups_post_dp.where(self.data.rules_for_all_groups_post_dp > 0).dropna().to_csv(
+            self.log_dir + '/rules_for_all_groups_post_dp.csv')
+
+    def log_redundancy_for_all_groups_in_all_tenants(self):
+        self.data.redundancy_for_all_groups_in_all_tenants.to_csv(
+            self.log_dir + '/redundancy_for_all_groups_in_all_tenants.csv')
