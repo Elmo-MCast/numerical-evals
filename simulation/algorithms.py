@@ -151,7 +151,7 @@ if __name__ == "__main__":
     min_bitmaps = _post_dp(max_bitmaps, min_bitmaps, category_bitmaps,
                            leaf_to_category_list, leaf_to_has_rule_list)
 
-    print('\n\nPost dp step:')
+    print('\n\npost dp step:')
 
     print('category_bitmaps: %s' % [bitmap.bin for bitmap in category_bitmaps])
     print('redundancy: %s' % r)
