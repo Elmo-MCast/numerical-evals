@@ -130,24 +130,31 @@ if __name__ == "__main__":
                       BitArray('0b1110'), BitArray('0b1110'), BitArray('0b1110'), BitArray('0b1110'),
                       BitArray('0b1111'), BitArray('0b1111'), BitArray('0b1111')]
 
-    max_bitmaps = 32
+    max_bitmaps = 10
 
     category_bitmaps, leaf_to_category_list, r, min_bitmaps = _dp(sample_bitmaps, max_bitmaps)
     category_bitmaps = category_bitmaps[:min_bitmaps]
 
     leaf_to_has_rule_list = [True] * len(leaf_to_category_list)
 
-    print(category_bitmaps)
-    print(r)
-    print(leaf_to_category_list)
-    print(leaf_to_has_rule_list)
-    print(min_bitmaps)
+    print('input_bitmaps: %s' % [bitmap.bin for bitmap in sample_bitmaps])
+    print('len(input_bitmaps): %s' % len(sample_bitmaps))
+    print('max_bitmaps: %s' % max_bitmaps)
+
+    print('\n\ndp step:')
+    print('category_bitmaps: %s' % [bitmap.bin for bitmap in category_bitmaps])
+    print('redundancy: %s' % r)
+    print('leaf_to_category_list: %s' % leaf_to_category_list)
+    print('leaf_to_has_rule_list: %s' % leaf_to_has_rule_list)
+    print('min_bitmaps: %s' % min_bitmaps)
 
     min_bitmaps = _post_dp(max_bitmaps, min_bitmaps, category_bitmaps,
                            leaf_to_category_list, leaf_to_has_rule_list)
 
-    print(category_bitmaps)
-    print(r)
-    print(leaf_to_category_list)
-    print(leaf_to_has_rule_list)
-    print(min_bitmaps)
+    print('\n\nPost dp step:')
+
+    print('category_bitmaps: %s' % [bitmap.bin for bitmap in category_bitmaps])
+    print('redundancy: %s' % r)
+    print('leaf_to_category_list: %s' % leaf_to_category_list)
+    print('leaf_to_has_rule_list: %s' % leaf_to_has_rule_list)
+    print('min_bitmaps: %s' % min_bitmaps)
