@@ -20,7 +20,7 @@ cloud = Cloud(num_leafs=1056,
               num_groups=100000,
               min_group_size=5,
               group_size_dist='uniform',
-              placement_dist='uniform',
+              placement_dist='colocate',
               num_bitmaps=NUM_BITMAPS,
               generate_bitmaps=True,
               post_process=True)
