@@ -3,10 +3,11 @@ import numpy as np
 from simulation.cloud import *
 from simulation.plot import *
 
-
 SEED = int(sys.argv[1])
 NUM_BITMAPS = int(sys.argv[2])
 LOGS_DIR = sys.argv[3]
+
+print('--- Running with seed %s, no. of bitmaps: %s ---\n' % (SEED, NUM_BITMAPS))
 
 np.random.seed(seed=SEED)
 
