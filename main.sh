@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 TEST_NAME="baseerat"
-NUM_GROUPS=100000
+NUM_GROUPS=1000000
 
 for seed in 0 1 2 3 4
 do
