@@ -3,7 +3,7 @@ import numpy as np
 from simulation.cloud import *
 from simulation.plot import *
 
-TEST_NAME = int(sys.argv[1])
+TEST_NAME = sys.argv[1]
 SEED = int(sys.argv[2])
 NUM_BITMAPS = int(sys.argv[3])
 LOGS_DIR = sys.argv[4]
