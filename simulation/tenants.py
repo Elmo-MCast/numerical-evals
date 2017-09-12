@@ -72,7 +72,7 @@ class Tenants:
                 self.tenants_maps[t]['vm_count'] = int(vm_counts[t])
                 self.tenants['vm_count'] += int(vm_counts[t])
         elif self.vm_dist == 'expon':
-            vm_counts = np.int64(np.floor((((stats.expon.rvs(size=self.num_tenants, scale=(1.0 / 2)) / 10) *
+            vm_counts = np.int64(np.floor((((stats.expon.rvs(size=self.num_tenants, scale=(1.0 / 4)) / 10) *
                                             (self.max_vms - self.min_vms)) % (
                                            self.max_vms - self.min_vms)) + self.min_vms))
 
