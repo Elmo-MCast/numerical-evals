@@ -7,7 +7,7 @@ from bitstring import BitArray
 
 
 class Placement:
-    def __init__(self, data, dist='uniform', num_bitmaps=32, num_hosts_per_leaf=48, generate_bitmaps=False):
+    def __init__(self, data, dist='uniform', num_bitmaps=32, generate_bitmaps=False):
         self.data = data
         self.dist = dist
         self.num_bitmaps = num_bitmaps
@@ -18,9 +18,7 @@ class Placement:
         self.tenants_maps = self.tenants['maps']
 
         self.data['placement'] = {'dist': dist,
-                                  'num_bitmaps': num_bitmaps,
-                                  'num_hosts_per_leaf': num_hosts_per_leaf}
-        self.placement = self.data['placement']
+                                  'num_bitmaps': num_bitmaps}
 
         for t in range(self.tenants['num_tenants']):
             self.tenants_maps[t]['vms_map'] = \
@@ -70,8 +68,8 @@ class Placement:
 
             for l in range(self.network['num_leafs']):
                 available_hosts_per_leaf[l] = [(l * self.network['num_hosts_per_leaf']) + h
-                                               for h in range(self.placement['num_hosts_per_leaf'])]
-                selected_hosts_count_per_leaf[l] = [0] * self.placement['num_hosts_per_leaf']
+                                               for h in range(self.network['num_hosts_per_leaf'])]
+                selected_hosts_count_per_leaf[l] = [0] * self.network['num_hosts_per_leaf']
 
             for t in range(self.tenants['num_tenants']):
                 running_index = 0

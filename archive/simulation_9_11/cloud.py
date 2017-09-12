@@ -17,7 +17,6 @@ class Cloud:
                  min_group_size=5,
                  group_size_dist='uniform',
                  placement_dist='uniform',
-                 colocate_num_hosts_per_leaf=48,
                  num_bitmaps=32,
                  generate_bitmaps=False,
                  post_process=False):
@@ -32,7 +31,7 @@ class Cloud:
                 num_groups=num_groups, min_group_size=min_group_size,
                 group_size_dist=group_size_dist)
 
-        Placement(data=self.data, dist=placement_dist, num_bitmaps=num_bitmaps,
-                  num_hosts_per_leaf=colocate_num_hosts_per_leaf, generate_bitmaps=generate_bitmaps)
+        Placement(data=self.data, dist=placement_dist,
+                  num_bitmaps=num_bitmaps, generate_bitmaps=generate_bitmaps)
 
         Optimization(data=self.data, post_process=post_process)
