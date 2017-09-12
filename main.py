@@ -6,15 +6,15 @@ from simulation.plot import *
 TEST_NAME = sys.argv[1]
 SEED = int(sys.argv[2])
 NUM_BITMAPS = int(sys.argv[3])
-LOGS_DIR = sys.argv[4]
+NUM_GROUPS = int(sys.argv[4])
+LOGS_DIR = sys.argv[5]
 
-print("--- Running test '%s': seed (%s), no. of bitmaps (%s) ---\n" % (TEST_NAME, SEED, NUM_BITMAPS))
+print("--- Running test '%s': seed (%s), no. of bitmaps (%s), no. of groups (%s) ---\n" %
+      (TEST_NAME, SEED, NUM_BITMAPS, NUM_GROUPS))
 
 np.random.seed(seed=SEED)
 
 if TEST_NAME == 'dcn-cmp':
-    NUM_GROUPS = 100000
-
     cloud = Cloud(num_leafs=576,
                   num_hosts_per_leaf=48,
                   max_vms_per_host=20,
@@ -31,8 +31,6 @@ if TEST_NAME == 'dcn-cmp':
                   generate_bitmaps=True,
                   post_process=True)
 elif TEST_NAME == 'baseerat':
-    NUM_GROUPS = 100000
-
     cloud = Cloud(num_leafs=1056,
                   num_hosts_per_leaf=48,
                   max_vms_per_host=20,
