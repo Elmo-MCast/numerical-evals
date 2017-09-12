@@ -7,10 +7,12 @@ TEST_NAME = sys.argv[1]
 SEED = int(sys.argv[2])
 NUM_BITMAPS = int(sys.argv[3])
 NUM_GROUPS = int(sys.argv[4])
-LOGS_DIR = sys.argv[5]
+NUM_COLOCATE_HOSTS = int(sys.argv[5])
+LOGS_DIR = sys.argv[6]
 
-print("--- Running test '%s': seed (%s), no. of bitmaps (%s), no. of groups (%s) ---\n" %
-      (TEST_NAME, SEED, NUM_BITMAPS, NUM_GROUPS))
+print("--- Running test '%s': seed (%s), no. of bitmaps (%s), no. of groups (%s), "
+      "no. of hosts used for colocated placement (%s)  ---\n" %
+      (TEST_NAME, SEED, NUM_BITMAPS, NUM_GROUPS, NUM_COLOCATE_HOSTS))
 
 np.random.seed(seed=SEED)
 
@@ -26,7 +28,7 @@ if TEST_NAME == 'dcn-cmp':
                   min_group_size=5,
                   group_size_dist='uniform',
                   placement_dist='colocate',
-                  colocate_num_hosts_per_leaf=48,
+                  colocate_num_hosts_per_leaf=NUM_COLOCATE_HOSTS,
                   num_bitmaps=NUM_BITMAPS,
                   generate_bitmaps=True,
                   post_process=True)
@@ -42,6 +44,7 @@ elif TEST_NAME == 'baseerat':
                   min_group_size=5,
                   group_size_dist='uniform',
                   placement_dist='colocate',
+                  colocate_num_hosts_per_leaf=NUM_COLOCATE_HOSTS,
                   num_bitmaps=NUM_BITMAPS,
                   generate_bitmaps=True,
                   post_process=True)
@@ -50,7 +53,8 @@ else:
 
 data = Data(cloud)
 
-_dir = LOGS_DIR + '/%s/num_bitmaps_%s__seed_%s__num_groups_%s' % (TEST_NAME, NUM_BITMAPS, SEED, NUM_GROUPS)
+_dir = LOGS_DIR + '/%s/num_bitmaps_%s__seed_%s__num_groups_%s__num_colocate_hosts_%s' % \
+                  (TEST_NAME, NUM_BITMAPS, SEED, NUM_GROUPS, NUM_COLOCATE_HOSTS)
 os.makedirs(_dir, exist_ok=True)
 
 log = Log(data, log_dir=_dir)
