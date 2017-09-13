@@ -34,4 +34,4 @@ class Cloud:
         Placement(data=self.data, dist=placement_dist,
                   num_bitmaps=num_bitmaps, generate_bitmaps=generate_bitmaps)
 
-        Optimization(data=self.data, post_process=post_process)
+        Optimization(data=self.data, use_all_bitmaps=post_process)

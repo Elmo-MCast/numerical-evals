@@ -18,6 +18,6 @@ cloud = Cloud(num_leafs=48,
               placement_dist='uniform',
               num_bitmaps=10,
               generate_bitmaps=True,
-              post_process=True)
+              use_all_bitmaps=True)
 
 data = Data(cloud)
