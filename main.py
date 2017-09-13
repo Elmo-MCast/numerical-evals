@@ -31,7 +31,7 @@ if TEST_NAME == 'dcn-cmp':
                   colocate_num_hosts_per_leaf=NUM_COLOCATE_HOSTS,
                   num_bitmaps=NUM_BITMAPS,
                   generate_bitmaps=True,
-                  post_process=True)
+                  use_all_bitmaps=True)
 elif TEST_NAME == 'baseerat':
     cloud = Cloud(num_leafs=1056,
                   num_hosts_per_leaf=48,
@@ -47,7 +47,7 @@ elif TEST_NAME == 'baseerat':
                   colocate_num_hosts_per_leaf=NUM_COLOCATE_HOSTS,
                   num_bitmaps=NUM_BITMAPS,
                   generate_bitmaps=True,
-                  post_process=True)
+                  use_all_bitmaps=True)
 else:
     raise(Exception('invalid test name'))
 

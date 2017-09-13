@@ -22,4 +22,4 @@ class Optimization:
                     algorithms.dynmaic(
                         data=self.tenants_maps[t]['groups_map'][g],
                         max_bitmaps=self.placement['num_bitmaps'],
-                        post_process=self.post_process)
+                        use_all_bitmaps=self.post_process)

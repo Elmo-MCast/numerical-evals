@@ -8,6 +8,7 @@ class Cloud:
     def __init__(self,
                  num_leafs=1056,
                  num_hosts_per_leaf=48,
+                 num_rules_perf_leaf=10000,
                  max_vms_per_host=20,
                  num_tenants=3000,
                  min_vms_per_tenant=10,
@@ -20,10 +21,12 @@ class Cloud:
                  colocate_num_hosts_per_leaf=48,
                  num_bitmaps=32,
                  generate_bitmaps=False,
-                 post_process=False):
+                 use_all_bitmaps=False,
+                 use_default_bitmap=False):
         self.data = dict()
 
-        Network(data=self.data, num_leafs=num_leafs, num_hosts_per_leaf=num_hosts_per_leaf)
+        Network(data=self.data, num_leafs=num_leafs, num_hosts_per_leaf=num_hosts_per_leaf,
+                num_rules_perf_leaf=num_rules_perf_leaf)
 
         Tenants(data=self.data,
                 max_vms_per_host=max_vms_per_host,
@@ -35,4 +38,4 @@ class Cloud:
         Placement(data=self.data, dist=placement_dist, num_bitmaps=num_bitmaps,
                   num_hosts_per_leaf=colocate_num_hosts_per_leaf, generate_bitmaps=generate_bitmaps)
 
-        Optimization(data=self.data, post_process=post_process)
+        Optimization(data=self.data, use_all_bitmaps=use_all_bitmaps, use_default_bitmap=use_default_bitmap)

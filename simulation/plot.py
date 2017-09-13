@@ -62,7 +62,9 @@ class Data:
         for t in range(self.tenants['num_tenants']):
             for g in range(self.tenants_maps[t]['group_count']):
                 if self.tenants_maps[t]['groups_map'][g]['leaf_count'] > self.placement['num_bitmaps']:
-                    self.redundancy_for_all_groups_in_all_tenants += [self.tenants_maps[t]['groups_map'][g]['r']]
+                    self.redundancy_for_all_groups_in_all_tenants += \
+                        [self.tenants_maps[t]['groups_map'][g]['r'] / self.tenants_maps[t]['groups_map'][g]['size']
+                         * 100]
 
         self.redundancy_for_all_groups_in_all_tenants = pd.Series(self.redundancy_for_all_groups_in_all_tenants)
 
