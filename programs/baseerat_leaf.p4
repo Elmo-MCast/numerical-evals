@@ -2,8 +2,7 @@
 // Global constants
 
 #define LEAF_ID 10
-#define ID_SIZE_in_BITS 13 // an extra least-significant bit is to indicate end of bitmap headers,
-                           // also we need to accomodate for both unique leaf ids and header ids.
+#define ID_SIZE_in_BITS 12 // we need to accomodate for both unique leaf ids and header ids.
 #define NUM_HOSTS 48
 #define NUM_HEADERS 4
 
@@ -56,18 +55,15 @@ header_type vxlan_t {
 
 
 
-header_type baseerat_start_t {
-    fields{
-        type : 16
-    }
-}
-
-header_type baseerat_bitmap_t {
+header_type bitmap_t {
     fields {
         id : ID_SIZE_in_BITS;
         bitmap : NUM_HOSTS;
+        next : 1;
     }
 }
+
+
 
 
 // Parser functions
@@ -129,7 +125,6 @@ parser parse_ipv4 {
 }
 
 #define UDP_PORT_VXLAN 4789
-#define UDP_PORT_BASEERAT 0xFFFE
 
 header udp_t udp_;
 
@@ -160,33 +155,36 @@ calculated_field udp_.checksum {
 parser parse_udp {
     extract(udp_);
     return select(latest.dstPort) {
-        UDP_PORT_BASEERAT : parse_baseerat_start_hdr;
         UDP_PORT_VXLAN  : parse_vxlan;
         default: ingress;
     }
 }
 
+#define VXLAN_VNI_BASEERAT 0xFFFFFE
 
+header vxlan_t vxlan_;
 
-
-header baseerat_start_t baseerat_start_hdr_;
-
-parser parse_baseerat_start_hdr {
-    extract(baseerat_start_hdr_);
-    return parse_bitmap_hdr0;
+parser parse_vxlan {
+    extract(vxlan_);
+    return select(latest.vni) {
+        VXLAN_VNI_BASEERAT : parse_bitmap_hdr0;
+        default: parse_inner_ethernet;
 }
 
-metadata baseerat_t leaf_hdr;
-header baseerat_t bitmap_hdr[NUM_HEADERS];
+
+
+
+metadata bitmap_t leaf_hdr;
+header bitmap_t bitmap_hdr[NUM_HEADERS];
 
 parser parse_bitmap_hdr0 {
     extract(bitmap_hdr[0]);
     set_metadata(leaf_hdr.id, latest.id);
     set_metadata(leaf_hdr.bitmap, latest.bitmap);
-    return select(latest.id) {
-        LEAF_ID mask 0x7FF : parse_baseerat_end_hdr;
+    return select(latest.next, latest.id) {
+        LEAF_ID mask 0x7FF : parse_inner_ethernet;
         0x100 mask 0x100 : parse_bitmap_hdr1;
-        default: parse_baseerat_end_hdr;
+        default: parse_inner_ethernet;
     }
 }
 
@@ -194,10 +192,10 @@ parser parse_bitmap_hdr1 {
     extract(bitmap_hdr[1]);
     set_metadata(leaf_hdr.id, latest.id);
     set_metadata(leaf_hdr.bitmap, latest.bitmap);
-    return select(latest.id) {
-        LEAF_ID mask 0x7FF : parse_baseerat_end_hdr;
+    return select(latest.next, latest.id) {
+        LEAF_ID mask 0x7FF : parse_inner_ethernet;
         0x100 mask 0x100 : parse_bitmap_hdr2;
-        default: parse_baseerat_end_hdr;
+        default: parse_inner_ethernet;
     }
 }
 
@@ -205,10 +203,10 @@ parser parse_bitmap_hdr2 {
     extract(bitmap_hdr[2]);
     set_metadata(leaf_hdr.id, latest.id);
     set_metadata(leaf_hdr.bitmap, latest.bitmap);
-    return select(latest.id) {
-        LEAF_ID mask 0x7FF : parse_baseerat_end_hdr;
+    return select(latest.next, latest.id) {
+        LEAF_ID mask 0x7FF : parse_inner_ethernet;
         0x100 mask 0x100 : parse_bitmap_hdr3;
-        default: parse_baseerat_end_hdr;
+        default: parse_inner_ethernet;
     }
 }
 
@@ -216,28 +214,12 @@ parser parse_bitmap_hdr3 {
     extract(bitmap_hdr[3]);
     set_metadata(leaf_hdr.id, latest.id);
     set_metadata(leaf_hdr.bitmap, latest.bitmap);
-    return parse_baseerat_end_hdr;
-    }
-}
-
-#define BASEERAT_VXLAN 4789
-
-parser parse_baseerat_end_hdr {
-    return select(baseerat_start_hdr_.type) {
-        BASEERAT_VXLAN : parse_vxlan;
-        default: ingress;
-    }
-}
-
-
-
-
-header vxlan_t vxlan_;
-
-parser parse_vxlan {
-    extract(vxlan_);
     return parse_inner_ethernet;
+    }
 }
+
+
+
 
 header ethernet_t inner_ethernet_;
 
@@ -317,23 +299,30 @@ parser parse_inner_udp {
     return ingress;
 }
 
-// @Shahbaz: update this part with match action code
 
-action action0() {
+
+
+extern action bitmap_output_select(bimtap); // The extern action for bitmap-based port selection
+
+action leaf_bitmap_output_select() {
+    bitmap_output_select(leaf_hdr.bitmap);
 }
 
-table table0 {
+//action bitmap_action() {
+//}
+
+table bitmap_table {
     reads {
-        ethernet_.etherType : exact;
+        leaf_hdr.id : exact; // This will be a least priority rule in the table
     }
     actions {
-        action0;
+        leaf_bitmap_output_select;
     }
-    size: 1;
+    size: 1000;
 }
 
 control ingress {
-    apply(table0);
+    apply(bitmap_table);
 }
 
 control egress {
