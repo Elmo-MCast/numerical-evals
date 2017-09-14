@@ -64,7 +64,8 @@ def _dp(bitmaps, max_bitmaps):  # dynamic programming algorithm
     return category_bitmaps, leaf_to_category_list, r, min_bitmaps
 
 
-def _post_dp_use_all_bitmaps(max_bitmaps, min_bitmaps, category_bitmaps, leaf_to_category_list, leaf_to_has_rule_list):
+def _post_dp_use_all_bitmaps(max_bitmaps, min_bitmaps, category_bitmaps, leaf_to_category_list,
+                             leaf_to_has_rule_list, ordered_leafs_list, leafs_map):
     category_to_leafs_map = dict()
     for v, k in enumerate(leaf_to_category_list):
         if k in category_to_leafs_map:
@@ -79,20 +80,26 @@ def _post_dp_use_all_bitmaps(max_bitmaps, min_bitmaps, category_bitmaps, leaf_to
         l_offsets_length = len(l_offsets)
 
         if l_offsets_length == 1:
+            category_bitmaps[category - 1] = leafs_map[ordered_leafs_list[l_offsets[0]][0]]['bitmap']['actual']
             leaf_to_has_rule_list[l_offsets[0]] = False
         else:
             for i in range(l_offsets_length):
                 if _unused_bitmaps > 0:
                     if (i + 1) == l_offsets_length:
+                        category_bitmaps[category - 1] = leafs_map[ordered_leafs_list[l_offsets[i]][0]]['bitmap'][
+                            'actual']
                         leaf_to_has_rule_list[l_offsets[i]] = False
                     else:
-                        category_bitmaps += [category_bitmaps[category - 1]]
+                        category_bitmaps += [leafs_map[ordered_leafs_list[l_offsets[i]][0]]['bitmap'][
+                            'actual']]
                         leaf_to_category_list[l_offsets[i]] = len(category_bitmaps)
                         leaf_to_has_rule_list[l_offsets[i]] = False
                         _unused_bitmaps -= 1
                         _min_bitmaps += 1
                 else:
                     if (i + 1) == l_offsets_length:
+                        category_bitmaps[category - 1] = leafs_map[ordered_leafs_list[l_offsets[i]][0]]['bitmap'][
+                            'actual']
                         leaf_to_has_rule_list[l_offsets[i]] = False
                     break
 
@@ -100,7 +107,7 @@ def _post_dp_use_all_bitmaps(max_bitmaps, min_bitmaps, category_bitmaps, leaf_to
 
 
 def _post_dp_use_default_bitmap(input_bitmaps, category_bitmaps, leaf_to_category_list, leaf_to_has_rule_list, r,
-                                ordered_leafs_list, leafs_to_rules_count_map, max_rules_perf_leaf):
+                                ordered_leafs_list, leafs_to_rules_count_map, max_rules_perf_leaf, leafs_map):
     category_to_leafs_map = dict()
     for v, k in enumerate(leaf_to_category_list):
         if k in category_to_leafs_map:
@@ -118,8 +125,7 @@ def _post_dp_use_default_bitmap(input_bitmaps, category_bitmaps, leaf_to_categor
         if l_offsets_length > 1:
             del_offsets = []
             for i in range(l_offsets_length):
-                l, _ = ordered_leafs_list[l_offsets[i]]
-                if leafs_to_rules_count_map[l] >= max_rules_perf_leaf:
+                if leafs_to_rules_count_map[ordered_leafs_list[l_offsets[i]][0]] >= max_rules_perf_leaf:
                     _r -= sum(category_bitmaps[category - 1] ^ input_bitmaps[l_offsets[i]])
                     default_bitmap_list += [(l_offsets[i], input_bitmaps[l_offsets[i]])]
                     leaf_to_category_list[l_offsets[i]] = 0
@@ -129,7 +135,7 @@ def _post_dp_use_default_bitmap(input_bitmaps, category_bitmaps, leaf_to_categor
                 del l_offsets[offset]
             if len(l_offsets) == 1:
                 _r -= sum(category_bitmaps[category - 1] ^ input_bitmaps[l_offsets[0]])
-                category_bitmaps[category - 1] = input_bitmaps[l_offsets[0]]
+                category_bitmaps[category - 1] = leafs_map[ordered_leafs_list[l_offsets[0]][0]]['bitmap']['actual']
                 leaf_to_has_rule_list[l_offsets[0]] = False
 
     if default_bitmap_list:
@@ -139,8 +145,8 @@ def _post_dp_use_default_bitmap(input_bitmaps, category_bitmaps, leaf_to_categor
             l_offsets_length = len(l_offsets)
 
             if l_offsets_length == 0:
-                offset, bitmap = default_bitmap_list[0]
-                category_bitmaps[category - 1] = bitmap
+                offset, _ = default_bitmap_list[0]
+                category_bitmaps[category - 1] = leafs_map[ordered_leafs_list[offset][0]]['bitmap']['actual']
                 leaf_to_category_list[offset] = category
                 del default_bitmap_list[0]
 
@@ -168,12 +174,12 @@ def dynmaic(data, max_bitmaps, leafs_to_rules_count_map, max_rules_perf_leaf, us
 
     if use_all_bitmaps:
         min_bitmaps = _post_dp_use_all_bitmaps(max_bitmaps, min_bitmaps, category_bitmaps, leaf_to_category_list,
-                                               leaf_to_has_rule_list)
+                                               leaf_to_has_rule_list, ordered_leafs_list, leafs_map)
 
     if use_default_bitmap:
         default_bitmap, r = _post_dp_use_default_bitmap(input_bitmaps, category_bitmaps, leaf_to_category_list,
                                                      leaf_to_has_rule_list, r, ordered_leafs_list,
-                                                     leafs_to_rules_count_map, max_rules_perf_leaf)
+                                                     leafs_to_rules_count_map, max_rules_perf_leaf, leafs_map)
     else:
         default_bitmap = None
 
