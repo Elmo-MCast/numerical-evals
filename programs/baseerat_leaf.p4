@@ -4,7 +4,6 @@
 #define LEAF_ID 10
 #define ID_SIZE_in_BITS 12 // we need to accomodate for both unique leaf ids and header ids.
 #define NUM_HOSTS 48
-#define NUM_HEADERS 4
 
 
 // Header types
@@ -175,45 +174,62 @@ parser parse_vxlan {
 
 
 metadata bitmap_t leaf_hdr;
-header bitmap_t bitmap_hdr[NUM_HEADERS];
+header bitmap_t bitmap_hdr0;
 
 parser parse_bitmap_hdr0 {
     extract(bitmap_hdr[0]);
     set_metadata(leaf_hdr.id, latest.id);
     set_metadata(leaf_hdr.bitmap, latest.bitmap);
     return select(latest.next, latest.id) {
-        LEAF_ID mask 0x7FF : parse_inner_ethernet;
-        0x100 mask 0x100 : parse_bitmap_hdr1;
+        LEAF_ID mask 0x0FFF : parse_inner_ethernet;
+        0x1000 mask 0x1000 : parse_bitmap_hdr1;
         default: parse_inner_ethernet;
     }
 }
+
+header bitmap_t bitmap_hdr1;
 
 parser parse_bitmap_hdr1 {
     extract(bitmap_hdr[1]);
     set_metadata(leaf_hdr.id, latest.id);
     set_metadata(leaf_hdr.bitmap, latest.bitmap);
     return select(latest.next, latest.id) {
-        LEAF_ID mask 0x7FF : parse_inner_ethernet;
-        0x100 mask 0x100 : parse_bitmap_hdr2;
+        LEAF_ID mask 0x0FFF : parse_inner_ethernet;
+        0x1000 mask 0x1000 : parse_bitmap_hdr2;
         default: parse_inner_ethernet;
     }
 }
+
+header bitmap_t bitmap_hdr2;
 
 parser parse_bitmap_hdr2 {
     extract(bitmap_hdr[2]);
     set_metadata(leaf_hdr.id, latest.id);
     set_metadata(leaf_hdr.bitmap, latest.bitmap);
     return select(latest.next, latest.id) {
-        LEAF_ID mask 0x7FF : parse_inner_ethernet;
-        0x100 mask 0x100 : parse_bitmap_hdr3;
+        LEAF_ID mask 0x0FFF : parse_inner_ethernet;
+        0x1000 mask 0x1000 : parse_bitmap_hdr3;
         default: parse_inner_ethernet;
     }
 }
+
+header bitmap_t bitmap_hdr3;
 
 parser parse_bitmap_hdr3 {
     extract(bitmap_hdr[3]);
     set_metadata(leaf_hdr.id, latest.id);
     set_metadata(leaf_hdr.bitmap, latest.bitmap);
+    return select(latest.next, latest.id) {
+        LEAF_ID mask 0x0FFF : parse_inner_ethernet;
+        0x1000 mask 0x1000 : parse_default_hdr;
+        default: parse_inner_ethernet;
+    }
+}
+
+header bitmap_t bitmap_default_hdr;
+
+parser parse_default_hdr {
+    extract(bitmap_default_hdr);
     return parse_inner_ethernet;
     }
 }
