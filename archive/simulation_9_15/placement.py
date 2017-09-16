@@ -7,7 +7,7 @@ from bitstring import BitArray
 
 
 class Placement:
-    def __init__(self, data, dist='uniform', num_bitmaps=32, num_hosts_per_leaf=48):
+    def __init__(self, data, dist='uniform', num_bitmaps=32, num_hosts_per_leaf=48, generate_bitmaps=False):
         self.data = data
         self.dist = dist
         self.num_bitmaps = num_bitmaps
@@ -39,8 +39,9 @@ class Placement:
         self._get_tenant_groups_to_leafs_and_count_map()
         print('placement[tenant_groups_to_leafs_and_count]: initialized.')
 
-        self._get_tenant_groups_leafs_to_hosts_and_bitmap_map()
-        print('placement[tenant_groups_leafs_to_hosts_and_bitmap]: initialized.')
+        if generate_bitmaps:
+            self._get_tenant_groups_leafs_to_hosts_and_bitmap_map()
+            print('placement[tenant_groups_leafs_to_hosts_and_bitmap]: initialized.')
 
     def _get_tenant_vms_to_host_map(self):
         if self.dist == 'uniform':
@@ -148,6 +149,6 @@ class Placement:
                             self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['bitmap']['actual'][
                                 h % self.network['num_hosts_per_leaf']] = 1
 
-                        # self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['bitmap']['sorted'] = \
-                        #     BitArray(sorted(self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['bitmap']['actual'],
-                        #                     reverse=True))
+                        self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['bitmap']['sorted'] = \
+                            BitArray(sorted(self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['bitmap']['actual'],
+                                            reverse=True))

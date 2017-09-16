@@ -52,6 +52,9 @@ cloud = Cloud(num_leafs=48,
               group_size_dist='uniform',
               placement_dist='colocate',
               colocate_num_hosts_per_leaf=20,
-              num_bitmaps=5)
+              num_bitmaps=5,
+              generate_bitmaps=True,
+              use_all_bitmaps=True,
+              use_default_bitmap=True)
 
-# data = Data(cloud)
+data = Data(cloud)
