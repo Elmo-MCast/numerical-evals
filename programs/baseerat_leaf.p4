@@ -173,13 +173,13 @@ parser parse_vxlan {
 
 
 
-metadata bitmap_t leaf_hdr;
-header bitmap_t bitmap_hdr0;
+metadata bitmap_t bitmap_leaf_hdr_;
+header bitmap_t bitmap_hdr0_;
 
 parser parse_bitmap_hdr0 {
-    extract(bitmap_hdr[0]);
-    set_metadata(leaf_hdr.id, latest.id);
-    set_metadata(leaf_hdr.bitmap, latest.bitmap);
+    extract(bitmap_hdr0_);
+    set_metadata(bitmap_leaf_hdr_.id, latest.id);
+    set_metadata(bitmap_leaf_hdr_.bitmap, latest.bitmap);
     return select(latest.next, latest.id) {
         LEAF_ID mask 0x0FFF : parse_inner_ethernet;
         0x1000 mask 0x1000 : parse_bitmap_hdr1;
@@ -187,12 +187,12 @@ parser parse_bitmap_hdr0 {
     }
 }
 
-header bitmap_t bitmap_hdr1;
+header bitmap_t bitmap_hdr1_;
 
 parser parse_bitmap_hdr1 {
-    extract(bitmap_hdr[1]);
-    set_metadata(leaf_hdr.id, latest.id);
-    set_metadata(leaf_hdr.bitmap, latest.bitmap);
+    extract(bitmap_hdr1_);
+    set_metadata(bitmap_leaf_hdr_.id, latest.id);
+    set_metadata(bitmap_leaf_hdr_.bitmap, latest.bitmap);
     return select(latest.next, latest.id) {
         LEAF_ID mask 0x0FFF : parse_inner_ethernet;
         0x1000 mask 0x1000 : parse_bitmap_hdr2;
@@ -200,12 +200,12 @@ parser parse_bitmap_hdr1 {
     }
 }
 
-header bitmap_t bitmap_hdr2;
+header bitmap_t bitmap_hdr2_;
 
 parser parse_bitmap_hdr2 {
-    extract(bitmap_hdr[2]);
-    set_metadata(leaf_hdr.id, latest.id);
-    set_metadata(leaf_hdr.bitmap, latest.bitmap);
+    extract(bitmap_hdr2_);
+    set_metadata(bitmap_leaf_hdr_.id, latest.id);
+    set_metadata(bitmap_leaf_hdr_.bitmap, latest.bitmap);
     return select(latest.next, latest.id) {
         LEAF_ID mask 0x0FFF : parse_inner_ethernet;
         0x1000 mask 0x1000 : parse_bitmap_hdr3;
@@ -213,23 +213,23 @@ parser parse_bitmap_hdr2 {
     }
 }
 
-header bitmap_t bitmap_hdr3;
+header bitmap_t bitmap_hdr3_;
 
 parser parse_bitmap_hdr3 {
-    extract(bitmap_hdr[3]);
-    set_metadata(leaf_hdr.id, latest.id);
-    set_metadata(leaf_hdr.bitmap, latest.bitmap);
+    extract(bitmap_hdr3_);
+    set_metadata(bitmap_leaf_hdr_.id, latest.id);
+    set_metadata(bitmap_leaf_hdr_.bitmap, latest.bitmap);
     return select(latest.next, latest.id) {
         LEAF_ID mask 0x0FFF : parse_inner_ethernet;
-        0x1000 mask 0x1000 : parse_default_hdr;
+        0x1000 mask 0x1000 : parse_bitmap_default_hdr;
         default: parse_inner_ethernet;
     }
 }
 
-header bitmap_t bitmap_default_hdr;
+header bitmap_t bitmap_default_hdr_;
 
-parser parse_default_hdr {
-    extract(bitmap_default_hdr);
+parser parse_bitmap_default_hdr {
+    extract(bitmap_default_hdr_);
     return parse_inner_ethernet;
     }
 }
@@ -318,21 +318,31 @@ parser parse_inner_udp {
 
 
 
-extern action bitmap_output_select(bimtap); // The extern action for bitmap-based port selection
+extern action bitmap_output_select(bitmap);  // The extern action for bitmap-based port selection
 
-action leaf_bitmap_output_select() {
-    bitmap_output_select(leaf_hdr.bitmap);
+action bitmap_leaf_hdr_action() {
+    bitmap_output_select(bitmap_leaf_hdr_.bitmap);
 }
 
-//action bitmap_action() {
-//}
+action inner_ipv4_bitmap_action(bitmap) {
+    bitmap_output_select(bitmap);
+}
+
+action bitmap_default_hdr_action() {
+    bitmap_output_select(bitmap_default_hdr_.bitmap);
+}
 
 table bitmap_table {
     reads {
-        leaf_hdr.id : exact; // This will be a least priority rule in the table
+        bitmap_leaf_hdr_.id : exact;  // This will be a least priority rule in the table
+        inner_ipv4_.dstAddr : exact;  // The group/topic identifier
+//        bitmap_default_hdr_.id : exact;  // A default action is specified at runtime (which will be
+                                           // bitmap_default_hdr_action()
     }
     actions {
-        leaf_bitmap_output_select;
+        leaf_hdr_action;
+        inner_ipv4_bitmap_action;
+        bitmap_default_hdr_action;
     }
     size: 1000;
 }
