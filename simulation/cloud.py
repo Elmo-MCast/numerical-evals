@@ -8,7 +8,7 @@ class Cloud:
     def __init__(self,
                  num_leafs=1056,
                  num_hosts_per_leaf=48,
-                 num_rules_perf_leaf=10000,
+                 num_rules_per_leaf=10000,
                  max_vms_per_host=20,
                  num_tenants=3000,
                  min_vms_per_tenant=10,
@@ -23,7 +23,7 @@ class Cloud:
         self.data = dict()
 
         Network(data=self.data, num_leafs=num_leafs, num_hosts_per_leaf=num_hosts_per_leaf,
-                num_rules_perf_leaf=num_rules_perf_leaf)
+                num_rules_per_leaf=num_rules_per_leaf)
 
         Tenants(data=self.data,
                 max_vms_per_host=max_vms_per_host,

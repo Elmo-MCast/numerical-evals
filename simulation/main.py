@@ -23,7 +23,7 @@ np.random.seed(seed=0)
 
 cloud = Cloud(num_leafs=576,
               num_hosts_per_leaf=48,
-              num_rules_perf_leaf=1000,
+              num_rules_per_leaf=1000,
               max_vms_per_host=20,
               num_tenants=3000,
               min_vms_per_tenant=10,
@@ -38,7 +38,7 @@ cloud = Cloud(num_leafs=576,
 
 # cloud = Cloud(num_leafs=48,
 #               num_hosts_per_leaf=48,
-#               num_rules_perf_leaf=10,
+#               num_rules_per_leaf=10,
 #               max_vms_per_host=20,
 #               num_tenants=100,
 #               min_vms_per_tenant=10,

@@ -1,6 +1,6 @@
 
 class Network:
-    def __init__(self, data, num_leafs=1056, num_hosts_per_leaf=48, num_rules_perf_leaf=10000):
+    def __init__(self, data, num_leafs=1056, num_hosts_per_leaf=48, num_rules_per_leaf=10000):
         self.data = data
         self.num_leafs = num_leafs
         self.num_hosts_per_leaf = num_hosts_per_leaf
@@ -8,7 +8,7 @@ class Network:
         self.data['network'] = {'num_leafs': num_leafs,
                                 'num_hosts_per_leaf': num_hosts_per_leaf,
                                 'num_hosts': num_leafs * num_hosts_per_leaf,
-                                'num_rules_perf_leaf': num_rules_perf_leaf,
+                                'num_rules_per_leaf': num_rules_per_leaf,
                                 'maps': {
                                     'leaf_to_hosts': None,
                                     'host_to_leaf': None

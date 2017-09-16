@@ -20,7 +20,7 @@ np.random.seed(seed=SEED)
 if TEST_NAME == 'dcn-cmp':
     cloud = Cloud(num_leafs=576,
                   num_hosts_per_leaf=48,
-                  num_rules_perf_leaf=NUM_CAPACITY,
+                  num_rules_per_leaf=NUM_CAPACITY,
                   max_vms_per_host=20,
                   num_tenants=3000,
                   min_vms_per_tenant=10,
@@ -38,7 +38,7 @@ if TEST_NAME == 'dcn-cmp':
 elif TEST_NAME == 'baseerat':
     cloud = Cloud(num_leafs=1056,
                   num_hosts_per_leaf=48,
-                  num_rules_perf_leaf=NUM_CAPACITY,
+                  num_rules_per_leaf=NUM_CAPACITY,
                   max_vms_per_host=20,
                   num_tenants=3000,
                   min_vms_per_tenant=10,

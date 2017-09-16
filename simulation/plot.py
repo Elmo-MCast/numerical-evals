@@ -16,6 +16,7 @@ class Data:
         self._get_redundancy_for_all_groups_in_all_tenants()
         self._get_rules_for_all_groups()
         self._get_rules_for_all_groups_post_optimization()
+        self._get_leafs_to_rules_count()
 
         print('data: complete.')
 
@@ -68,7 +69,8 @@ class Data:
             for g in range(self.tenants_maps[t]['group_count']):
                 if self.tenants_maps[t]['groups_map'][g]['leaf_count'] > self.placement['num_bitmaps']:
                     self.redundancy_for_all_groups_in_all_tenants += \
-                        [self.tenants_maps[t]['groups_map'][g]['r'] / self.tenants_maps[t]['groups_map'][g]['size']
+                        [self.tenants_maps[t]['groups_map'][g]['r'] /
+                         (self.tenants_maps[t]['groups_map'][g]['r'] + self.tenants_maps[t]['groups_map'][g]['size'])
                          * 100]
 
         self.redundancy_for_all_groups_in_all_tenants = pd.Series(self.redundancy_for_all_groups_in_all_tenants)
@@ -97,6 +99,9 @@ class Data:
                             self.rules_for_all_groups_post_optimization[len(self.rules_for_all_groups_post_optimization) - 1] += 1
 
         self.rules_for_all_groups_post_optimization = pd.Series(self.rules_for_all_groups_post_optimization)
+
+    def _get_leafs_to_rules_count(self):
+        self.leafs_to_rules_count = self.placement['maps']['leafs_to_rules_count']
 
 
 class Plot:

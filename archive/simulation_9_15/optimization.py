@@ -25,6 +25,6 @@ class Optimization:
                         data=self.tenants_maps[t]['groups_map'][g],
                         max_bitmaps=self.placement['num_bitmaps'],
                         leafs_to_rules_count_map=self.placement['maps']['leafs_to_rules_count'],
-                        max_rules_perf_leaf=self.network['num_rules_perf_leaf'],
+                        max_rules_perf_leaf=self.network['num_rules_per_leaf'],
                         use_all_bitmaps=self.use_all_bitmaps,
                         use_default_bitmap=self.use_default_bitmap)

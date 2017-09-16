@@ -23,5 +23,5 @@ class Optimization:
                         data=self.tenants_maps[t]['groups_map'][g],
                         max_bitmaps=self.placement['num_bitmaps'],
                         leafs_to_rules_count_map=self.placement['maps']['leafs_to_rules_count'],
-                        max_rules_perf_leaf=self.network['num_rules_perf_leaf'],
+                        max_rules_perf_leaf=self.network['num_rules_per_leaf'],
                         num_hosts_per_leaf=self.network['num_hosts_per_leaf'])
