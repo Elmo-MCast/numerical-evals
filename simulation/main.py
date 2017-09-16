@@ -54,4 +54,4 @@ cloud = Cloud(num_leafs=48,
               colocate_num_hosts_per_leaf=20,
               num_bitmaps=5)
 
-# data = Data(cloud)
+data = Data(cloud)

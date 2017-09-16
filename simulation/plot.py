@@ -12,11 +12,12 @@ class Data:
         self._get_leafs_for_all_tenants()
         self._get_percentage_hist_of_groups_covered_with_varying_bitmaps()
         self._get_rules_for_all_leafs()
-        self._get_rules_for_all_leafs_post_dp()
+        self._get_rules_for_all_leafs_post_optimization()
         self._get_redundancy_for_all_groups_in_all_tenants()
-        self._get_min_bitmaps_for_all_tenants()
         self._get_rules_for_all_groups()
         self._get_rules_for_all_groups_post_dp()
+
+        print('data: complete.')
 
     def _get_leafs_for_all_tenants(self):
         self.leafs_for_all_tenants = []
@@ -44,7 +45,7 @@ class Data:
 
         self.rules_for_all_leafs = pd.Series(self.rules_for_all_leafs)
 
-    def _get_rules_for_all_leafs_post_dp(self):
+    def _get_rules_for_all_leafs_post_optimization(self):
         self.rules_for_all_leafs_post_dp = [0] * self.network['num_leafs']
 
         for t in range(self.tenants['num_tenants']):
@@ -67,16 +68,6 @@ class Data:
                          * 100]
 
         self.redundancy_for_all_groups_in_all_tenants = pd.Series(self.redundancy_for_all_groups_in_all_tenants)
-
-    def _get_min_bitmaps_for_all_tenants(self):
-        self.min_bitmaps_for_all_tenants = []
-
-        for t in range(self.tenants['num_tenants']):
-            for g in range(self.tenants_maps[t]['group_count']):
-                if self.tenants_maps[t]['groups_map'][g]['leaf_count'] > self.placement['num_bitmaps']:
-                    self.min_bitmaps_for_all_tenants += [self.tenants_maps[t]['groups_map'][g]['min_bitmaps']]
-
-        self.min_bitmaps_for_all_tenants = pd.Series(self.min_bitmaps_for_all_tenants)
 
     def _get_rules_for_all_groups(self):
         self.rules_for_all_groups = []
@@ -152,27 +143,6 @@ class Plot:
         ax = self.data.redundancy_for_all_groups_in_all_tenants.plot(kind='hist')
         ax.set(
             xlabel="Redundancy for all groups using %s bitmaps (all leafs)" % self.data.placement['num_bitmaps'],
-            ylabel='Frequency')
-        self.plt.show()
-
-    def cdf_min_bitmaps_for_all_tenants(self):
-        ax = sb.kdeplot(self.data.min_bitmaps_for_all_tenants, cumulative=True)
-        ax.set(
-            xlabel="Minimum bitmaps for all groups using %s bitmaps (all leafs)" % self.data.placement['num_bitmaps'],
-            ylabel='CDF')
-        self.plt.show()
-
-    def pdf_min_bitmaps_for_all_tenants(self):
-        ax = self.data.min_bitmaps_for_all_tenants.plot(kind='density')
-        ax.set(
-            xlabel="Minimum bitmaps for all groups using %s bitmaps (all leafs)" % self.data.placement['num_bitmaps'],
-            ylabel='PDF')
-        self.plt.show()
-
-    def hist_min_bitmaps_for_all_tenants(self):
-        ax = self.data.min_bitmaps_for_all_tenants.plot(kind='hist')
-        ax.set(
-            xlabel="Minimum bitmaps for all groups using %s bitmaps (all leafs)" % self.data.placement['num_bitmaps'],
             ylabel='Frequency')
         self.plt.show()
 
