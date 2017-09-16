@@ -6,11 +6,12 @@ def run(data, max_bitmaps, leafs_to_rules_count_map, max_rules_perf_leaf, num_ho
     ordered_leafs_list = sorted(leafs_map.items(), key=lambda item: leafs_to_rules_count_map[item[0]], reverse=True)
 
     num_leafs_with_no_space = 0
-    for i, (l, _) in enumerate(ordered_leafs_list):
-        if leafs_to_rules_count_map[l] >= max_rules_perf_leaf:
-            num_leafs_with_no_space += 1
-        else:
-            break
+    if max_rules_perf_leaf > 0:
+        for i, (l, _) in enumerate(ordered_leafs_list):
+            if leafs_to_rules_count_map[l] >= max_rules_perf_leaf:
+                num_leafs_with_no_space += 1
+            else:
+                break
 
     if (num_leafs_with_no_space - max_bitmaps) <= 0:
         for i in range(max_bitmaps):
