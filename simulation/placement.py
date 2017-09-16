@@ -181,14 +181,9 @@ class Placement:
                                 self.tenants_maps[t]['vms_map'][vm]['host']}
 
                     for l in self.tenants_maps[t]['groups_map'][g]['leafs_map']:
-                        self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['bitmap'] = dict()
+                        self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['bitmap'] = BitArray(
+                            self.network['num_hosts_per_leaf'])
 
-                        self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['bitmap']['actual'] = \
-                            BitArray(self.network['num_hosts_per_leaf'])
                         for h in self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['hosts']:
-                            self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['bitmap']['actual'][
+                            self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['bitmap'][
                                 h % self.network['num_hosts_per_leaf']] = 1
-
-                        # self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['bitmap']['sorted'] = \
-                        #     BitArray(sorted(self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['bitmap']['actual'],
-                        #                     reverse=True))

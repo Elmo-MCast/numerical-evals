@@ -37,7 +37,7 @@ def run(data, max_bitmaps, leafs_to_rules_count_map, max_rules_perf_leaf, num_ho
         l, _ = ordered_leafs_list[max_bitmaps]
         leafs_map[l]['has_bitmap'] = False
         leafs_map[l]['has_rule'] = False
-        data['default_bitmap'] |= leafs_map[l]['bitmap']['actual']
+        data['default_bitmap'] |= leafs_map[l]['bitmap']
         data['r'] = 0
 
         for i in range(num_leafs_with_no_space, data['leaf_count']):
@@ -58,12 +58,12 @@ def run(data, max_bitmaps, leafs_to_rules_count_map, max_rules_perf_leaf, num_ho
             l, _ = ordered_leafs_list[i]
             leafs_map[l]['has_bitmap'] = False
             leafs_map[l]['has_rule'] = False
-            data['default_bitmap'] |= leafs_map[l]['bitmap']['actual']
+            data['default_bitmap'] |= leafs_map[l]['bitmap']
 
         data['r'] = 0
         for i in range(max_bitmaps, num_leafs_with_no_space):
             l, _ = ordered_leafs_list[i]
-            data['r'] += sum(data['default_bitmap'] ^ leafs_map[l]['bitmap']['actual'])
+            data['r'] += sum(data['default_bitmap'] ^ leafs_map[l]['bitmap'])
 
         for i in range(num_leafs_with_no_space, data['leaf_count']):
             l, _ = ordered_leafs_list[i]
