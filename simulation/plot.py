@@ -15,7 +15,7 @@ class Data:
         self._get_rules_for_all_leafs_post_optimization()
         self._get_redundancy_for_all_groups_in_all_tenants()
         self._get_rules_for_all_groups()
-        self._get_rules_for_all_groups_post_dp()
+        self._get_rules_for_all_groups_post_optimization()
 
         print('data: complete.')
 
@@ -40,22 +40,26 @@ class Data:
         for t in range(self.tenants['num_tenants']):
             for g in range(self.tenants_maps[t]['group_count']):
                 if self.tenants_maps[t]['groups_map'][g]['leaf_count'] > self.placement['num_bitmaps']:
+                    num_bitmaps = self.placement['num_bitmaps']
                     for l in self.tenants_maps[t]['groups_map'][g]['leafs']:
-                        self.rules_for_all_leafs[l] += 1
+                        if num_bitmaps > 0:
+                            num_bitmaps -= 1
+                        else:
+                            self.rules_for_all_leafs[l] += 1
 
         self.rules_for_all_leafs = pd.Series(self.rules_for_all_leafs)
 
     def _get_rules_for_all_leafs_post_optimization(self):
-        self.rules_for_all_leafs_post_dp = [0] * self.network['num_leafs']
+        self.rules_for_all_leafs_post_optimization = [0] * self.network['num_leafs']
 
         for t in range(self.tenants['num_tenants']):
             for g in range(self.tenants_maps[t]['group_count']):
                 if self.tenants_maps[t]['groups_map'][g]['leaf_count'] > self.placement['num_bitmaps']:
                     for l in self.tenants_maps[t]['groups_map'][g]['leafs']:
                         if self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['has_rule']:
-                            self.rules_for_all_leafs_post_dp[l] += 1
+                            self.rules_for_all_leafs_post_optimization[l] += 1
 
-        self.rules_for_all_leafs_post_dp = pd.Series(self.rules_for_all_leafs_post_dp)
+        self.rules_for_all_leafs_post_optimization = pd.Series(self.rules_for_all_leafs_post_optimization)
 
     def _get_redundancy_for_all_groups_in_all_tenants(self):
         self.redundancy_for_all_groups_in_all_tenants = []
@@ -81,18 +85,18 @@ class Data:
 
         self.rules_for_all_groups = pd.Series(self.rules_for_all_groups)
 
-    def _get_rules_for_all_groups_post_dp(self):
-        self.rules_for_all_groups_post_dp = []
+    def _get_rules_for_all_groups_post_optimization(self):
+        self.rules_for_all_groups_post_optimization = []
 
         for t in range(self.tenants['num_tenants']):
             for g in range(self.tenants_maps[t]['group_count']):
-                self.rules_for_all_groups_post_dp += [0]
+                self.rules_for_all_groups_post_optimization += [0]
                 if self.tenants_maps[t]['groups_map'][g]['leaf_count'] > self.placement['num_bitmaps']:
                     for l in self.tenants_maps[t]['groups_map'][g]['leafs']:
                         if self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['has_rule']:
-                            self.rules_for_all_groups_post_dp[len(self.rules_for_all_groups_post_dp) - 1] += 1
+                            self.rules_for_all_groups_post_optimization[len(self.rules_for_all_groups_post_optimization) - 1] += 1
 
-        self.rules_for_all_groups_post_dp = pd.Series(self.rules_for_all_groups_post_dp)
+        self.rules_for_all_groups_post_optimization = pd.Series(self.rules_for_all_groups_post_optimization)
 
 
 class Plot:
@@ -153,9 +157,9 @@ class Log:
         self.log_dir = log_dir
 
         self.log_rules_for_all_leafs()
-        self.log_rules_for_all_leafs_post_dp()
+        self.log_rules_for_all_leafs_post_optimization()
         self.log_rules_for_all_groups()
-        self.log_rules_for_all_groups_post_dp()
+        self.log_rules_for_all_groups_post_optimization()
         self.log_redundancy_for_all_groups_in_all_tenants()
 
         print('log: complete.')
@@ -163,16 +167,16 @@ class Log:
     def log_rules_for_all_leafs(self):
         self.data.rules_for_all_leafs.to_csv(self.log_dir + '/rules_for_all_leafs.csv')
 
-    def log_rules_for_all_leafs_post_dp(self):
-        self.data.rules_for_all_leafs_post_dp.to_csv(self.log_dir + '/rules_for_all_leafs_post_dp.csv')
+    def log_rules_for_all_leafs_post_optimization(self):
+        self.data.rules_for_all_leafs_post_optimization.to_csv(self.log_dir + '/rules_for_all_leafs_post_optimization.csv')
 
     def log_rules_for_all_groups(self):
         self.data.rules_for_all_groups.where(self.data.rules_for_all_groups > 0).dropna().to_csv(
             self.log_dir + '/rules_for_all_groups.csv')
 
-    def log_rules_for_all_groups_post_dp(self):
-        self.data.rules_for_all_groups_post_dp.where(self.data.rules_for_all_groups_post_dp > 0).dropna().to_csv(
-            self.log_dir + '/rules_for_all_groups_post_dp.csv')
+    def log_rules_for_all_groups_post_optimization(self):
+        self.data.rules_for_all_groups_post_optimization.where(self.data.rules_for_all_groups_post_optimization > 0).dropna().to_csv(
+            self.log_dir + '/rules_for_all_groups_post_optimization.csv')
 
     def log_redundancy_for_all_groups_in_all_tenants(self):
         self.data.redundancy_for_all_groups_in_all_tenants.to_csv(

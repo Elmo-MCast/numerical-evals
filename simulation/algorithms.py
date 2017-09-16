@@ -46,7 +46,7 @@ def run(data, max_bitmaps, leafs_to_rules_count_map, max_rules_perf_leaf, num_ho
             leafs_to_rules_count_map[l] += 1
 
     else:  # (num_leafs_with_no_space - max_bitmaps) >= 2
-        # TODO: talk to Ori for an optimization heuristic for this.
+        # TODO: talk to Ori for a heuristic for this.
         for i in range(max_bitmaps):
             l, _ = ordered_leafs_list[i]
             leafs_map[l]['has_bitmap'] = True
