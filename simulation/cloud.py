@@ -13,11 +13,11 @@ class Cloud:
                  num_tenants=3000,
                  min_vms_per_tenant=10,
                  max_vms_per_tenant=5000,
-                 vm_dist='expon',  # Options: expon, expon-mean, and geom
+                 vm_dist='expon',  # options: expon, expon-mean, and geom
                  num_groups=100000,
                  min_group_size=5,
-                 group_size_dist='uniform',  # Options: uniform and wve
-                 placement_dist='uniform',  # Options: uniform, colocate, and colocate-random
+                 group_size_dist='uniform',  # options: uniform and wve
+                 placement_dist='uniform',  # options: uniform, colocate, and colocate-random
                  colocate_num_hosts_per_leaf=48,
                  num_bitmaps=32,
                  max_batch_size=10):
