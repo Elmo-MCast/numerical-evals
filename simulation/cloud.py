@@ -20,7 +20,7 @@ class Cloud:
                  placement_dist='uniform',  # options: uniform, colocate, and colocate-random
                  colocate_num_hosts_per_leaf=48,
                  num_bitmaps=32,
-                 max_batch_size=10):
+                 max_batch_size=1):
         self.data = dict()
 
         Network(data=self.data,

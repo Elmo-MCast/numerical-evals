@@ -17,7 +17,7 @@ print("--- Running test '%s': seed (%s), no. of bitmaps (%s), no. of groups (%s)
 
 np.random.seed(seed=SEED)
 
-if TEST_NAME == 'dcn-cmp':
+if TEST_NAME == 'compare_dcn':
     cloud = Cloud(num_leafs=576,
                   num_hosts_per_leaf=48,
                   num_rules_per_leaf=NUM_CAPACITY,
@@ -25,16 +25,15 @@ if TEST_NAME == 'dcn-cmp':
                   num_tenants=3000,
                   min_vms_per_tenant=10,
                   max_vms_per_tenant=5000,
-                  vm_dist='expon',
+                  vm_dist='expon',  # options: expon, expon-mean, and geom
                   num_groups=NUM_GROUPS,
                   min_group_size=5,
-                  group_size_dist='uniform',
-                  placement_dist='colocate',
+                  group_size_dist='uniform',  # options: uniform and wve
+                  placement_dist='colocate',  # options: uniform, colocate, and colocate-random
                   colocate_num_hosts_per_leaf=NUM_COLOCATE_HOSTS,
                   num_bitmaps=NUM_BITMAPS,
-                  generate_bitmaps=True,
-                  use_all_bitmaps=True,
-                  use_default_bitmap=True)
+                  max_batch_size=1)
+
 elif TEST_NAME == 'baseerat':
     cloud = Cloud(num_leafs=1056,
                   num_hosts_per_leaf=48,
@@ -43,16 +42,15 @@ elif TEST_NAME == 'baseerat':
                   num_tenants=3000,
                   min_vms_per_tenant=10,
                   max_vms_per_tenant=5000,
-                  vm_dist='expon',
+                  vm_dist='expon',  # options: expon, expon-mean, and geom
                   num_groups=NUM_GROUPS,
                   min_group_size=5,
-                  group_size_dist='uniform',
-                  placement_dist='colocate',
+                  group_size_dist='uniform',  # options: uniform and wve
+                  placement_dist='colocate',  # options: uniform, colocate, and colocate-random
                   colocate_num_hosts_per_leaf=NUM_COLOCATE_HOSTS,
                   num_bitmaps=NUM_BITMAPS,
-                  generate_bitmaps=True,
-                  use_all_bitmaps=True,
-                  use_default_bitmap=True)
+                  max_batch_size=1)
+
 else:
     raise(Exception('invalid test name'))
 
