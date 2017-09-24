@@ -53,9 +53,10 @@ class Tenants:
         print('tenants[groups_to_vms]: initialized.')
 
     def _get_tenant_to_vm_count_map(self):
-        if self.vm_dist == 'geom':  # ... using geometric distribution as discrete exponential distribution
-            avg_vms = 1.0 * (self.max_vms_per_host * self.num_hosts) / self.num_tenants
-            vm_counts = stats.geom.rvs(size=self.num_tenants, loc=self.min_vms, p=(1.0 / avg_vms))
+        if self.vm_dist == 'expon':
+            vm_counts = np.int64(np.floor((((stats.expon.rvs(size=self.num_tenants, scale=(1.0 / 4)) / 10) *
+                                            (self.max_vms - self.min_vms)) % (
+                                               self.max_vms - self.min_vms)) + self.min_vms))
 
             for t in range(self.num_tenants):
                 self.tenants_maps[t]['vm_count'] = int(vm_counts[t])
@@ -67,10 +68,9 @@ class Tenants:
             for t in range(self.num_tenants):
                 self.tenants_maps[t]['vm_count'] = int(vm_counts[t])
                 self.tenants['vm_count'] += int(vm_counts[t])
-        elif self.vm_dist == 'expon':
-            vm_counts = np.int64(np.floor((((stats.expon.rvs(size=self.num_tenants, scale=(1.0 / 4)) / 10) *
-                                            (self.max_vms - self.min_vms)) % (
-                                           self.max_vms - self.min_vms)) + self.min_vms))
+        elif self.vm_dist == 'geom':
+            avg_vms = 1.0 * (self.max_vms_per_host * self.num_hosts) / self.num_tenants
+            vm_counts = stats.geom.rvs(size=self.num_tenants, loc=self.min_vms, p=(1.0 / avg_vms))
 
             for t in range(self.num_tenants):
                 self.tenants_maps[t]['vm_count'] = int(vm_counts[t])
@@ -94,6 +94,18 @@ class Tenants:
 
                 for g, size in enumerate(sizes):
                     self.tenants_maps[t]['groups_map'][g]['size'] = int(size)
+        elif self.group_size_dist == 'wve':  # ... using mix3 distribution from the dcn-mcast paper.
+            for t in range(self.num_tenants):
+                samples = np.random.random_sample(self.tenants_maps[t]['group_count'])
+                for g, sample in enumerate(samples):
+                    if sample < 0.02:
+                        size = self.tenants_maps[t]['group_count'] - \
+                               int(np.random.gamma(2, 10) * self.tenants_maps[t]['group_count'] / 15) % \
+                               self.tenants_maps[t]['group_count']
+                    else:
+                        size = int((np.random.gamma(2, 5) * self.tenants_maps[t]['group_count'] / 15) +
+                                   self.min_group_size - 1) % self.tenants_maps[t]['group_count'] + 1
+                    self.tenants_maps[t]['groups_map'][g]['size'] = size
         else:
             raise (Exception("invalid dist parameter for group size allocation"))
 

@@ -1,4 +1,3 @@
-
 class Network:
     def __init__(self, data, num_leafs=1056, num_hosts_per_leaf=48, num_rules_per_leaf=10000):
         self.data = data

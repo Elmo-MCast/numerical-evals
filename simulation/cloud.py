@@ -13,17 +13,19 @@ class Cloud:
                  num_tenants=3000,
                  min_vms_per_tenant=10,
                  max_vms_per_tenant=5000,
-                 vm_dist='expon',
+                 vm_dist='expon',  # Options: expon, expon-mean, and geom
                  num_groups=100000,
                  min_group_size=5,
-                 group_size_dist='uniform',
-                 placement_dist='uniform',
+                 group_size_dist='uniform',  # Options: uniform and wve
+                 placement_dist='uniform',  # Options: uniform, colocate, and colocate-random
                  colocate_num_hosts_per_leaf=48,
                  num_bitmaps=32,
                  max_batch_size=10):
         self.data = dict()
 
-        Network(data=self.data, num_leafs=num_leafs, num_hosts_per_leaf=num_hosts_per_leaf,
+        Network(data=self.data,
+                num_leafs=num_leafs,
+                num_hosts_per_leaf=num_hosts_per_leaf,
                 num_rules_per_leaf=num_rules_per_leaf)
 
         Tenants(data=self.data,
