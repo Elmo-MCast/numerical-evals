@@ -35,7 +35,7 @@ class Plot:
         self.plt.show()
 
     def cdf_rules_for_all_leafs(self):
-        ax = sb.kdeplot(self.data.rules_for_all_leafs, cumulative=True)
+        ax = sb.kdeplot(self.data.rules_for_all_leafs_pre_optimization, cumulative=True)
         ax.set(xlabel="Number of rules using %s bitmaps (all leafs)" % self.data.placement['num_bitmaps'],
                ylabel='CDF')
         self.plt.show()

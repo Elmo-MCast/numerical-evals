@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 
 class Data:
@@ -8,34 +9,23 @@ class Data:
         self.tenants_maps = self.tenants['maps']
         self.placement = cloud.data['placement']
 
-        self._get_leafs_for_all_tenants()
-        self._get_percentage_hist_of_groups_covered_with_varying_bitmaps()
-        self._get_rules_for_all_leafs()
-        self._get_rules_for_all_leafs_post_optimization()
-        self._get_redundancy_for_all_groups_in_all_tenants()
-        self._get_rules_for_all_groups()
-        self._get_rules_for_all_groups_post_optimization()
-        self._get_leafs_to_rules_count()
-
-        print('data: complete.')
-
-    def _get_leafs_for_all_tenants(self):
-        self.leafs_for_all_tenants = []
+    def leafs_for_all_groups_in_all_tenants(self):
+        _leafs_for_all_groups_in_all_tenants = []
 
         for t in range(self.tenants['num_tenants']):
             for g in range(self.tenants_maps[t]['group_count']):
-                self.leafs_for_all_tenants += [self.tenants_maps[t]['groups_map'][g]['leaf_count']]
+                _leafs_for_all_groups_in_all_tenants += [self.tenants_maps[t]['groups_map'][g]['leaf_count']]
 
-        self.leafs_for_all_tenants = pd.Series(self.leafs_for_all_tenants)
+        return pd.Series(_leafs_for_all_groups_in_all_tenants)
 
-    def _get_percentage_hist_of_groups_covered_with_varying_bitmaps(self):
-        hist = pd.cut(self.leafs_for_all_tenants, [i for i in range(self.placement['num_bitmaps'] + 1)],
-                      labels=[i for i in range(self.placement['num_bitmaps'])]).value_counts()
-        percentage_hist = hist / self.tenants['group_count'] * 100
-        self.percentage_hist_of_groups_covered_with_varying_bitmaps = percentage_hist.sort_index()
+    def percentage_of_groups_covered_with_varying_bitmaps(self, num_bitmaps):
+        categories = pd.cut(self.leafs_for_all_groups_in_all_tenants(), [i for i in range(-1, num_bitmaps + 1)],
+                            right=True, labels=[i for i in range(0, num_bitmaps + 1)]).value_counts()
+        percentage_categories = np.cumsum(categories.sort_index()).astype(np.double) / self.tenants['group_count'] * 100
+        return percentage_categories
 
-    def _get_rules_for_all_leafs(self):
-        self.rules_for_all_leafs = [0] * self.network['num_leafs']
+    def rules_for_all_leafs_pre_optimization(self):
+        _rules_for_all_leafs = [0] * self.network['num_leafs']
 
         for t in range(self.tenants['num_tenants']):
             for g in range(self.tenants_maps[t]['group_count']):
@@ -45,60 +35,65 @@ class Data:
                         if num_bitmaps > 0:
                             num_bitmaps -= 1
                         else:
-                            self.rules_for_all_leafs[l] += 1
+                            _rules_for_all_leafs[l] += 1
 
-        self.rules_for_all_leafs = pd.Series(self.rules_for_all_leafs)
+        return pd.Series(_rules_for_all_leafs)
 
-    def _get_rules_for_all_leafs_post_optimization(self):
-        self.rules_for_all_leafs_post_optimization = [0] * self.network['num_leafs']
+    def rules_for_all_leafs_post_optimization(self):
+        # _rules_for_all_leafs_post_optimization = [0] * self.network['num_leafs']
+        #
+        # for t in range(self.tenants['num_tenants']):
+        #     for g in range(self.tenants_maps[t]['group_count']):
+        #         if self.tenants_maps[t]['groups_map'][g]['leaf_count'] > self.placement['num_bitmaps']:
+        #             for l in self.tenants_maps[t]['groups_map'][g]['leafs']:
+        #                 if self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['has_rule']:
+        #                     _rules_for_all_leafs_post_optimization[l] += 1
+        #
+        # return pd.Series(_rules_for_all_leafs_post_optimization)
+
+        # return pd.DataFrame.from_dict(self.placement['maps']['leafs_to_rules_count'], orient='index')[0]
+        return pd.Series(self.placement['maps']['leafs_to_rules_count'])
+
+    def redundancy_for_all_groups_in_all_tenants(self):
+        _redundancy_for_all_groups_in_all_tenants = []
 
         for t in range(self.tenants['num_tenants']):
             for g in range(self.tenants_maps[t]['group_count']):
                 if self.tenants_maps[t]['groups_map'][g]['leaf_count'] > self.placement['num_bitmaps']:
-                    for l in self.tenants_maps[t]['groups_map'][g]['leafs']:
-                        if self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['has_rule']:
-                            self.rules_for_all_leafs_post_optimization[l] += 1
-
-        self.rules_for_all_leafs_post_optimization = pd.Series(self.rules_for_all_leafs_post_optimization)
-
-    def _get_redundancy_for_all_groups_in_all_tenants(self):
-        self.redundancy_for_all_groups_in_all_tenants = []
-
-        for t in range(self.tenants['num_tenants']):
-            for g in range(self.tenants_maps[t]['group_count']):
-                if self.tenants_maps[t]['groups_map'][g]['leaf_count'] > self.placement['num_bitmaps']:
-                    self.redundancy_for_all_groups_in_all_tenants += \
+                    _redundancy_for_all_groups_in_all_tenants += \
                         [self.tenants_maps[t]['groups_map'][g]['r'] /
                          (self.tenants_maps[t]['groups_map'][g]['r'] + self.tenants_maps[t]['groups_map'][g]['size'])
                          * 100]
 
-        self.redundancy_for_all_groups_in_all_tenants = pd.Series(self.redundancy_for_all_groups_in_all_tenants)
+        return pd.Series(_redundancy_for_all_groups_in_all_tenants)
 
-    def _get_rules_for_all_groups(self):
-        self.rules_for_all_groups = []
+    # def rules_for_all_groups_pre_optimization(self):
+    #     _rules_for_all_groups_pre_optimization = []
+    #
+    #     for t in range(self.tenants['num_tenants']):
+    #         for g in range(self.tenants_maps[t]['group_count']):
+    #             _rules_for_all_groups_pre_optimization += [0]
+    #             if self.tenants_maps[t]['groups_map'][g]['leaf_count'] > self.placement['num_bitmaps']:
+    #                 num_bitmaps = self.placement['num_bitmaps']
+    #                 for _ in self.tenants_maps[t]['groups_map'][g]['leafs']:
+    #                     if num_bitmaps > 0:
+    #                         num_bitmaps -= 1
+    #                     else:
+    #                         _rules_for_all_groups_pre_optimization[len(_rules_for_all_groups_pre_optimization) - 1] += 1
+    #
+    #     return pd.Series(_rules_for_all_groups_pre_optimization)
+    #
+    # def rules_for_all_groups_post_optimization(self):
+    #     _rules_for_all_groups_post_optimization = []
+    #
+    #     for t in range(self.tenants['num_tenants']):
+    #         for g in range(self.tenants_maps[t]['group_count']):
+    #             _rules_for_all_groups_post_optimization += [0]
+    #             if self.tenants_maps[t]['groups_map'][g]['leaf_count'] > self.placement['num_bitmaps']:
+    #                 for l in self.tenants_maps[t]['groups_map'][g]['leafs']:
+    #                     if self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['has_rule']:
+    #                         _rules_for_all_groups_post_optimization[
+    #                             len(_rules_for_all_groups_post_optimization) - 1] += 1
+    #
+    #     return pd.Series(_rules_for_all_groups_post_optimization)
 
-        for t in range(self.tenants['num_tenants']):
-            for g in range(self.tenants_maps[t]['group_count']):
-                self.rules_for_all_groups += [0]
-                if self.tenants_maps[t]['groups_map'][g]['leaf_count'] > self.placement['num_bitmaps']:
-                    for _ in self.tenants_maps[t]['groups_map'][g]['leafs']:
-                        self.rules_for_all_groups[len(self.rules_for_all_groups) - 1] += 1
-
-        self.rules_for_all_groups = pd.Series(self.rules_for_all_groups)
-
-    def _get_rules_for_all_groups_post_optimization(self):
-        self.rules_for_all_groups_post_optimization = []
-
-        for t in range(self.tenants['num_tenants']):
-            for g in range(self.tenants_maps[t]['group_count']):
-                self.rules_for_all_groups_post_optimization += [0]
-                if self.tenants_maps[t]['groups_map'][g]['leaf_count'] > self.placement['num_bitmaps']:
-                    for l in self.tenants_maps[t]['groups_map'][g]['leafs']:
-                        if self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['has_rule']:
-                            self.rules_for_all_groups_post_optimization[
-                                len(self.rules_for_all_groups_post_optimization) - 1] += 1
-
-        self.rules_for_all_groups_post_optimization = pd.Series(self.rules_for_all_groups_post_optimization)
-
-    def _get_leafs_to_rules_count(self):
-        self.leafs_to_rules_count = self.placement['maps']['leafs_to_rules_count']
