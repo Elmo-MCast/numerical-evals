@@ -1,7 +1,11 @@
 import sys, os
 import numpy as np
+
+sys.path.append("../")
 from simulation.cloud import *
+from simulation.data import *
 from simulation.plot import *
+from simulation.log import *
 
 TEST_NAME = sys.argv[1]
 SEED = int(sys.argv[2])
