@@ -3,7 +3,7 @@ from bitstring import BitArray
 
 
 class Placement:
-    def __init__(self, data, dist='uniform',  # options: uniform, colocate, colocate-random
+    def __init__(self, data, dist='uniform',  # options: uniform, colocate-linear, colocate-random
                  num_bitmaps=32, num_hosts_per_leaf=48):
         self.data = data
         self.dist = dist

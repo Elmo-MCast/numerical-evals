@@ -1,14 +1,14 @@
 from bitstring import BitArray
 
 
-def run(data, max_bitmaps, leafs_to_rules_count_map, max_rules_perf_leaf, num_hosts_per_leaf):
+def run(data, max_bitmaps, leafs_to_rules_count_map, max_rules_per_leaf, num_hosts_per_leaf):
     leafs_map = data['leafs_map']
     ordered_leafs_list = sorted(leafs_map.items(), key=lambda item: leafs_to_rules_count_map[item[0]], reverse=True)
 
     num_leafs_with_no_space = 0
-    if max_rules_perf_leaf > 0:
+    if max_rules_per_leaf > 0:
         for i, (l, _) in enumerate(ordered_leafs_list):
-            if leafs_to_rules_count_map[l] >= max_rules_perf_leaf:
+            if leafs_to_rules_count_map[l] >= max_rules_per_leaf:
                 num_leafs_with_no_space += 1
             else:
                 break

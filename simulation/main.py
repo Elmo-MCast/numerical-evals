@@ -2,7 +2,6 @@ import numpy as np
 from simulation.cloud import *
 from simulation.plot import *
 
-
 np.random.seed(seed=0)
 
 # cloud = Cloud(num_leafs=1056,
@@ -47,8 +46,8 @@ cloud = Cloud(num_leafs=48,
               vm_dist='expon',
               num_groups=1000,
               min_group_size=5,
-              group_size_dist='wve',
-              placement_dist='colocate-random',
+              group_size_dist='uniform',
+              placement_dist='colocate-linear',
               colocate_num_hosts_per_leaf=20,
               num_bitmaps=5,
               max_batch_size=1)

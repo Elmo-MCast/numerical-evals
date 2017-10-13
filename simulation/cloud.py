@@ -17,7 +17,7 @@ class Cloud:
                  num_groups=100000,
                  min_group_size=5,
                  group_size_dist='uniform',  # options: uniform and wve
-                 placement_dist='uniform',  # options: uniform, colocate, and colocate-random
+                 placement_dist='uniform',  # options: uniform, colocate-linear, and colocate-random
                  colocate_num_hosts_per_leaf=48,
                  num_bitmaps=32,
                  max_batch_size=1):

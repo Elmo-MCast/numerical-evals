@@ -17,7 +17,6 @@ class Optimization:
         self.data['optimization'] = {'max_batch_size': max_batch_size}
 
         self._optimize()
-
         print('optimization: complete.')
 
     def _optimize(self):
@@ -29,7 +28,7 @@ class Optimization:
                             data=self.tenants_maps[t]['groups_map'][g],
                             max_bitmaps=self.placement['num_bitmaps'],
                             leafs_to_rules_count_map=self.placement['maps']['leafs_to_rules_count'],
-                            max_rules_perf_leaf=self.network['num_rules_per_leaf'],
+                            max_rules_per_leaf=self.network['num_rules_per_leaf'],
                             num_hosts_per_leaf=self.network['num_hosts_per_leaf'])
         else:
             batch_size = np.random.randint(low=1, high=self.max_batch_size + 1, size=1)[0]
@@ -50,7 +49,7 @@ class Optimization:
                                     data=_g,
                                     max_bitmaps=self.placement['num_bitmaps'],
                                     leafs_to_rules_count_map=self.placement['maps']['leafs_to_rules_count'],
-                                    max_rules_perf_leaf=self.network['num_rules_per_leaf'],
+                                    max_rules_per_leaf=self.network['num_rules_per_leaf'],
                                     num_hosts_per_leaf=self.network['num_hosts_per_leaf'])
 
                         batch_size = np.random.randint(low=1, high=self.max_batch_size + 1, size=1)[0]
@@ -66,5 +65,5 @@ class Optimization:
                                 data=_g,
                                 max_bitmaps=self.placement['num_bitmaps'],
                                 leafs_to_rules_count_map=self.placement['maps']['leafs_to_rules_count'],
-                                max_rules_perf_leaf=self.network['num_rules_per_leaf'],
+                                max_rules_per_leaf=self.network['num_rules_per_leaf'],
                                 num_hosts_per_leaf=self.network['num_hosts_per_leaf'])
