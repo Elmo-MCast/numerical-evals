@@ -1,5 +1,7 @@
 import numpy as np
 from simulation.cloud import *
+from simulation.data import *
+from simulation.log import *
 from simulation.plot import *
 
 np.random.seed(seed=0)
