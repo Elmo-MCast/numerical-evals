@@ -42,7 +42,7 @@ class Placement:
     def _get_tenant_vms_to_host_map(self):
         if self.dist == 'uniform':
             available_hosts = [h for h in range(self.tenants['num_hosts'])]
-            selected_hosts_count = [0] * self.tenants['num_hosts']
+            available_hosts_count = [0] * self.tenants['num_hosts']
 
             for t in range(self.tenants['num_tenants']):
                 hosts = np.random.choice(a=available_hosts,
@@ -50,24 +50,24 @@ class Placement:
 
                 for v, host in enumerate(hosts):
                     self.tenants_maps[t]['vms_map'][v]['host'] = host
-                    selected_hosts_count[host] += 1
+                    available_hosts_count[host] += 1
 
-                max_host_count = max(selected_hosts_count)
+                max_host_count = max(available_hosts_count)
                 if max_host_count == self.tenants['max_vms_per_host']:
-                    removed_hosts = [h for h, host_count in enumerate(selected_hosts_count)
+                    removed_hosts = [h for h, host_count in enumerate(available_hosts_count)
                                      if host_count == max_host_count]
                     available_hosts = list(set(available_hosts) - set(removed_hosts))
                     for removed_host in sorted(removed_hosts, reverse=True):
-                        selected_hosts_count[removed_host] = -1
-        elif self.dist == 'colocate':
+                        available_hosts_count[removed_host] = -1
+        elif self.dist == 'colocate-linear':
             available_leafs = [l for l in range(self.network['num_leafs'])]
             available_hosts_per_leaf = [None] * self.network['num_leafs']
-            selected_hosts_count_per_leaf = [None] * self.network['num_leafs']
+            available_hosts_count_per_leaf = [None] * self.network['num_leafs']
 
             for l in range(self.network['num_leafs']):
                 available_hosts_per_leaf[l] = [(l * self.network['num_hosts_per_leaf']) + h
-                                               for h in range(self.placement['num_hosts_per_leaf'])]
-                selected_hosts_count_per_leaf[l] = [0] * self.placement['num_hosts_per_leaf']
+                                               for h in range(self.network['num_hosts_per_leaf'])]
+                available_hosts_count_per_leaf[l] = [0] * self.network['num_hosts_per_leaf']
 
             for t in range(self.tenants['num_tenants']):
                 running_index = 0
@@ -76,72 +76,84 @@ class Placement:
                     selected_leaf = np.random.choice(a=available_leafs, size=1)[0]
                     selected_leaf_hosts_count = len(available_hosts_per_leaf[selected_leaf])
 
+                    # to ensure that we always pick hosts <= self.placement['num_hosts_per_leaf'] at each leaf
+                    if selected_leaf_hosts_count > self.placement['num_hosts_per_leaf']:
+                        selected_leaf_hosts_count = self.placement['num_hosts_per_leaf']
+
                     if int(running_count / selected_leaf_hosts_count) > 0:
                         for h in range(selected_leaf_hosts_count):
                             self.tenants_maps[t]['vms_map'][running_index]['host'] = \
                                 available_hosts_per_leaf[selected_leaf][h]
-                            selected_hosts_count_per_leaf[selected_leaf][h] += 1
+                            available_hosts_count_per_leaf[selected_leaf][h] += 1
                             running_index += 1
                         running_count -= selected_leaf_hosts_count
                     else:
                         for h in range(running_count):
                             self.tenants_maps[t]['vms_map'][running_index]['host'] = \
                                 available_hosts_per_leaf[selected_leaf][h]
-                            selected_hosts_count_per_leaf[selected_leaf][h] += 1
+                            available_hosts_count_per_leaf[selected_leaf][h] += 1
                             running_index += 1
                         running_count = 0
 
-                    max_host_count = max(selected_hosts_count_per_leaf[selected_leaf])
+                    max_host_count = max(available_hosts_count_per_leaf[selected_leaf])
                     if max_host_count == self.tenants['max_vms_per_host']:
-                        removed_hosts = [h for h, host_count in enumerate(selected_hosts_count_per_leaf[selected_leaf])
+                        removed_hosts = [h for h, host_count in enumerate(available_hosts_count_per_leaf[selected_leaf])
                                          if host_count == max_host_count]
                         for removed_host in sorted(removed_hosts, reverse=True):
                             del available_hosts_per_leaf[selected_leaf][removed_host]
-                            del selected_hosts_count_per_leaf[selected_leaf][removed_host]
+                            del available_hosts_count_per_leaf[selected_leaf][removed_host]
 
                         if len(available_hosts_per_leaf[selected_leaf]) == 0:
                             available_leafs.remove(selected_leaf)
         elif self.dist == 'colocate-random':
             available_leafs = [l for l in range(self.network['num_leafs'])]
             available_hosts_per_leaf = [None] * self.network['num_leafs']
-            selected_hosts_count_per_leaf = [None] * self.network['num_leafs']
+            available_hosts_count_per_leaf = [None] * self.network['num_leafs']
 
             for l in range(self.network['num_leafs']):
-                available_hosts_per_leaf[l] = list(
-                    np.random.choice(a=[(l * self.network['num_hosts_per_leaf']) + h
-                                        for h in range(self.placement['num_hosts_per_leaf'])],
-                                     size=self.placement['num_hosts_per_leaf'], replace=False))
-                selected_hosts_count_per_leaf[l] = [0] * self.placement['num_hosts_per_leaf']
+                available_hosts_per_leaf[l] = [(l * self.network['num_hosts_per_leaf']) + h
+                                               for h in range(self.network['num_hosts_per_leaf'])]
+                available_hosts_count_per_leaf[l] = [0] * self.network['num_hosts_per_leaf']
 
             for t in range(self.tenants['num_tenants']):
                 running_index = 0
                 running_count = self.tenants_maps[t]['vm_count']
                 while running_count > 0:
                     selected_leaf = np.random.choice(a=available_leafs, size=1)[0]
+                    selected_leaf_hosts = available_hosts_per_leaf[selected_leaf]
                     selected_leaf_hosts_count = len(available_hosts_per_leaf[selected_leaf])
+
+                    # to ensure that we always pick hosts <= self.placement['num_hosts_per_leaf'] at each leaf
+                    if selected_leaf_hosts_count > self.placement['num_hosts_per_leaf']:
+                        selected_leaf_hosts = list(np.random.choice(a=selected_leaf_hosts,
+                                                                    size=self.placement['num_hosts_per_leaf'],
+                                                                    replace=False))
+                        selected_leaf_hosts_count = self.placement['num_hosts_per_leaf']
 
                     if int(running_count / selected_leaf_hosts_count) > 0:
                         for h in range(selected_leaf_hosts_count):
                             self.tenants_maps[t]['vms_map'][running_index]['host'] = \
-                                available_hosts_per_leaf[selected_leaf][h]
-                            selected_hosts_count_per_leaf[selected_leaf][h] += 1
+                                selected_leaf_hosts[h]
+                            available_hosts_count_per_leaf[selected_leaf][
+                                available_hosts_per_leaf[selected_leaf].index(selected_leaf_hosts[h])] += 1
                             running_index += 1
                         running_count -= selected_leaf_hosts_count
                     else:
                         for h in range(running_count):
                             self.tenants_maps[t]['vms_map'][running_index]['host'] = \
-                                available_hosts_per_leaf[selected_leaf][h]
-                            selected_hosts_count_per_leaf[selected_leaf][h] += 1
+                                selected_leaf_hosts[h]
+                            available_hosts_count_per_leaf[selected_leaf][
+                                available_hosts_per_leaf[selected_leaf].index(selected_leaf_hosts[h])] += 1
                             running_index += 1
                         running_count = 0
 
-                    max_host_count = max(selected_hosts_count_per_leaf[selected_leaf])
+                    max_host_count = max(available_hosts_count_per_leaf[selected_leaf])
                     if max_host_count == self.tenants['max_vms_per_host']:
-                        removed_hosts = [h for h, host_count in enumerate(selected_hosts_count_per_leaf[selected_leaf])
+                        removed_hosts = [h for h, host_count in enumerate(available_hosts_count_per_leaf[selected_leaf])
                                          if host_count == max_host_count]
                         for removed_host in sorted(removed_hosts, reverse=True):
                             del available_hosts_per_leaf[selected_leaf][removed_host]
-                            del selected_hosts_count_per_leaf[selected_leaf][removed_host]
+                            del available_hosts_count_per_leaf[selected_leaf][removed_host]
 
                         if len(available_hosts_per_leaf[selected_leaf]) == 0:
                             available_leafs.remove(selected_leaf)
