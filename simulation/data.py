@@ -9,6 +9,15 @@ class Data:
         self.tenants_maps = self.tenants['maps']
         self.placement = cloud.data['placement']
 
+    def group_sizes_for_all_tenants(self):
+        _group_sizes_for_all_tenants = []
+
+        for t in range(self.tenants['num_tenants']):
+            for g in range(self.tenants_maps[t]['group_count']):
+                _group_sizes_for_all_tenants += [self.tenants_maps[t]['groups_map'][g]['size']]
+
+        return pd.Series(_group_sizes_for_all_tenants)
+
     def leafs_for_all_groups_in_all_tenants(self):
         _leafs_for_all_groups_in_all_tenants = []
 

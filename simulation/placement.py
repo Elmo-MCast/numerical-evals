@@ -1,4 +1,4 @@
-import numpy as np
+import random
 from bitstring import BitArray
 
 
@@ -45,8 +45,7 @@ class Placement:
             available_hosts_count = [0] * self.tenants['num_hosts']
 
             for t in range(self.tenants['num_tenants']):
-                hosts = np.random.choice(a=available_hosts,
-                                         size=self.tenants_maps[t]['vm_count'], replace=False)
+                hosts = random.sample(available_hosts, self.tenants_maps[t]['vm_count'])
 
                 for v, host in enumerate(hosts):
                     self.tenants_maps[t]['vms_map'][v]['host'] = host
@@ -73,7 +72,7 @@ class Placement:
                 running_index = 0
                 running_count = self.tenants_maps[t]['vm_count']
                 while running_count > 0:
-                    selected_leaf = np.random.choice(a=available_leafs, size=1)[0]
+                    selected_leaf = random.sample(available_leafs, 1)[0]
                     selected_leaf_hosts_count = len(available_hosts_per_leaf[selected_leaf])
 
                     # to ensure that we always pick hosts <= self.placement['num_hosts_per_leaf'] at each leaf
@@ -119,15 +118,13 @@ class Placement:
                 running_index = 0
                 running_count = self.tenants_maps[t]['vm_count']
                 while running_count > 0:
-                    selected_leaf = np.random.choice(a=available_leafs, size=1)[0]
+                    selected_leaf = random.sample(available_leafs, 1)[0]
                     selected_leaf_hosts = available_hosts_per_leaf[selected_leaf]
                     selected_leaf_hosts_count = len(available_hosts_per_leaf[selected_leaf])
 
                     # to ensure that we always pick hosts <= self.placement['num_hosts_per_leaf'] at each leaf
                     if selected_leaf_hosts_count > self.placement['num_hosts_per_leaf']:
-                        selected_leaf_hosts = list(np.random.choice(a=selected_leaf_hosts,
-                                                                    size=self.placement['num_hosts_per_leaf'],
-                                                                    replace=False))
+                        selected_leaf_hosts = random.sample(selected_leaf_hosts, self.placement['num_hosts_per_leaf'])
                         selected_leaf_hosts_count = self.placement['num_hosts_per_leaf']
 
                     if int(running_count / selected_leaf_hosts_count) > 0:

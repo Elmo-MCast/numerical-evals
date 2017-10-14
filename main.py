@@ -1,10 +1,10 @@
-import sys, os
-import numpy as np
+import sys
+import random
 
-sys.path.append("../")
-from simulation.cloud import *
-from simulation.data import *
+from simulation.cloud import Cloud
+from simulation.data import Data
 from simulation.log import *
+
 
 if len(sys.argv) > 1:
     NUM_LEAFS = int(sys.argv[1])
@@ -14,7 +14,7 @@ if len(sys.argv) > 1:
     NUM_TENANTS = int(sys.argv[5])
     MIN_VMS_PER_TENANT = int(sys.argv[6])
     MAX_VMS_PER_TENANT = int(sys.argv[7])
-    VM_DIST = sys.argv[8]  # options: expon, expon-mean, and geom
+    VM_DIST = sys.argv[8]  # options: expon
     NUM_GROUPS = int(sys.argv[9])
     MIN_GROUP_SIZE = int(sys.argv[10])
     GROUP_SIZE_DIST = sys.argv[11]  # options: uniform and wve
@@ -32,11 +32,11 @@ else:
     NUM_TENANTS = 3000
     MIN_VMS_PER_TENANT = 10
     MAX_VMS_PER_TENANT = 5000
-    VM_DIST = "expon"  # options: expon, expon-mean, and geom
+    VM_DIST = "expon"  # options: expon
     NUM_GROUPS = 100000
     MIN_GROUP_SIZE = 5
-    GROUP_SIZE_DIST = "uniform"  # options: uniform and wve
-    PLACEMENT_DIST = "colocate-linear"  # options: uniform, colocate-linear, and colocate-random
+    GROUP_SIZE_DIST = "wve"  # options: uniform and wve
+    PLACEMENT_DIST = "uniform"  # options: uniform, colocate-linear, and colocate-random
     COLOCATE_NUM_HOSTS_PER_LEAF = 48
     NUM_BITMAPS = 10
     MAX_BATCH_SIZE = 1
@@ -44,7 +44,7 @@ else:
     LOGS_DIR = None
 
 print("""
--> parameters (
+-> cloud (
      leafs=%s, 
      hosts_per_leaf=%s, 
      rules_per_leaf=%s,
@@ -78,7 +78,7 @@ print("""
        MAX_BATCH_SIZE,
        SEED))
 
-np.random.seed(seed=SEED)
+random.seed(SEED)
 
 cloud = Cloud(num_leafs=NUM_LEAFS,
               num_hosts_per_leaf=NUM_HOSTS_PER_LEAF,
@@ -96,11 +96,11 @@ cloud = Cloud(num_leafs=NUM_LEAFS,
               num_bitmaps=NUM_BITMAPS,
               max_batch_size=MAX_BATCH_SIZE)
 
-data = Data(cloud)
+# data = Data(cloud)
 
-if LOGS_DIR:
-    _dir = LOGS_DIR + '/mcast-dcn/seed/%s/bitmaps/%s/colocate-hosts/%s' % \
-                      (SEED, NUM_BITMAPS, COLOCATE_NUM_HOSTS_PER_LEAF)
-    os.makedirs(_dir, exist_ok=True)
-
-    log = Log(data, log_dir=_dir)
+# if LOGS_DIR:
+#     _dir = LOGS_DIR + '/mcast-dcn/seed/%s/bitmaps/%s/colocate-hosts/%s' % \
+#                       (SEED, NUM_BITMAPS, COLOCATE_NUM_HOSTS_PER_LEAF)
+#     os.makedirs(_dir, exist_ok=True)
+#
+#     log = Log(data, log_dir=_dir)
