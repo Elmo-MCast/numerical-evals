@@ -35,8 +35,8 @@ else:
     VM_DIST = "expon"  # options: expon
     NUM_GROUPS = 100000
     MIN_GROUP_SIZE = 5
-    GROUP_SIZE_DIST = "wve"  # options: uniform and wve
-    PLACEMENT_DIST = "uniform"  # options: uniform, colocate-linear, and colocate-random
+    GROUP_SIZE_DIST = "uniform"  # options: uniform and wve
+    PLACEMENT_DIST = "colocate-linear"  # options: uniform, colocate-linear, and colocate-random
     COLOCATE_NUM_HOSTS_PER_LEAF = 48
     NUM_BITMAPS = 10
     MAX_BATCH_SIZE = 1
