@@ -18,7 +18,7 @@ if len(sys.argv) > 1:
     NUM_GROUPS = int(sys.argv[9])
     MIN_GROUP_SIZE = int(sys.argv[10])
     GROUP_SIZE_DIST = sys.argv[11]  # options: uniform and wve
-    PLACEMENT_DIST = sys.argv[12]  # options: uniform, colocate-linear, and colocate-random
+    PLACEMENT_DIST = sys.argv[12]  # options: uniform, colocate-random-linear, and colocate-random-random
     COLOCATE_NUM_HOSTS_PER_LEAF = int(sys.argv[13])
     NUM_BITMAPS = int(sys.argv[14])
     MAX_BATCH_SIZE = int(sys.argv[15])
@@ -36,7 +36,7 @@ else:
     NUM_GROUPS = 100000
     MIN_GROUP_SIZE = 5
     GROUP_SIZE_DIST = "uniform"  # options: uniform and wve
-    PLACEMENT_DIST = "colocate-linear"  # options: uniform, colocate-linear, and colocate-random
+    PLACEMENT_DIST = "colocate-random-linear"  # options: uniform, colocate-random-linear, and colocate-random-random
     COLOCATE_NUM_HOSTS_PER_LEAF = 48
     NUM_BITMAPS = 10
     MAX_BATCH_SIZE = 1
@@ -91,7 +91,7 @@ cloud = Cloud(num_leafs=NUM_LEAFS,
               num_groups=NUM_GROUPS,
               min_group_size=MIN_GROUP_SIZE,
               group_size_dist=GROUP_SIZE_DIST,  # options: uniform and wve
-              placement_dist=PLACEMENT_DIST,  # options: uniform, colocate-linear, and colocate-random
+              placement_dist=PLACEMENT_DIST,  # options: uniform, colocate-random-linear, and colocate-random-random
               colocate_num_hosts_per_leaf=COLOCATE_NUM_HOSTS_PER_LEAF,
               num_bitmaps=NUM_BITMAPS,
               max_batch_size=MAX_BATCH_SIZE)

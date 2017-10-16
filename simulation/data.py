@@ -9,6 +9,12 @@ class Data:
         self.tenants_maps = self.tenants['maps']
         self.placement = cloud.data['placement']
 
+    def vm_count_for_all_tenants(self):
+        return pd.Series([self.tenants_maps[t]['vm_count'] for t in range(self.tenants['num_tenants'])])
+
+    def group_count_for_all_tenants(self):
+        return pd.Series([self.tenants_maps[t]['group_count'] for t in range(self.tenants['num_tenants'])])
+
     def group_sizes_for_all_tenants(self):
         _group_sizes_for_all_tenants = []
 

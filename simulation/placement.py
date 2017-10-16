@@ -3,7 +3,7 @@ from bitstring import BitArray
 
 
 class Placement:
-    def __init__(self, data, dist='uniform',  # options: uniform, colocate-linear, colocate-random
+    def __init__(self, data, dist='uniform',  # options: uniform, colocate-random-linear, colocate-random-random
                  num_bitmaps=32, num_hosts_per_leaf=48):
         self.data = data
         self.dist = dist
@@ -58,7 +58,7 @@ class Placement:
                     available_hosts = list(set(available_hosts) - set(removed_hosts))
                     for removed_host in sorted(removed_hosts, reverse=True):
                         available_hosts_count[removed_host] = -1
-        elif self.dist == 'colocate-linear':
+        elif self.dist == 'colocate-random-linear':
             available_leafs = [l for l in range(self.network['num_leafs'])]
             available_hosts_per_leaf = [None] * self.network['num_leafs']
             available_hosts_count_per_leaf = [None] * self.network['num_leafs']
@@ -104,7 +104,7 @@ class Placement:
 
                         if len(available_hosts_per_leaf[selected_leaf]) == 0:
                             available_leafs.remove(selected_leaf)
-        elif self.dist == 'colocate-random':
+        elif self.dist == 'colocate-random-random':
             available_leafs = [l for l in range(self.network['num_leafs'])]
             available_hosts_per_leaf = [None] * self.network['num_leafs']
             available_hosts_count_per_leaf = [None] * self.network['num_leafs']
