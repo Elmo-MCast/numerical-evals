@@ -70,3 +70,4 @@ def run(data, max_bitmaps, leafs_to_rules_count_map, max_rules_per_leaf, num_hos
             leafs_map[l]['has_bitmap'] = False
             leafs_map[l]['has_rule'] = True
             leafs_to_rules_count_map[l] += 1
+

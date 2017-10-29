@@ -20,7 +20,8 @@ class Cloud:
                  placement_dist='uniform',  # options: uniform, colocate-random-linear, and colocate-random-random
                  colocate_num_hosts_per_leaf=48,
                  num_bitmaps=32,
-                 max_batch_size=1):
+                 max_batch_size=1,
+                 algorithm='exact_match'):  # options: naive, exact_match
         self.data = dict()
 
         Network(data=self.data,
@@ -38,4 +39,4 @@ class Cloud:
         Placement(data=self.data, dist=placement_dist, num_bitmaps=num_bitmaps,
                   num_hosts_per_leaf=colocate_num_hosts_per_leaf)
 
-        Optimization(data=self.data, max_batch_size=max_batch_size)
+        Optimization(data=self.data, max_batch_size=max_batch_size, algorithm=algorithm)

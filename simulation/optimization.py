@@ -1,11 +1,12 @@
 import numpy as np
-from simulation import algorithms
+from simulation.algorithms import algorithms
 
 
 class Optimization:
-    def __init__(self, data, max_batch_size=1):
+    def __init__(self, data, max_batch_size=1, algorithm='naive'):
         self.data = data
         self.max_batch_size = max_batch_size
+        self.algorithm = algorithm
 
         self.network = self.data['network']
         self.network_maps = self.network['maps']
@@ -14,7 +15,8 @@ class Optimization:
         self.placement = self.data['placement']
         self.placement['maps'] = {'leafs_to_rules_count': {l: 0 for l in range(self.network['num_leafs'])}}
 
-        self.data['optimization'] = {'max_batch_size': max_batch_size}
+        self.data['optimization'] = {'max_batch_size': max_batch_size,
+                                     'algorithm': algorithm}
 
         self._optimize()
         print('optimization: complete.')
@@ -25,6 +27,7 @@ class Optimization:
                 for g in range(self.tenants_maps[t]['group_count']):
                     if self.tenants_maps[t]['groups_map'][g]['leaf_count'] > self.placement['num_bitmaps']:
                         algorithms.run(
+                            algorithm=self.algorithm,
                             data=self.tenants_maps[t]['groups_map'][g],
                             max_bitmaps=self.placement['num_bitmaps'],
                             leafs_to_rules_count_map=self.placement['maps']['leafs_to_rules_count'],
@@ -46,6 +49,7 @@ class Optimization:
                         for _g in running_batch_list:
                             if _g['leaf_count'] > self.placement['num_bitmaps']:
                                 algorithms.run(
+                                    algorithm=self.algorithm,
                                     data=_g,
                                     max_bitmaps=self.placement['num_bitmaps'],
                                     leafs_to_rules_count_map=self.placement['maps']['leafs_to_rules_count'],
@@ -62,6 +66,7 @@ class Optimization:
                     for _g in running_batch_list:
                         if _g['leaf_count'] > self.placement['num_bitmaps']:
                             algorithms.run(
+                                algorithm=self.algorithm,
                                 data=_g,
                                 max_bitmaps=self.placement['num_bitmaps'],
                                 leafs_to_rules_count_map=self.placement['maps']['leafs_to_rules_count'],

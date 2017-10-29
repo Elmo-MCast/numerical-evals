@@ -5,7 +5,6 @@ from simulation.cloud import Cloud
 from simulation.data import Data
 from simulation.log import *
 
-
 if len(sys.argv) > 1:
     NUM_LEAFS = int(sys.argv[1])
     NUM_HOSTS_PER_LEAF = int(sys.argv[2])
@@ -24,7 +23,7 @@ if len(sys.argv) > 1:
     MAX_BATCH_SIZE = int(sys.argv[15])
     SEED = int(sys.argv[16])
     LOGS_DIR = sys.argv[17]
-else:
+elif False:
     NUM_LEAFS = 576
     NUM_HOSTS_PER_LEAF = 48
     NUM_RULES_PER_LEAF = 1000
@@ -42,6 +41,26 @@ else:
     MAX_BATCH_SIZE = 1
     SEED = 0
     LOGS_DIR = None
+elif True:
+    NUM_LEAFS = 576
+    NUM_HOSTS_PER_LEAF = 48
+    NUM_RULES_PER_LEAF = 10000
+    MAX_VMS_PER_HOST = 20
+    NUM_TENANTS = 3000
+    MIN_VMS_PER_TENANT = 10
+    MAX_VMS_PER_TENANT = 5000
+    VM_DIST = "expon"  # options: expon
+    NUM_GROUPS = 1000
+    MIN_GROUP_SIZE = 5
+    GROUP_SIZE_DIST = "uniform"  # options: uniform and wve
+    PLACEMENT_DIST = "colocate-random-linear"  # options: uniform, colocate-random-linear, and colocate-random-random
+    COLOCATE_NUM_HOSTS_PER_LEAF = 48
+    NUM_BITMAPS = 10
+    MAX_BATCH_SIZE = 1
+    SEED = 0
+    LOGS_DIR = None
+else:
+    raise (Exception('invalid parameters'))
 
 print("""
 -> cloud (
