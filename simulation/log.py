@@ -15,7 +15,7 @@ class Log:
         self.data.rules_for_all_leafs_pre_optimization.to_csv(self.log_dir + '/rules_for_all_leafs.csv')
 
     def log_rules_for_all_leafs_post_optimization(self):
-        self.data.rules_for_all_leafs_post_optimization.to_csv(
+        self.data.rules_for_all_leafs.to_csv(
             self.log_dir + '/rules_for_all_leafs_post_optimization.csv')
 
     def log_rules_for_all_groups(self):
