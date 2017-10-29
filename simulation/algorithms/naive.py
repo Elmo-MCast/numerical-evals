@@ -71,7 +71,8 @@ def run(data, max_bitmaps, leafs_to_rules_count_map, max_rules_per_leaf, num_hos
         data['r'] = 0
         for i in range(max_bitmaps, num_leafs_with_no_space):
             l, _ = ordered_leafs_list[i]
-            data['r'] += sum(data['default_bitmap'] ^ leafs_map[l]['bitmap'])
+            leafs_map[l]['~bitmap'] = data['default_bitmap'] ^ leafs_map[l]['bitmap']
+            data['r'] += sum(leafs_map[l]['~bitmap'])
 
         for i in range(num_leafs_with_no_space, data['leaf_count']):
             l, _ = ordered_leafs_list[i]

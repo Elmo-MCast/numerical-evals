@@ -54,4 +54,5 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_r
     data['r'] = 0
     for l in leafs_map:
         if not (leafs_map[l]['has_bitmap'] or leafs_map[l]['has_rule']):
-            data['r'] += sum(data['default_bitmap'] ^ leafs_map[l]['bitmap'])
+            leafs_map[l]['~bitmap'] = data['default_bitmap'] ^ leafs_map[l]['bitmap']
+            data['r'] += sum(leafs_map[l]['~bitmap'])
