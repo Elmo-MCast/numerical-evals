@@ -54,13 +54,14 @@ elif True:
     MIN_VMS_PER_TENANT = 10
     MAX_VMS_PER_TENANT = 500
     VM_DIST = "expon"  # options: expon
-    NUM_GROUPS = 100
+    NUM_GROUPS = 10000
     MIN_GROUP_SIZE = 5
     GROUP_SIZE_DIST = "uniform"  # options: uniform and wve
-    PLACEMENT_DIST = "colocate-random-linear"  # options: uniform, colocate-random-linear, and colocate-random-random
+    PLACEMENT_DIST = "sorted-colocate-random-linear"  # options: uniform, colocate-random-linear,
+    # colocate-random-random, sorted-colocate-random-linear, and sorted-colocate-random-random
     COLOCATE_NUM_HOSTS_PER_LEAF = 48
-    NUM_BITMAPS = 1
-    NUM_LEAFS_PER_BITMAP = 1
+    NUM_BITMAPS = 10
+    NUM_LEAFS_PER_BITMAP = 2
     MAX_BATCH_SIZE = 1
     ALGORITHM = 'exact_match'
     SEED = 0

@@ -21,6 +21,7 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_r
     # Assigning leafs to bitmaps, rules, and default bitmap
     bitmap_count = 0
     leafs_per_bitmap_count = 0
+    leafs_budget_count = (max_bitmaps * max_leafs_per_bitmap) - max_bitmaps
     for _, leafs in ordered_bitmap_list:
         for l in leafs:
             if bitmap_count < max_bitmaps:  # Assign leaf to a bitmap
@@ -29,7 +30,8 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_r
                 leafs_per_bitmap_count += 1
 
                 # Select next bitmap, when no. of leafs assigned is equal to max_leafs_per_bitmap
-                if leafs_per_bitmap_count == max_leafs_per_bitmap:
+                if leafs_per_bitmap_count == (1 + leafs_budget_count):
+                    leafs_budget_count = 0
                     bitmap_count += 1
                     leafs_per_bitmap_count = 0
             else:
@@ -44,6 +46,7 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_r
 
         # Select next bitmap, if the current bitmap contains any leaf
         if bitmap_count < max_bitmaps and leafs_per_bitmap_count > 0:
+            leafs_budget_count -= (leafs_per_bitmap_count - 1)
             bitmap_count += 1
             leafs_per_bitmap_count = 0
 
