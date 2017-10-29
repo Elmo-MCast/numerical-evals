@@ -3,10 +3,11 @@ from simulation.algorithms import algorithms
 
 
 class Optimization:
-    def __init__(self, data, max_batch_size=1, algorithm='naive'):
+    def __init__(self, data, max_batch_size=1, algorithm='naive', num_leafs_per_bitmap=3):
         self.data = data
         self.max_batch_size = max_batch_size
         self.algorithm = algorithm
+        self.num_leafs_per_bitmap = num_leafs_per_bitmap
 
         self.network = self.data['network']
         self.network_maps = self.network['maps']
@@ -16,7 +17,8 @@ class Optimization:
         self.placement['maps'] = {'leafs_to_rules_count': {l: 0 for l in range(self.network['num_leafs'])}}
 
         self.data['optimization'] = {'max_batch_size': max_batch_size,
-                                     'algorithm': algorithm}
+                                     'algorithm': algorithm,
+                                     'max_leafs_per_bitmap': num_leafs_per_bitmap}
 
         self._optimize()
         print('optimization: complete.')
@@ -30,6 +32,7 @@ class Optimization:
                             algorithm=self.algorithm,
                             data=self.tenants_maps[t]['groups_map'][g],
                             max_bitmaps=self.placement['num_bitmaps'],
+                            max_leafs_per_bitmap=self.num_leafs_per_bitmap,
                             leafs_to_rules_count_map=self.placement['maps']['leafs_to_rules_count'],
                             max_rules_per_leaf=self.network['num_rules_per_leaf'],
                             num_hosts_per_leaf=self.network['num_hosts_per_leaf'])
@@ -52,6 +55,7 @@ class Optimization:
                                     algorithm=self.algorithm,
                                     data=_g,
                                     max_bitmaps=self.placement['num_bitmaps'],
+                                    max_leafs_per_bitmap=self.num_leafs_per_bitmap,
                                     leafs_to_rules_count_map=self.placement['maps']['leafs_to_rules_count'],
                                     max_rules_per_leaf=self.network['num_rules_per_leaf'],
                                     num_hosts_per_leaf=self.network['num_hosts_per_leaf'])
@@ -69,6 +73,7 @@ class Optimization:
                                 algorithm=self.algorithm,
                                 data=_g,
                                 max_bitmaps=self.placement['num_bitmaps'],
+                                max_leafs_per_bitmap=self.num_leafs_per_bitmap,
                                 leafs_to_rules_count_map=self.placement['maps']['leafs_to_rules_count'],
                                 max_rules_per_leaf=self.network['num_rules_per_leaf'],
                                 num_hosts_per_leaf=self.network['num_hosts_per_leaf'])

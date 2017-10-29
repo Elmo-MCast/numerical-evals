@@ -7,7 +7,7 @@ def run(data, max_bitmaps, leafs_to_rules_count_map, max_rules_per_leaf, num_hos
 
     num_leafs_with_no_space = 0
     if max_rules_per_leaf > 0:
-        for i, (l, _) in enumerate(ordered_leafs_list):
+        for (l, _) in ordered_leafs_list:
             if leafs_to_rules_count_map[l] >= max_rules_per_leaf:
                 num_leafs_with_no_space += 1
             else:

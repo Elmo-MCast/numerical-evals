@@ -20,9 +20,11 @@ if len(sys.argv) > 1:
     PLACEMENT_DIST = sys.argv[12]  # options: uniform, colocate-random-linear, and colocate-random-random
     COLOCATE_NUM_HOSTS_PER_LEAF = int(sys.argv[13])
     NUM_BITMAPS = int(sys.argv[14])
-    MAX_BATCH_SIZE = int(sys.argv[15])
-    SEED = int(sys.argv[16])
-    LOGS_DIR = sys.argv[17]
+    NUM_LEAFS_PER_BITMAP = int(sys.argv[15])
+    MAX_BATCH_SIZE = int(sys.argv[16])
+    ALGORITHM = sys.argv[17]
+    SEED = int(sys.argv[18])
+    LOGS_DIR = sys.argv[19]
 elif False:
     NUM_LEAFS = 576
     NUM_HOSTS_PER_LEAF = 48
@@ -38,25 +40,29 @@ elif False:
     PLACEMENT_DIST = "colocate-random-linear"  # options: uniform, colocate-random-linear, and colocate-random-random
     COLOCATE_NUM_HOSTS_PER_LEAF = 48
     NUM_BITMAPS = 10
+    NUM_LEAFS_PER_BITMAP = 1
     MAX_BATCH_SIZE = 1
+    ALGORITHM = 'naive'
     SEED = 0
     LOGS_DIR = None
 elif True:
-    NUM_LEAFS = 576
-    NUM_HOSTS_PER_LEAF = 48
-    NUM_RULES_PER_LEAF = 10000
+    NUM_LEAFS = 100
+    NUM_HOSTS_PER_LEAF = 24
+    NUM_RULES_PER_LEAF = 1
     MAX_VMS_PER_HOST = 20
-    NUM_TENANTS = 3000
+    NUM_TENANTS = 300
     MIN_VMS_PER_TENANT = 10
-    MAX_VMS_PER_TENANT = 5000
+    MAX_VMS_PER_TENANT = 500
     VM_DIST = "expon"  # options: expon
-    NUM_GROUPS = 1000
+    NUM_GROUPS = 100
     MIN_GROUP_SIZE = 5
     GROUP_SIZE_DIST = "uniform"  # options: uniform and wve
     PLACEMENT_DIST = "colocate-random-linear"  # options: uniform, colocate-random-linear, and colocate-random-random
     COLOCATE_NUM_HOSTS_PER_LEAF = 48
-    NUM_BITMAPS = 10
+    NUM_BITMAPS = 1
+    NUM_LEAFS_PER_BITMAP = 1
     MAX_BATCH_SIZE = 1
+    ALGORITHM = 'exact_match'
     SEED = 0
     LOGS_DIR = None
 else:
@@ -78,7 +84,9 @@ print("""
      placement_dist=%s,
      colocate_hosts_per_leaf=%s,
      bitmaps=%s,
+     leafs_per_bitmap=%s,
      batch_size=%s,
+     algorithm=%s,
      seed=%s)
 """ % (NUM_LEAFS,
        NUM_HOSTS_PER_LEAF,
@@ -94,7 +102,9 @@ print("""
        PLACEMENT_DIST,
        COLOCATE_NUM_HOSTS_PER_LEAF,
        NUM_BITMAPS,
+       NUM_LEAFS_PER_BITMAP,
        MAX_BATCH_SIZE,
+       ALGORITHM,
        SEED))
 
 random.seed(SEED)
@@ -113,7 +123,9 @@ cloud = Cloud(num_leafs=NUM_LEAFS,
               placement_dist=PLACEMENT_DIST,  # options: uniform, colocate-random-linear, and colocate-random-random
               colocate_num_hosts_per_leaf=COLOCATE_NUM_HOSTS_PER_LEAF,
               num_bitmaps=NUM_BITMAPS,
-              max_batch_size=MAX_BATCH_SIZE)
+              num_leafs_per_bitmap=NUM_LEAFS_PER_BITMAP,
+              max_batch_size=MAX_BATCH_SIZE,
+              algorithm=ALGORITHM)
 
 # data = Data(cloud)
 
