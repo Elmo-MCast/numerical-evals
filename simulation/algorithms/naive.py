@@ -76,8 +76,6 @@ def run(data, max_bitmaps, leafs_to_rules_count_map, max_rules_per_leaf, num_hos
         default_bitmap, default_leafs = min_k_union(leafs_map, ordered_leafs_with_no_space, num_hosts_per_leaf,
                                                     num_leafs_with_no_space - max_bitmaps)
 
-        assert max_bitmaps == len(ordered_leafs_with_no_space)
-
         for l in ordered_leafs_with_no_space:
             leafs_map[l]['has_bitmap'] = True
             leafs_map[l]['has_rule'] = False
