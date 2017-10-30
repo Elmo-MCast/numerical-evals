@@ -2,6 +2,9 @@ from bitstring import BitArray
 
 
 def run(data, max_bitmaps, leafs_to_rules_count_map, max_rules_per_leaf, num_hosts_per_leaf):
+    if data['leaf_count'] <= max_bitmaps:
+        return
+
     leafs_map = data['leafs_map']
 
     # Sort leafs based on their flow table space (descending order)

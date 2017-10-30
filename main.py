@@ -128,7 +128,11 @@ cloud = Cloud(num_leafs=NUM_LEAFS,
               max_batch_size=MAX_BATCH_SIZE,
               algorithm=ALGORITHM)
 
-# data = Data(cloud)
+data = Data(cloud)
+
+actual_traffic, redundant_traffic = data.traffic_stats()
+traffic_overhead = data.traffic_overhead(actual_traffic, redundant_traffic)
+traffic_rate = data.traffic_rate(actual_traffic, redundant_traffic)
 
 # if LOGS_DIR:
 #     _dir = LOGS_DIR + '/mcast-dcn/seed/%s/bitmaps/%s/colocate-hosts/%s' % \

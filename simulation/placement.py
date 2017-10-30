@@ -273,24 +273,23 @@ class Placement:
     def _get_tenant_groups_leafs_to_hosts_and_bitmap_map(self):
         for t in range(self.tenants['num_tenants']):
             for g in range(self.tenants_maps[t]['group_count']):
-                if self.tenants_maps[t]['groups_map'][g]['leaf_count'] > self.num_bitmaps:
-                    for vm in self.tenants_maps[t]['groups_map'][g]['vms']:
-                        if self.tenants_maps[t]['vms_map'][vm]['leaf'] in \
-                                self.tenants_maps[t]['groups_map'][g]['leafs_map']:
-                            self.tenants_maps[t]['groups_map'][g]['leafs_map'][
-                                self.tenants_maps[t]['vms_map'][vm]['leaf']]['hosts'] |= {
-                                self.tenants_maps[t]['vms_map'][vm]['host']}
-                        else:
-                            self.tenants_maps[t]['groups_map'][g]['leafs_map'][
-                                self.tenants_maps[t]['vms_map'][vm]['leaf']] = dict()
-                            self.tenants_maps[t]['groups_map'][g]['leafs_map'][
-                                self.tenants_maps[t]['vms_map'][vm]['leaf']]['hosts'] = {
-                                self.tenants_maps[t]['vms_map'][vm]['host']}
+                for vm in self.tenants_maps[t]['groups_map'][g]['vms']:
+                    if self.tenants_maps[t]['vms_map'][vm]['leaf'] in \
+                            self.tenants_maps[t]['groups_map'][g]['leafs_map']:
+                        self.tenants_maps[t]['groups_map'][g]['leafs_map'][
+                            self.tenants_maps[t]['vms_map'][vm]['leaf']]['hosts'] |= {
+                            self.tenants_maps[t]['vms_map'][vm]['host']}
+                    else:
+                        self.tenants_maps[t]['groups_map'][g]['leafs_map'][
+                            self.tenants_maps[t]['vms_map'][vm]['leaf']] = dict()
+                        self.tenants_maps[t]['groups_map'][g]['leafs_map'][
+                            self.tenants_maps[t]['vms_map'][vm]['leaf']]['hosts'] = {
+                            self.tenants_maps[t]['vms_map'][vm]['host']}
 
-                    for l in self.tenants_maps[t]['groups_map'][g]['leafs_map']:
-                        self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['bitmap'] = BitArray(
-                            self.network['num_hosts_per_leaf'])
+                for l in self.tenants_maps[t]['groups_map'][g]['leafs_map']:
+                    self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['bitmap'] = BitArray(
+                        self.network['num_hosts_per_leaf'])
 
-                        for h in self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['hosts']:
-                            self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['bitmap'][
-                                h % self.network['num_hosts_per_leaf']] = 1
+                    for h in self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['hosts']:
+                        self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['bitmap'][
+                            h % self.network['num_hosts_per_leaf']] = 1

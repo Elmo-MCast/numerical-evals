@@ -2,6 +2,9 @@ from bitstring import BitArray
 
 
 def run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_rules_per_leaf, num_hosts_per_leaf):
+    if data['leaf_count'] <= max_bitmaps:
+        return
+
     leafs_map = data['leafs_map']
 
     # Initializing default bitmap

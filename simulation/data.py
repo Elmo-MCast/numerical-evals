@@ -17,7 +17,6 @@ class Data:
 
     def group_sizes_for_all_tenants(self):
         _group_sizes_for_all_tenants = []
-
         for t in range(self.tenants['num_tenants']):
             for g in range(self.tenants_maps[t]['group_count']):
                 _group_sizes_for_all_tenants += [self.tenants_maps[t]['groups_map'][g]['size']]
@@ -26,7 +25,6 @@ class Data:
 
     def leafs_for_all_groups_in_all_tenants(self):
         _leafs_for_all_groups_in_all_tenants = []
-
         for t in range(self.tenants['num_tenants']):
             for g in range(self.tenants_maps[t]['group_count']):
                 _leafs_for_all_groups_in_all_tenants += [self.tenants_maps[t]['groups_map'][g]['leaf_count']]
@@ -44,7 +42,6 @@ class Data:
 
     def redundancy_for_all_groups_in_all_tenants(self):
         _redundancy_for_all_groups_in_all_tenants = []
-
         for t in range(self.tenants['num_tenants']):
             for g in range(self.tenants_maps[t]['group_count']):
                 if self.tenants_maps[t]['groups_map'][g]['leaf_count'] > self.placement['num_bitmaps']:
@@ -54,6 +51,55 @@ class Data:
                          * 100]
 
         return pd.Series(_redundancy_for_all_groups_in_all_tenants)
+
+    def traffic_stats(self):
+        _actual_traffic_for_all_leafs = dict()
+        _redundant_traffic_for_all_leafs = dict()
+        for t in range(self.tenants['num_tenants']):
+            for g in range(self.tenants_maps[t]['group_count']):
+                for l in self.tenants_maps[t]['groups_map'][g]['leafs']:
+                    if not (l in _actual_traffic_for_all_leafs):
+                        _actual_traffic_for_all_leafs[l] = [0] * self.network['num_hosts_per_leaf']
+                    for i, b in enumerate(self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['bitmap']):
+                        if b:
+                            _actual_traffic_for_all_leafs[l][i] += 1
+
+                    if '~bitmap' in self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]:
+                        if not (l in _redundant_traffic_for_all_leafs):
+                            _redundant_traffic_for_all_leafs[l] = [0] * self.network['num_hosts_per_leaf']
+                        for i, b in enumerate(self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['~bitmap']):
+                            if b:
+                                _redundant_traffic_for_all_leafs[l][i] += 1
+
+        return _actual_traffic_for_all_leafs, _redundant_traffic_for_all_leafs
+
+    @staticmethod
+    def traffic_overhead(actual_traffic, redundant_traffic):
+        _actual_traffic = 0
+        for l in actual_traffic:
+            _actual_traffic += sum(actual_traffic[l])
+
+        _redundant_traffic = 0
+        for l in redundant_traffic:
+            _redundant_traffic += sum(redundant_traffic[l])
+
+        return _redundant_traffic / (_actual_traffic + _redundant_traffic) * 100
+
+    def traffic_rate(self, actual_traffic, redundant_traffic):
+        _total_traffic = dict()
+        for l in actual_traffic:
+            if l in redundant_traffic:
+                _total_traffic[l] = [0] * self.network['num_hosts_per_leaf']
+                for i in range(self.network['num_hosts_per_leaf']):
+                    _total_traffic[l][i] = actual_traffic[l][i] + redundant_traffic[l][i]
+            else:
+                _total_traffic[l] = actual_traffic[l]
+
+        _traffic_rate = []
+        for l in _total_traffic:
+            _traffic_rate += _total_traffic[l]
+
+        return pd.Series(_traffic_rate)
 
     # def rules_for_all_leafs_pre_optimization(self):
     #     _rules_for_all_leafs = [0] * self.network['num_leafs']
@@ -99,4 +145,3 @@ class Data:
     #                             len(_rules_for_all_groups_post_optimization) - 1] += 1
     #
     #     return pd.Series(_rules_for_all_groups_post_optimization)
-
