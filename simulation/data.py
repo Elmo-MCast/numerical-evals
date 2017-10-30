@@ -85,7 +85,23 @@ class Data:
 
         return _redundant_traffic / (_actual_traffic + _redundant_traffic) * 100
 
-    def traffic_rate(self, actual_traffic, redundant_traffic):
+    @staticmethod
+    def actual_traffic_rate(actual_traffic):
+        _actual_traffic_rate = []
+        for l in actual_traffic:
+            _actual_traffic_rate += actual_traffic[l]
+
+        return pd.Series(_actual_traffic_rate)
+
+    @staticmethod
+    def redundant_traffic_rate(redundant_traffic):
+        _redundant_traffic_rate = []
+        for l in redundant_traffic:
+            _redundant_traffic_rate += redundant_traffic[l]
+
+        return pd.Series(_redundant_traffic_rate)
+
+    def total_traffic_rate(self, actual_traffic, redundant_traffic):
         _total_traffic = dict()
         for l in actual_traffic:
             if l in redundant_traffic:
@@ -95,53 +111,8 @@ class Data:
             else:
                 _total_traffic[l] = actual_traffic[l]
 
-        _traffic_rate = []
+        _total_traffic_rate = []
         for l in _total_traffic:
-            _traffic_rate += _total_traffic[l]
+            _total_traffic_rate += _total_traffic[l]
 
-        return pd.Series(_traffic_rate)
-
-    # def rules_for_all_leafs_pre_optimization(self):
-    #     _rules_for_all_leafs = [0] * self.network['num_leafs']
-    #
-    #     for t in range(self.tenants['num_tenants']):
-    #         for g in range(self.tenants_maps[t]['group_count']):
-    #             if self.tenants_maps[t]['groups_map'][g]['leaf_count'] > self.placement['num_bitmaps']:
-    #                 num_bitmaps = self.placement['num_bitmaps']
-    #                 for l in self.tenants_maps[t]['groups_map'][g]['leafs']:
-    #                     if num_bitmaps > 0:
-    #                         num_bitmaps -= 1
-    #                     else:
-    #                         _rules_for_all_leafs[l] += 1
-    #
-    #     return pd.Series(_rules_for_all_leafs)
-    #
-    # def rules_for_all_groups_pre_optimization(self):
-    #     _rules_for_all_groups_pre_optimization = []
-    #
-    #     for t in range(self.tenants['num_tenants']):
-    #         for g in range(self.tenants_maps[t]['group_count']):
-    #             _rules_for_all_groups_pre_optimization += [0]
-    #             if self.tenants_maps[t]['groups_map'][g]['leaf_count'] > self.placement['num_bitmaps']:
-    #                 num_bitmaps = self.placement['num_bitmaps']
-    #                 for _ in self.tenants_maps[t]['groups_map'][g]['leafs']:
-    #                     if num_bitmaps > 0:
-    #                         num_bitmaps -= 1
-    #                     else:
-    #                         _rules_for_all_groups_pre_optimization[len(_rules_for_all_groups_pre_optimization) - 1] += 1
-    #
-    #     return pd.Series(_rules_for_all_groups_pre_optimization)
-    #
-    # def rules_for_all_groups_post_optimization(self):
-    #     _rules_for_all_groups_post_optimization = []
-    #
-    #     for t in range(self.tenants['num_tenants']):
-    #         for g in range(self.tenants_maps[t]['group_count']):
-    #             _rules_for_all_groups_post_optimization += [0]
-    #             if self.tenants_maps[t]['groups_map'][g]['leaf_count'] > self.placement['num_bitmaps']:
-    #                 for l in self.tenants_maps[t]['groups_map'][g]['leafs']:
-    #                     if self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['has_rule']:
-    #                         _rules_for_all_groups_post_optimization[
-    #                             len(_rules_for_all_groups_post_optimization) - 1] += 1
-    #
-    #     return pd.Series(_rules_for_all_groups_post_optimization)
+        return pd.Series(_total_traffic_rate)

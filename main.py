@@ -57,13 +57,13 @@ elif True:
     NUM_GROUPS = 10000
     MIN_GROUP_SIZE = 5
     GROUP_SIZE_DIST = "uniform"  # options: uniform and wve
-    PLACEMENT_DIST = "sorted-colocate-random-linear"  # options: uniform, colocate-random-linear,
+    PLACEMENT_DIST = "colocate-random-linear"  # options: uniform, colocate-random-linear,
     # colocate-random-random, sorted-colocate-random-linear, and sorted-colocate-random-random
     COLOCATE_NUM_HOSTS_PER_LEAF = 48
     NUM_BITMAPS = 10
     NUM_LEAFS_PER_BITMAP = 2
     MAX_BATCH_SIZE = 1
-    ALGORITHM = 'exact_match'
+    ALGORITHM = 'naive'
     SEED = 0
     LOGS_DIR = None
 else:
@@ -129,10 +129,6 @@ cloud = Cloud(num_leafs=NUM_LEAFS,
               algorithm=ALGORITHM)
 
 data = Data(cloud)
-
-actual_traffic, redundant_traffic = data.traffic_stats()
-traffic_overhead = data.traffic_overhead(actual_traffic, redundant_traffic)
-traffic_rate = data.traffic_rate(actual_traffic, redundant_traffic)
 
 # if LOGS_DIR:
 #     _dir = LOGS_DIR + '/mcast-dcn/seed/%s/bitmaps/%s/colocate-hosts/%s' % \

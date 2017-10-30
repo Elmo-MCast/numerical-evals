@@ -32,7 +32,7 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_r
                 leafs_map[l]['has_rule'] = False
                 leafs_per_bitmap_count += 1
 
-                # Select next bitmap, when no. of leafs assigned is equal to max_leafs_per_bitmap
+                # Select next bitmap, when no. of leafs assigned is equal to (1 + leafs_budget_count)
                 if leafs_per_bitmap_count == (1 + leafs_budget_count):
                     leafs_budget_count = 0
                     bitmap_count += 1
