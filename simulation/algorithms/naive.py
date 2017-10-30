@@ -5,7 +5,7 @@ def min_k_union(leafs_map, leafs, num_hosts_per_leaf, k):
     _bitmap = BitArray(num_hosts_per_leaf)
     _leafs = []
     for _ in range(k):
-        leaf = min(leafs, key=lambda l: (leafs_map[l]['bitmap'] | _bitmap).int)
+        leaf = min(leafs, key=lambda l: sum(leafs_map[l]['bitmap'] | _bitmap))
         leafs.remove(leaf)
         _bitmap |= leafs_map[leaf]['bitmap']
         _leafs += [leaf]
