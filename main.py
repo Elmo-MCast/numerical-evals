@@ -46,13 +46,13 @@ elif False:
     SEED = 0
     LOGS_DIR = None
 elif True:
-    NUM_LEAFS = 100
-    NUM_HOSTS_PER_LEAF = 24
-    NUM_RULES_PER_LEAF = 1
+    NUM_LEAFS = 576
+    NUM_HOSTS_PER_LEAF = 48
+    NUM_RULES_PER_LEAF = 1000
     MAX_VMS_PER_HOST = 20
-    NUM_TENANTS = 300
+    NUM_TENANTS = 3000
     MIN_VMS_PER_TENANT = 10
-    MAX_VMS_PER_TENANT = 500
+    MAX_VMS_PER_TENANT = 5000
     VM_DIST = "expon"  # options: expon
     NUM_GROUPS = 10000
     MIN_GROUP_SIZE = 5
@@ -63,7 +63,7 @@ elif True:
     NUM_BITMAPS = 10
     NUM_LEAFS_PER_BITMAP = 2
     MAX_BATCH_SIZE = 1
-    ALGORITHM = 'naive'
+    ALGORITHM = 'fuzzy_match'
     SEED = 0
     LOGS_DIR = None
 else:
