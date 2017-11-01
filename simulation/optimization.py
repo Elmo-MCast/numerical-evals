@@ -5,7 +5,7 @@ from simulation.utils import bar_range
 
 class Optimization:
     def __init__(self, data, max_batch_size=1, algorithm='naive', num_leafs_per_bitmap=3,
-                 perc_redundancy_per_bitmap=10):
+                 perc_redundancy_per_bitmap=20):
         self.data = data
         self.max_batch_size = max_batch_size
         self.algorithm = algorithm
