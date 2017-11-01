@@ -1,11 +1,12 @@
 import simulation.algorithms.naive as naive
 import simulation.algorithms.exact_match as exact_match
 import simulation.algorithms.fuzzy_match as fuzzy_match
+import simulation.algorithms.fuzzy_match_r as fuzzy_match_r
 import simulation.algorithms.random_fuzzy_match as random_fuzzy_match
 
 
-def run(algorithm, data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_rules_per_leaf,
-        num_hosts_per_leaf):
+def run(algorithm, data, max_bitmaps, max_leafs_per_bitmap, perc_redundancy_per_bitmap, leafs_to_rules_count_map,
+        max_rules_per_leaf, num_hosts_per_leaf):
     if algorithm == 'naive':
         naive.run(data, max_bitmaps, leafs_to_rules_count_map, max_rules_per_leaf, num_hosts_per_leaf)
     elif algorithm == 'exact_match':
@@ -14,6 +15,9 @@ def run(algorithm, data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count
     elif algorithm == 'fuzzy_match':
         fuzzy_match.run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_rules_per_leaf,
                         num_hosts_per_leaf)
+    elif algorithm == 'fuzzy_match_r':
+        fuzzy_match_r.run(data, max_bitmaps, max_leafs_per_bitmap, perc_redundancy_per_bitmap, leafs_to_rules_count_map,
+                          max_rules_per_leaf, num_hosts_per_leaf)
     elif algorithm == 'random_fuzzy_match':
         random_fuzzy_match.run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_rules_per_leaf,
                                num_hosts_per_leaf)
