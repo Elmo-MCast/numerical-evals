@@ -1,4 +1,4 @@
-from bitstring import BitArray
+import numpy as np
 
 
 def run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_rules_per_leaf, num_hosts_per_leaf):
@@ -8,15 +8,15 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_r
     leafs_map = data['leafs_map']
 
     # Initializing default bitmap
-    data['default_bitmap'] = BitArray(num_hosts_per_leaf)
+    data['default_bitmap'] = np.array([0] * num_hosts_per_leaf)
 
     # Generating bitmaps-to-leaf mapping
     bitmap_to_leafs_map = dict()
     for l in leafs_map:
-        if leafs_map[l]['bitmap'].hex in bitmap_to_leafs_map:
-            bitmap_to_leafs_map[leafs_map[l]['bitmap'].hex] += [l]
+        if tuple(leafs_map[l]['bitmap']) in bitmap_to_leafs_map:
+            bitmap_to_leafs_map[tuple(leafs_map[l]['bitmap'])] += [l]
         else:
-            bitmap_to_leafs_map[leafs_map[l]['bitmap'].hex] = [l]
+            bitmap_to_leafs_map[tuple(leafs_map[l]['bitmap'])] = [l]
 
     # Sorting bitmaps-to-leaf mapping based on the number of leafs per bitmap (descending order)
     ordered_bitmap_list = sorted(bitmap_to_leafs_map.items(), key=lambda item: len(item[1]), reverse=True)
@@ -58,4 +58,4 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_r
     for l in leafs_map:
         if not (leafs_map[l]['has_bitmap'] or leafs_map[l]['has_rule']):
             leafs_map[l]['~bitmap'] = data['default_bitmap'] ^ leafs_map[l]['bitmap']
-            data['r'] += sum(leafs_map[l]['~bitmap'])
+            data['r'] += np.count_nonzero(leafs_map[l]['~bitmap'])
