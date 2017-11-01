@@ -1,5 +1,6 @@
 import random
-from bitstring import BitArray
+import numpy as np
+from simulation.utils import bar_range
 
 
 class Placement:
@@ -198,7 +199,7 @@ class Placement:
                     len(self.tenants_maps[t]['groups_map'][g]['leafs'])
 
     def _get_tenant_groups_leafs_to_hosts_and_bitmap_map(self):
-        for t in range(self.tenants['num_tenants']):
+        for t in bar_range(self.tenants['num_tenants'], desc='bitmaps'):
             for g in range(self.tenants_maps[t]['group_count']):
                 for vm in self.tenants_maps[t]['groups_map'][g]['vms']:
                     if self.tenants_maps[t]['vms_map'][vm]['leaf'] in \
@@ -214,8 +215,8 @@ class Placement:
                             self.tenants_maps[t]['vms_map'][vm]['host']}
 
                 for l in self.tenants_maps[t]['groups_map'][g]['leafs_map']:
-                    self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['bitmap'] = BitArray(
-                        self.network['num_hosts_per_leaf'])
+                    self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['bitmap'] = np.array(
+                        [0] * self.network['num_hosts_per_leaf'])
 
                     for h in self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['hosts']:
                         self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['bitmap'][

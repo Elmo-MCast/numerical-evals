@@ -1,11 +1,11 @@
-from bitstring import BitArray
+import numpy as np
 
 
 def min_k_union(leafs_map, leafs, num_hosts_per_leaf, k):
-    _bitmap = BitArray(num_hosts_per_leaf)
+    _bitmap = np.array([0] * num_hosts_per_leaf)
     _leafs = []
     for _ in range(k):
-        leaf = min(leafs, key=lambda l: sum(leafs_map[l]['bitmap'] | _bitmap))
+        leaf = min(leafs, key=lambda l: np.count_nonzero(leafs_map[l]['bitmap'] | _bitmap))
         leafs.remove(leaf)
         _bitmap |= leafs_map[leaf]['bitmap']
         _leafs += [leaf]
@@ -53,7 +53,7 @@ def run(data, max_bitmaps, leafs_to_rules_count_map, max_rules_per_leaf, num_hos
             leafs_map[l]['has_bitmap'] = True
             leafs_map[l]['has_rule'] = False
 
-        data['default_bitmap'] = BitArray(num_hosts_per_leaf)
+        data['default_bitmap'] = np.array([0] * num_hosts_per_leaf)
         l, _ = ordered_leafs_list[max_bitmaps]
         leafs_map[l]['has_bitmap'] = False
         leafs_map[l]['has_rule'] = False
@@ -88,7 +88,7 @@ def run(data, max_bitmaps, leafs_to_rules_count_map, max_rules_per_leaf, num_hos
         data['r'] = 0
         for l in default_leafs:
             leafs_map[l]['~bitmap'] = data['default_bitmap'] ^ leafs_map[l]['bitmap']
-            data['r'] += sum(leafs_map[l]['~bitmap'])
+            data['r'] += np.count_nonzero(leafs_map[l]['~bitmap'])
 
         for i in range(num_leafs_with_no_space, data['leaf_count']):
             l, _ = ordered_leafs_list[i]

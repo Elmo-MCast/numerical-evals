@@ -46,15 +46,15 @@ elif False:
     SEED = 0
     LOGS_DIR = None
 elif True:
-    NUM_LEAFS = 100
-    NUM_HOSTS_PER_LEAF = 24
+    NUM_LEAFS = 576
+    NUM_HOSTS_PER_LEAF = 48
     NUM_RULES_PER_LEAF = 1
     MAX_VMS_PER_HOST = 20
-    NUM_TENANTS = 300
+    NUM_TENANTS = 3000
     MIN_VMS_PER_TENANT = 10
-    MAX_VMS_PER_TENANT = 500
+    MAX_VMS_PER_TENANT = 1000
     VM_DIST = "expon"  # options: expon
-    NUM_GROUPS = 10000
+    NUM_GROUPS = 100000
     MIN_GROUP_SIZE = 5
     GROUP_SIZE_DIST = "uniform"  # options: uniform and wve
     PLACEMENT_DIST = "colocate-random-linear"  # options: uniform, colocate-random-linear,

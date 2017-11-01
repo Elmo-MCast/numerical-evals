@@ -1,5 +1,6 @@
 import numpy as np
 from simulation.algorithms import algorithms
+from simulation.utils import bar_range
 
 
 class Optimization:
@@ -25,7 +26,7 @@ class Optimization:
 
     def _optimize(self):
         if self.max_batch_size <= 1:
-            for t in range(self.tenants['num_tenants']):
+            for t in bar_range(self.tenants['num_tenants'], desc='optimization'):
                 for g in range(self.tenants_maps[t]['group_count']):
                     algorithms.run(
                         algorithm=self.algorithm,
@@ -40,7 +41,7 @@ class Optimization:
             running_batch_size = 0
             running_batch_list = []
 
-            for t in range(self.tenants['num_tenants']):
+            for t in bar_range(self.tenants['num_tenants'], desc='optimization'):
                 for g in range(self.tenants_maps[t]['group_count']):
                     running_batch_list += [self.tenants_maps[t]['groups_map'][g]]
                     running_batch_size += 1
