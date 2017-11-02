@@ -29,22 +29,18 @@ class Placement:
                 self.tenants_maps[t]['groups_map'][g]['leafs_map'] = dict()
 
         self._get_tenant_vms_to_host_map()
-        print('placement[tenant_vms_to_host]: initialized.')
 
         self._get_tenant_vms_to_leaf_map()
-        print('placement[tenant_vms_to_leaf]: initialized.')
 
         self._get_tenant_groups_to_leafs_and_count_map()
-        print('placement[tenant_groups_to_leafs_and_count]: initialized.')
 
         self._get_tenant_groups_leafs_to_hosts_and_bitmap_map()
-        print('placement[tenant_groups_leafs_to_hosts_and_bitmap]: initialized.')
 
     def _uniform(self):
         available_hosts = [h for h in range(self.tenants['num_hosts'])]
         available_hosts_count = [0] * self.tenants['num_hosts']
 
-        for t in range(self.tenants['num_tenants']):
+        for t in bar_range(self.tenants['num_tenants'], desc='placement:vms->host'):
             hosts = random.sample(available_hosts, self.tenants_maps[t]['vm_count'])
 
             for v, host in enumerate(hosts):
@@ -73,7 +69,7 @@ class Placement:
             tenants_maps = sorted(self.tenants_maps, key=lambda item: item['vm_count'], reverse=is_reverse)
         else:
             tenants_maps = self.tenants_maps
-        for t in range(self.tenants['num_tenants']):
+        for t in bar_range(self.tenants['num_tenants'], desc='placement:vms->host'):
             running_index = 0
             running_count = tenants_maps[t]['vm_count']
             while running_count > 0:
@@ -124,7 +120,7 @@ class Placement:
             tenants_maps = sorted(self.tenants_maps, key=lambda item: item['vm_count'], reverse=is_reverse)
         else:
             tenants_maps = self.tenants_maps
-        for t in range(self.tenants['num_tenants']):
+        for t in bar_range(self.tenants['num_tenants'], desc='placement:vms->host'):
             running_index = 0
             running_count = tenants_maps[t]['vm_count']
             while running_count > 0:
@@ -184,13 +180,13 @@ class Placement:
             raise (Exception("invalid dist parameter for vm to host allocation"))
 
     def _get_tenant_vms_to_leaf_map(self):
-        for t in range(self.tenants['num_tenants']):
+        for t in bar_range(self.tenants['num_tenants'], desc='placement:vms->leaf'):
             for v in range(self.tenants_maps[t]['vm_count']):
                 self.tenants_maps[t]['vms_map'][v]['leaf'] = \
                     self.network_maps['host_to_leaf'][self.tenants_maps[t]['vms_map'][v]['host']]
 
     def _get_tenant_groups_to_leafs_and_count_map(self):
-        for t in bar_range(self.tenants['num_tenants'], desc='leafs'):
+        for t in bar_range(self.tenants['num_tenants'], desc='placement:groups->leafs'):
             for g in range(self.tenants_maps[t]['group_count']):
                 self.tenants_maps[t]['groups_map'][g]['leafs'] = list(
                     {self.tenants_maps[t]['vms_map'][vm]['leaf']
@@ -199,7 +195,7 @@ class Placement:
                     len(self.tenants_maps[t]['groups_map'][g]['leafs'])
 
     def _get_tenant_groups_leafs_to_hosts_and_bitmap_map(self):
-        for t in bar_range(self.tenants['num_tenants'], desc='bitmaps'):
+        for t in bar_range(self.tenants['num_tenants'], desc='placement:leafs->bitmap'):
             for g in range(self.tenants_maps[t]['group_count']):
                 for vm in self.tenants_maps[t]['groups_map'][g]['vms']:
                     if self.tenants_maps[t]['vms_map'][vm]['leaf'] in \

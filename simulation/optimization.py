@@ -25,7 +25,6 @@ class Optimization:
                                      'perc_redundancy_per_bitmap': perc_redundancy_per_bitmap}
 
         self._optimize()
-        print('optimization: complete.')
 
     def _optimize(self):
         if self.max_batch_size <= 1:

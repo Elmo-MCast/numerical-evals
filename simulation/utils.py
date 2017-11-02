@@ -3,15 +3,9 @@ import pandas as pd
 import seaborn as sb
 from tqdm import trange, tnrange
 
-try:
-    get_ipython
 
-
-    def bar_range(x, desc):
-        return tnrange(x, desc=desc)
-except:
-    def bar_range(x, desc):
-        return trange(x, desc=desc)
+def bar_range(x, desc):
+    return trange(x, desc=desc)
 
 
 def ecdf(sample):

@@ -38,14 +38,12 @@ class Tenants:
         self.tenants_maps = self.tenants['maps']
 
         self._get_tenant_to_vm_count_map()
-        print('tenants[vm_count]: initialized.')
 
         if debug:
             print(pd.Series([self.tenants_maps[t]['vm_count'] for t in range(self.num_tenants)]).describe())
             print("VM Count: %s" % self.tenants['vm_count'])
 
         self._get_tenant_to_group_count_map()
-        print('tenants[group_count]: initialized.')
 
         if debug:
             print(pd.Series([self.tenants_maps[t]['group_count'] for t in range(self.num_tenants)]).describe())
@@ -56,7 +54,6 @@ class Tenants:
                 [{'size': None, 'vms': None} for _ in range(self.tenants_maps[t]['group_count'])]
 
         self._get_tenant_groups_to_sizes_map()
-        print('tenants[groups_to_sizes]: initialized.')
 
         if debug:
             _group_sizes_for_all_tenants = []
@@ -66,11 +63,10 @@ class Tenants:
             print(pd.Series(_group_sizes_for_all_tenants).describe())
 
         self._get_tenant_groups_to_vms_map()
-        print('tenants[groups_to_vms]: initialized.')
 
     def _get_tenant_to_vm_count_map(self):
         if self.vm_dist == 'expon':
-            for t in range(self.num_tenants):
+            for t in bar_range(self.num_tenants, desc='tenants:vm count'):
                 sample = random.random()
                 if sample < 0.02:
                     vm_count = random.randint(self.min_vms, self.max_vms)
@@ -85,19 +81,19 @@ class Tenants:
 
     def _get_tenant_to_group_count_map(self):
         # ... weighted assignment of groups (based on VMs) to tenants
-        for t in range(self.num_tenants):
+        for t in bar_range(self.num_tenants, desc='tenants:group count'):
             group_count = int(self.tenants_maps[t]['vm_count'] / self.tenants['vm_count'] * self.num_groups)
             self.tenants_maps[t]['group_count'] = int(group_count)
             self.tenants['group_count'] += int(group_count)
 
     def _get_tenant_groups_to_sizes_map(self):
         if self.group_size_dist == 'uniform':
-            for t in range(self.num_tenants):
+            for t in bar_range(self.num_tenants, desc='tenants:group sizes'):
                 for g in range(self.tenants_maps[t]['group_count']):
                     size = random.randint(self.min_group_size, self.tenants_maps[t]['vm_count'])
                     self.tenants_maps[t]['groups_map'][g]['size'] = size
         elif self.group_size_dist == 'wve':  # ... using mix3 distribution from the dcn-mcast paper.
-            for t in range(self.num_tenants):
+            for t in bar_range(self.num_tenants, desc='tenants:group sizes'):
                 for g in range(self.tenants_maps[t]['group_count']):
                     sample = random.random()
                     if sample < 0.02:
@@ -113,7 +109,7 @@ class Tenants:
             raise (Exception("invalid dist parameter for group size allocation"))
 
     def _get_tenant_groups_to_vms_map(self):
-        for t in bar_range(self.num_tenants, desc='vms'):
+        for t in bar_range(self.num_tenants, desc='tenants:groups->vms'):
             for g in range(self.tenants_maps[t]['group_count']):
                 self.tenants_maps[t]['groups_map'][g]['vms'] = random.sample(
                     range(self.tenants_maps[t]['vm_count']),
