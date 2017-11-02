@@ -11,28 +11,28 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, max_redundancy_per_bitmap, leaf
     leafs = [l for l in leafs_map]
 
     # Generate combinations of leafs
-    combinations = dict()
     num_unpacked_leafs = data['leaf_count'] % max_bitmaps
     num_combinations = int(data['leaf_count'] / max_bitmaps) + (1 if num_unpacked_leafs > 0 else 0)
     if num_combinations > max_leafs_per_bitmap:
         num_combinations = max_leafs_per_bitmap
         num_unpacked_leafs = 0
 
-    for i in range(1, num_combinations + 1):
-        combinations[i] = []
-        if i == 1:
-            for l in leafs:
-                combinations[i] += [((l,), (leafs_map[l]['bitmap'], 0))]
-        else:
-            for c, (b, hd) in combinations[i - 1]:
-                _leafs = set(leafs) - set(c)
-                for l in _leafs:
-                    combinations[i] += [(c + (l,), (b | leafs_map[l]['bitmap'],
-                                                    hd + np.count_nonzero(b ^ leafs_map[l]['bitmap'])))]
+    combinations = np.array([[]] * num_combinations)
 
-            combinations[i] = sorted(combinations[i], key=lambda item: item[1][1])
-            j = next(x for x, (_, (_, hd)) in enumerate(combinations[i]) if hd > max_redundancy_per_bitmap)
-            del combinations[i][j:len(combinations[i])]
+    for l in leafs:
+        combinations[0] += [(l, l)]
+
+    for i in range(1, num_combinations):
+        combinations += [[]]
+        for j in range(len(combinations[i - 1])):
+            l, _ = combinations[i - 1][j]
+            for _l in leafs:
+                combinations[i] += [(l, _l)]
+
+        # combinations[i] = sorted(combinations[i], key=lambda item: item[1][1])
+        # j = next((x for x, (_, (_, hd)) in enumerate(combinations[i]) if hd > max_redundancy_per_bitmap), None)
+        # if j is not None:
+        #     del combinations[i][j:len(combinations[i])]
 
     pass
 

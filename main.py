@@ -60,10 +60,10 @@ elif True:
     PLACEMENT_DIST = "colocate-random-linear"  # options: uniform, colocate-random-linear,
     # colocate-random-random, sorted-colocate-random-linear, and sorted-colocate-random-random
     COLOCATE_NUM_HOSTS_PER_LEAF = 48
-    NUM_BITMAPS = 10
-    NUM_LEAFS_PER_BITMAP = 2
+    NUM_BITMAPS = 5
+    NUM_LEAFS_PER_BITMAP = 3
     MAX_BATCH_SIZE = 1
-    ALGORITHM = 'fuzzy_match_r'
+    ALGORITHM = 'greedy_match'
     SEED = 0
     LOGS_DIR = None
 else:
