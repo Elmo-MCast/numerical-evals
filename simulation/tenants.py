@@ -1,5 +1,6 @@
 import random
 import pandas as pd
+from simulation.utils import bar_range
 
 
 class Tenants:
@@ -112,7 +113,7 @@ class Tenants:
             raise (Exception("invalid dist parameter for group size allocation"))
 
     def _get_tenant_groups_to_vms_map(self):
-        for t in range(self.num_tenants):
+        for t in bar_range(self.num_tenants, desc='vms'):
             for g in range(self.tenants_maps[t]['group_count']):
                 self.tenants_maps[t]['groups_map'][g]['vms'] = random.sample(
                     range(self.tenants_maps[t]['vm_count']),

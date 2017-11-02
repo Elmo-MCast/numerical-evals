@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from simulation.utils import bar_range
 
 
 class Data:
@@ -55,7 +56,7 @@ class Data:
     def traffic_stats(self):
         _actual_traffic_for_all_leafs = dict()
         _redundant_traffic_for_all_leafs = dict()
-        for t in range(self.tenants['num_tenants']):
+        for t in bar_range(self.tenants['num_tenants'], desc='stats'):
             for g in range(self.tenants_maps[t]['group_count']):
                 for l in self.tenants_maps[t]['groups_map'][g]['leafs']:
                     if not (l in _actual_traffic_for_all_leafs):

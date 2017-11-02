@@ -190,7 +190,7 @@ class Placement:
                     self.network_maps['host_to_leaf'][self.tenants_maps[t]['vms_map'][v]['host']]
 
     def _get_tenant_groups_to_leafs_and_count_map(self):
-        for t in range(self.tenants['num_tenants']):
+        for t in bar_range(self.tenants['num_tenants'], desc='leafs'):
             for g in range(self.tenants_maps[t]['group_count']):
                 self.tenants_maps[t]['groups_map'][g]['leafs'] = list(
                     {self.tenants_maps[t]['vms_map'][vm]['leaf']
