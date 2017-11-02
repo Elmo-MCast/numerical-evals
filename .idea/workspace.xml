@@ -2,11 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3f0c75d9-ed49-4a19-bc97-bf85c19dcdfe" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/simulation/algorithms/fuzzy_match_r.py" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.py" afterPath="$PROJECT_DIR$/main.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/notebooks/mcast-dcn.ipynb" afterPath="$PROJECT_DIR$/notebooks/mcast-dcn.ipynb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/simulation/algorithms/fuzzy_match.py" afterPath="$PROJECT_DIR$/simulation/algorithms/fuzzy_match.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/simulation/algorithms/random_fuzzy_match.py" afterPath="$PROJECT_DIR$/simulation/algorithms/random_fuzzy_match.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/simulation/algorithms/algorithms.py" afterPath="$PROJECT_DIR$/simulation/algorithms/algorithms.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -22,14 +21,12 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/main.py">
+      <file leaf-file-name="algorithms.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/simulation/algorithms/algorithms.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
-              <caret line="65" column="35" lean-forward="false" selection-start-line="65" selection-start-column="17" selection-end-line="65" selection-end-column="35" />
-              <folding>
-                <element signature="e#0#10#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="60">
+              <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -37,30 +34,8 @@
       <file leaf-file-name="random_fuzzy_match.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/simulation/algorithms/random_fuzzy_match.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
+            <state relative-caret-position="690">
               <caret line="48" column="35" lean-forward="true" selection-start-line="48" selection-start-column="35" selection-end-line="48" selection-end-column="35" />
-              <folding>
-                <element signature="e#0#18#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="data.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/simulation/data.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-435">
-              <caret line="9" column="48" lean-forward="true" selection-start-line="9" selection-start-column="48" selection-end-line="9" selection-end-column="48" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="fuzzy_match.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/simulation/algorithms/fuzzy_match.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="199">
-              <caret line="30" column="70" lean-forward="true" selection-start-line="30" selection-start-column="70" selection-end-line="30" selection-end-column="70" />
               <folding />
             </state>
           </provider>
@@ -130,7 +105,6 @@
         <option value="$PROJECT_DIR$/simulation/algorithms/fuzzy_match_0.py" />
         <option value="$PROJECT_DIR$/simulation/algorithms/naive.py" />
         <option value="$PROJECT_DIR$/simulation/algorithms/fuzzy_match_r.py" />
-        <option value="$PROJECT_DIR$/simulation/algorithms/algorithms.py" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/simulation/algorithms/exact_match.py" />
         <option value="$PROJECT_DIR$/simulation/algorithms/greedy_match.py" />
@@ -143,6 +117,7 @@
         <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/simulation/algorithms/fuzzy_match.py" />
         <option value="$PROJECT_DIR$/simulation/algorithms/random_fuzzy_match.py" />
+        <option value="$PROJECT_DIR$/simulation/algorithms/algorithms.py" />
       </list>
     </option>
   </component>
@@ -474,18 +449,6 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/simulation/algorithms/fuzzy_match_r.py</url>
-          <line>24</line>
-          <option name="timeStamp" value="224" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/simulation/algorithms/fuzzy_match_r.py</url>
-          <line>36</line>
-          <option name="timeStamp" value="225" />
-        </line-breakpoint>
-      </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
           <properties notifyOnTerminate="true" exception="BaseException">
@@ -744,16 +707,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/simulation/algorithms/algorithms.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="30" column="0" lean-forward="true" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#43#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/simulation/algorithms/naive.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="894">
@@ -791,7 +744,7 @@
         <state relative-caret-position="654">
           <caret line="60" column="22" lean-forward="false" selection-start-line="60" selection-start-column="22" selection-end-line="60" selection-end-column="22" />
           <folding>
-            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -849,25 +802,31 @@
         <state relative-caret-position="144">
           <caret line="65" column="35" lean-forward="false" selection-start-line="65" selection-start-column="17" selection-end-line="65" selection-end-column="35" />
           <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/simulation/algorithms/random_fuzzy_match.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="48" column="35" lean-forward="true" selection-start-line="48" selection-start-column="35" selection-end-line="48" selection-end-column="35" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#0#10#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/simulation/data.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-435">
-          <caret line="9" column="48" lean-forward="true" selection-start-line="9" selection-start-column="48" selection-end-line="9" selection-end-column="48" />
+        <state relative-caret-position="825">
+          <caret line="57" column="49" lean-forward="true" selection-start-line="57" selection-start-column="49" selection-end-line="57" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simulation/algorithms/random_fuzzy_match.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="690">
+          <caret line="48" column="35" lean-forward="true" selection-start-line="48" selection-start-column="35" selection-end-line="48" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simulation/algorithms/algorithms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
           <folding />
         </state>
       </provider>
