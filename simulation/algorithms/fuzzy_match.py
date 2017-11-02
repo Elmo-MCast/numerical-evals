@@ -41,6 +41,7 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_r
         num_combination = _num_combinations
         if num_unpacked_leafs > 0:
             num_combination += 1
+            num_unpacked_leafs -= 1
 
         while True:
             selected_combination = sorted_combinations[num_combination][0]
@@ -56,8 +57,6 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_r
             seen_leafs |= set(selected_combination[0])
             sorted_combinations[num_combination].remove(selected_combination)
             break
-
-        num_unpacked_leafs -= (num_combination - _num_combinations)
 
     remaining_leafs = set(leafs) - seen_leafs
 

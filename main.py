@@ -63,7 +63,7 @@ elif True:
     NUM_BITMAPS = 5
     NUM_LEAFS_PER_BITMAP = 3
     MAX_BATCH_SIZE = 1
-    ALGORITHM = 'greedy_match'
+    ALGORITHM = 'random_fuzzy_match'
     SEED = 0
     LOGS_DIR = None
 else:

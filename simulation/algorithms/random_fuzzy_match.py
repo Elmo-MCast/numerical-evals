@@ -36,8 +36,7 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_r
                                         key=lambda item: item[1][1])
 
         # Dropping the first combination with 1/3 probability
-        # TODO: discuss this with Lalith
-        if random.randint(0, 2) == 0:
+        if i > 1 and random.randint(0, 2) == 0:
             sorted_combinations[i].remove(sorted_combinations[i][0])
 
     # Assign leafs to bitmaps using the sorted combinations of leafs
@@ -47,23 +46,25 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_r
         num_combination = _num_combinations
         if num_unpacked_leafs > 0:
             num_combination += 1
+            num_unpacked_leafs -= 1
 
         while True:
-            selected_combination = sorted_combinations[num_combination][0]
-            if len(set(selected_combination[0]) - seen_leafs) != len(selected_combination[0]):
+            if sorted_combinations[num_combination]:
+                selected_combination = sorted_combinations[num_combination][0]
+                if len(set(selected_combination[0]) - seen_leafs) != len(selected_combination[0]):
+                    sorted_combinations[num_combination].remove(selected_combination)
+                    continue
+
+                for l in selected_combination[0]:
+                    leafs_map[l]['has_bitmap'] = True
+                    leafs_map[l]['has_rule'] = False
+                    leafs_map[l]['~bitmap'] = selected_combination[1][0] ^ leafs_map[l]['bitmap']
+
+                seen_leafs |= set(selected_combination[0])
                 sorted_combinations[num_combination].remove(selected_combination)
-                continue
-
-            for l in selected_combination[0]:
-                leafs_map[l]['has_bitmap'] = True
-                leafs_map[l]['has_rule'] = False
-                leafs_map[l]['~bitmap'] = selected_combination[1][0] ^ leafs_map[l]['bitmap']
-
-            seen_leafs |= set(selected_combination[0])
-            sorted_combinations[num_combination].remove(selected_combination)
-            break
-
-        num_unpacked_leafs -= (num_combination - _num_combinations)
+                break
+            else:
+                num_combination -= 1
 
     remaining_leafs = set(leafs) - seen_leafs
 
