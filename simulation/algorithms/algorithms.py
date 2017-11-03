@@ -15,7 +15,8 @@ def run(algorithm, data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitma
         greedy_match.run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to_rules_count_map,
                          max_rules_per_leaf)
     elif algorithm == 'fuzzy_match':
-        fuzzy_match.run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_rules_per_leaf)
+        fuzzy_match.run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to_rules_count_map,
+                        max_rules_per_leaf)
     elif algorithm == 'random_fuzzy_match':
         random_fuzzy_match.run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_rules_per_leaf,
                                num_hosts_per_leaf)

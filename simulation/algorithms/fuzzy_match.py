@@ -1,7 +1,7 @@
 import itertools
 
 
-def run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_rules_per_leaf):
+def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to_rules_count_map, max_rules_per_leaf):
     if data['leaf_count'] <= max_bitmaps:
         return
 
@@ -21,10 +21,9 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_r
             if i == 1:
                 combinations[i][c] = (leafs_map[c[0]]['bitmap'], 0)
             else:
-                combinations[i][c] = (
-                    combinations[i - 1][c[:len(c) - 1]][0] | leafs_map[c[len(c) - 1]]['bitmap'],
-                    combinations[i - 1][c[:len(c) - 1]][1] +
-                    bin(combinations[i - 1][c[:len(c) - 1]][0] ^ leafs_map[c[len(c) - 1]]['bitmap'])[2:].count('1'))
+                _bitmap = combinations[i - 1][c[:len(c) - 1]][0] | leafs_map[c[len(c) - 1]]['bitmap']
+                _redundancy = sum([bin(_bitmap ^ leafs_map[l]['bitmap'])[2:].count('1') for l in c])
+                combinations[i][c] = (_bitmap, _redundancy)
 
     # Sort combinations of leafs based on their hamming distance value
     sorted_combinations = dict()
