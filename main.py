@@ -41,6 +41,7 @@ elif False:
     COLOCATE_NUM_HOSTS_PER_LEAF = 48
     NUM_BITMAPS = 10
     NUM_LEAFS_PER_BITMAP = 1
+    REDUNDANCY_PER_BITMAP = 20
     MAX_BATCH_SIZE = 1
     ALGORITHM = 'naive'
     SEED = 0
@@ -62,8 +63,9 @@ elif True:
     COLOCATE_NUM_HOSTS_PER_LEAF = 48
     NUM_BITMAPS = 5
     NUM_LEAFS_PER_BITMAP = 3
+    REDUNDANCY_PER_BITMAP = 50
     MAX_BATCH_SIZE = 1
-    ALGORITHM = 'random_fuzzy_match'
+    ALGORITHM = 'greedy_match'
     SEED = 0
     LOGS_DIR = None
 else:
@@ -86,6 +88,7 @@ print("""
      colocate_hosts_per_leaf=%s,
      bitmaps=%s,
      leafs_per_bitmap=%s,
+     redundancy_per_bitmap=%s,
      batch_size=%s,
      algorithm=%s,
      seed=%s)
@@ -104,6 +107,7 @@ print("""
        COLOCATE_NUM_HOSTS_PER_LEAF,
        NUM_BITMAPS,
        NUM_LEAFS_PER_BITMAP,
+       REDUNDANCY_PER_BITMAP,
        MAX_BATCH_SIZE,
        ALGORITHM,
        SEED))
@@ -125,6 +129,7 @@ cloud = Cloud(num_leafs=NUM_LEAFS,
               colocate_num_hosts_per_leaf=COLOCATE_NUM_HOSTS_PER_LEAF,
               num_bitmaps=NUM_BITMAPS,
               num_leafs_per_bitmap=NUM_LEAFS_PER_BITMAP,
+              redundancy_per_bitmap=REDUNDANCY_PER_BITMAP,
               max_batch_size=MAX_BATCH_SIZE,
               algorithm=ALGORITHM)
 

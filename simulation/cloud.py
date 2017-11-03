@@ -21,7 +21,7 @@ class Cloud:
                  colocate_num_hosts_per_leaf=48,
                  num_bitmaps=32,
                  num_leafs_per_bitmap=3,
-                 perc_redundancy_per_bitmap=10,
+                 redundancy_per_bitmap=10,
                  max_batch_size=1,
                  algorithm='naive'):  # options: naive, exact_match
         self.data = dict()
@@ -42,4 +42,4 @@ class Cloud:
                   num_hosts_per_leaf=colocate_num_hosts_per_leaf)
 
         Optimization(data=self.data, max_batch_size=max_batch_size, algorithm=algorithm,
-                     num_leafs_per_bitmap=num_leafs_per_bitmap, perc_redundancy_per_bitmap=perc_redundancy_per_bitmap)
+                     num_leafs_per_bitmap=num_leafs_per_bitmap, redundancy_per_bitmap=redundancy_per_bitmap)

@@ -1,15 +1,17 @@
 def min_k_union(leafs_map, leafs, k):
     _bitmap = 0
+    _redundancy = 0
     _leafs = []
     for _ in range(k):
         leaf = min(leafs, key=lambda l: bin(leafs_map[l]['bitmap'] | _bitmap)[2:].count('1'))
         leafs.remove(leaf)
+        _redundancy += 0 if _bitmap == 0 else bin(leafs_map[leaf]['bitmap'] ^ _bitmap)[2:].count('1')
         _bitmap |= leafs_map[leaf]['bitmap']
         _leafs += [leaf]
-    return _bitmap, _leafs
+    return _bitmap, _redundancy, _leafs
 
 
-def run(data, max_bitmaps, max_leafs_per_bitmap, perc_redundancy_per_bitmap, leafs_to_rules_count_map,
+def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to_rules_count_map,
         max_rules_per_leaf):
     if data['leaf_count'] <= max_bitmaps:
         return
@@ -29,14 +31,21 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, perc_redundancy_per_bitmap, lea
         __num_leafs_per_bitmap = _num_leafs_per_bitmap
         if num_unpacked_leafs > 0:
             __num_leafs_per_bitmap += 1
-            num_unpacked_leafs -= 1
 
-        _bitmap, _leafs = min_k_union(leafs_map, leafs, __num_leafs_per_bitmap)
+        for j in range(__num_leafs_per_bitmap, 0, -1):
+            _bitmap, _redundancy, _leafs = min_k_union(leafs_map, leafs, j)
 
-        for l in _leafs:
-            leafs_map[l]['has_bitmap'] = True
-            leafs_map[l]['has_rule'] = False
-            leafs_map[l]['~bitmap'] = _bitmap ^ leafs_map[l]['bitmap']
+            if _redundancy <= redundancy_per_bitmap:
+                for l in _leafs:
+                    leafs_map[l]['has_bitmap'] = True
+                    leafs_map[l]['has_rule'] = False
+                    leafs_map[l]['~bitmap'] = _bitmap ^ leafs_map[l]['bitmap']
+
+                if j == __num_leafs_per_bitmap and num_unpacked_leafs > 0:
+                    num_unpacked_leafs -= 1
+                break
+            else:
+                leafs += _leafs
 
     # Initializing default bitmap
     data['default_bitmap'] = 0
