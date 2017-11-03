@@ -2,10 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3f0c75d9-ed49-4a19-bc97-bf85c19dcdfe" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/simulation/algorithms/fuzzy_match_r.py" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/archive/notebooks_9_23/baseerat__placement_colocate_100K_groups.ipynb" afterPath="$PROJECT_DIR$/archive/notebooks_9_23/baseerat__placement_colocate_100K_groups.ipynb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/notebooks/mcast-dcn.ipynb" afterPath="$PROJECT_DIR$/notebooks/mcast-dcn.ipynb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/simulation/algorithms/algorithms.py" afterPath="$PROJECT_DIR$/simulation/algorithms/algorithms.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/simulation/algorithms/exact_match.py" afterPath="$PROJECT_DIR$/simulation/algorithms/exact_match.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/simulation/algorithms/fuzzy_match.py" afterPath="$PROJECT_DIR$/simulation/algorithms/fuzzy_match.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/simulation/algorithms/greedy_match.py" afterPath="$PROJECT_DIR$/simulation/algorithms/greedy_match.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/simulation/algorithms/naive.py" afterPath="$PROJECT_DIR$/simulation/algorithms/naive.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/simulation/algorithms/random_fuzzy_match.py" afterPath="$PROJECT_DIR$/simulation/algorithms/random_fuzzy_match.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/simulation/data.py" afterPath="$PROJECT_DIR$/simulation/data.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -21,11 +26,63 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="algorithms.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="algorithms.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/simulation/algorithms/algorithms.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+            <state relative-caret-position="390">
+              <caret line="26" column="0" lean-forward="true" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#43#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="data.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/simulation/data.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="669">
+              <caret line="130" column="70" lean-forward="false" selection-start-line="130" selection-start-column="70" selection-end-line="130" selection-end-column="70" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="exact_match.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/simulation/algorithms/exact_match.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="439">
+              <caret line="57" column="85" lean-forward="true" selection-start-line="55" selection-start-column="4" selection-end-line="57" selection-end-column="85" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="fuzzy_match.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/simulation/algorithms/fuzzy_match.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="481">
+              <caret line="79" column="0" lean-forward="true" selection-start-line="76" selection-start-column="4" selection-end-line="79" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="greedy_match.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/simulation/algorithms/greedy_match.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="427">
+              <caret line="61" column="0" lean-forward="true" selection-start-line="61" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="naive.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/simulation/algorithms/naive.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="274">
+              <caret line="80" column="31" lean-forward="true" selection-start-line="80" selection-start-column="31" selection-end-line="80" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -34,8 +91,8 @@
       <file leaf-file-name="random_fuzzy_match.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/simulation/algorithms/random_fuzzy_match.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="690">
-              <caret line="48" column="35" lean-forward="true" selection-start-line="48" selection-start-column="35" selection-end-line="48" selection-end-column="35" />
+            <state relative-caret-position="184">
+              <caret line="69" column="0" lean-forward="true" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -80,6 +137,7 @@
       <find>sum</find>
       <find>placement['num_bitmaps']</find>
       <find>percentage</find>
+      <find>'r'</find>
     </findStrings>
     <replaceStrings>
       <replace>sorted_tenants_map[t]</replace>
@@ -103,21 +161,21 @@
         <option value="$PROJECT_DIR$/simulation/plot.py" />
         <option value="$PROJECT_DIR$/temp.py" />
         <option value="$PROJECT_DIR$/simulation/algorithms/fuzzy_match_0.py" />
-        <option value="$PROJECT_DIR$/simulation/algorithms/naive.py" />
         <option value="$PROJECT_DIR$/simulation/algorithms/fuzzy_match_r.py" />
         <option value="$PROJECT_DIR$/README.md" />
-        <option value="$PROJECT_DIR$/simulation/algorithms/exact_match.py" />
-        <option value="$PROJECT_DIR$/simulation/algorithms/greedy_match.py" />
-        <option value="$PROJECT_DIR$/simulation/data.py" />
         <option value="$PROJECT_DIR$/simulation/network.py" />
         <option value="$PROJECT_DIR$/simulation/tenants.py" />
         <option value="$PROJECT_DIR$/simulation/placement.py" />
         <option value="$PROJECT_DIR$/simulation/optimization.py" />
         <option value="$PROJECT_DIR$/simulation/utils.py" />
         <option value="$PROJECT_DIR$/main.py" />
-        <option value="$PROJECT_DIR$/simulation/algorithms/fuzzy_match.py" />
-        <option value="$PROJECT_DIR$/simulation/algorithms/random_fuzzy_match.py" />
         <option value="$PROJECT_DIR$/simulation/algorithms/algorithms.py" />
+        <option value="$PROJECT_DIR$/simulation/algorithms/exact_match.py" />
+        <option value="$PROJECT_DIR$/simulation/algorithms/fuzzy_match.py" />
+        <option value="$PROJECT_DIR$/simulation/algorithms/greedy_match.py" />
+        <option value="$PROJECT_DIR$/simulation/algorithms/naive.py" />
+        <option value="$PROJECT_DIR$/simulation/algorithms/random_fuzzy_match.py" />
+        <option value="$PROJECT_DIR$/simulation/data.py" />
       </list>
     </option>
   </component>
@@ -421,9 +479,9 @@
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3279483" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32942554" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32842582" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26387316" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26387316" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1656017" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -707,14 +765,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/simulation/algorithms/naive.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="894">
-          <caret line="68" column="62" lean-forward="true" selection-start-line="68" selection-start-column="62" selection-end-line="68" selection-end-column="62" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -728,24 +778,6 @@
         <state relative-caret-position="240">
           <caret line="17" column="30" lean-forward="true" selection-start-line="17" selection-start-column="30" selection-end-line="17" selection-end-column="30" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/simulation/algorithms/exact_match.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="256">
-          <caret line="27" column="40" lean-forward="true" selection-start-line="27" selection-start-column="40" selection-end-line="27" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/simulation/algorithms/greedy_match.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="654">
-          <caret line="60" column="22" lean-forward="false" selection-start-line="60" selection-start-column="22" selection-end-line="60" selection-end-column="22" />
-          <folding>
-            <element signature="e#0#18#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -789,14 +821,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/simulation/algorithms/fuzzy_match.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="30" column="70" lean-forward="true" selection-start-line="30" selection-start-column="70" selection-end-line="30" selection-end-column="70" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="144">
@@ -807,26 +831,60 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/simulation/data.py">
+    <entry file="file://$PROJECT_DIR$/simulation/algorithms/greedy_match.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="825">
-          <caret line="57" column="49" lean-forward="true" selection-start-line="57" selection-start-column="49" selection-end-line="57" selection-end-column="49" />
+        <state relative-caret-position="427">
+          <caret line="61" column="0" lean-forward="true" selection-start-line="61" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simulation/algorithms/naive.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="274">
+          <caret line="80" column="31" lean-forward="true" selection-start-line="80" selection-start-column="31" selection-end-line="80" selection-end-column="31" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/simulation/algorithms/random_fuzzy_match.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="690">
-          <caret line="48" column="35" lean-forward="true" selection-start-line="48" selection-start-column="35" selection-end-line="48" selection-end-column="35" />
+        <state relative-caret-position="184">
+          <caret line="69" column="0" lean-forward="true" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/simulation/algorithms/algorithms.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+        <state relative-caret-position="390">
+          <caret line="26" column="0" lean-forward="true" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#43#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simulation/algorithms/exact_match.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="439">
+          <caret line="57" column="85" lean-forward="true" selection-start-line="55" selection-start-column="4" selection-end-line="57" selection-end-column="85" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simulation/algorithms/fuzzy_match.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="481">
+          <caret line="79" column="0" lean-forward="true" selection-start-line="76" selection-start-column="4" selection-end-line="79" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simulation/data.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="669">
+          <caret line="130" column="70" lean-forward="false" selection-start-line="130" selection-start-column="70" selection-end-line="130" selection-end-column="70" />
           <folding />
         </state>
       </provider>

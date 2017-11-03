@@ -43,8 +43,6 @@ def run(data, max_bitmaps, leafs_to_rules_count_map, max_rules_per_leaf, num_hos
             leafs_map[l]['has_rule'] = True
             leafs_to_rules_count_map[l] += 1
 
-        data['r'] = 0
-
     # If no. of leafs with no space is one more than the no. of available bitmaps then assign them a bitmap and
     # last one to the default bitmap ...
     elif (num_leafs_with_no_space - max_bitmaps) == 1:
@@ -58,7 +56,6 @@ def run(data, max_bitmaps, leafs_to_rules_count_map, max_rules_per_leaf, num_hos
         leafs_map[l]['has_bitmap'] = False
         leafs_map[l]['has_rule'] = False
         data['default_bitmap'] |= leafs_map[l]['bitmap']
-        data['r'] = 0
 
         for i in range(num_leafs_with_no_space, data['leaf_count']):
             l, _ = ordered_leafs_list[i]
@@ -85,10 +82,8 @@ def run(data, max_bitmaps, leafs_to_rules_count_map, max_rules_per_leaf, num_hos
             leafs_map[l]['has_bitmap'] = False
             leafs_map[l]['has_rule'] = False
 
-        data['r'] = 0
         for l in default_leafs:
             leafs_map[l]['~bitmap'] = data['default_bitmap'] ^ leafs_map[l]['bitmap']
-            data['r'] += np.count_nonzero(leafs_map[l]['~bitmap'])
 
         for i in range(num_leafs_with_no_space, data['leaf_count']):
             l, _ = ordered_leafs_list[i]

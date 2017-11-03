@@ -74,11 +74,6 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_r
             leafs_map[l]['has_rule'] = False
             data['default_bitmap'] |= leafs_map[l]['bitmap']
 
-    # Calculate redundancy
-    data['r'] = 0
-    for l in leafs:
-        if leafs_map[l]['has_bitmap']:
-            data['r'] += np.count_nonzero(leafs_map[l]['~bitmap'])
-        elif not leafs_map[l]['has_rule']:
+    for l in remaining_leafs:
+        if not leafs_map[l]['has_rule']:
             leafs_map[l]['~bitmap'] = data['default_bitmap'] ^ leafs_map[l]['bitmap']
-            data['r'] += np.count_nonzero(leafs_map[l]['~bitmap'])

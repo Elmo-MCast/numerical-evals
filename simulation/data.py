@@ -43,20 +43,26 @@ class Data:
 
     def redundancy_for_all_groups_in_all_tenants(self):
         _redundancy_for_all_groups_in_all_tenants = []
-        for t in range(self.tenants['num_tenants']):
+        for t in bar_range(self.tenants['num_tenants'], desc='progress'):
             for g in range(self.tenants_maps[t]['group_count']):
-                if self.tenants_maps[t]['groups_map'][g]['leaf_count'] > self.placement['num_bitmaps']:
-                    _redundancy_for_all_groups_in_all_tenants += \
-                        [self.tenants_maps[t]['groups_map'][g]['r'] /
-                         (self.tenants_maps[t]['groups_map'][g]['r'] + self.tenants_maps[t]['groups_map'][g]['size'])
-                         * 100]
+                _actual_traffic = 0
+                _redundant_traffic = 0
+                for l in self.tenants_maps[t]['groups_map'][g]['leafs']:
+                    _actual_traffic += np.count_nonzero(self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['bitmap'])
+
+                    if '~bitmap' in self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]:
+                        _redundant_traffic += \
+                            np.count_nonzero(self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['~bitmap'])
+
+                _redundancy_for_all_groups_in_all_tenants += \
+                    [_redundant_traffic / (_actual_traffic + _redundant_traffic) * 100]
 
         return pd.Series(_redundancy_for_all_groups_in_all_tenants)
 
     def traffic_stats(self):
         _actual_traffic_for_all_leafs = dict()
-        _redundant_traffic_for_all_leafs = dict()
-        for t in bar_range(self.tenants['num_tenants'], desc='stats'):
+        _unwanted_traffic_for_all_leafs = dict()
+        for t in bar_range(self.tenants['num_tenants'], desc='progress'):
             for g in range(self.tenants_maps[t]['group_count']):
                 for l in self.tenants_maps[t]['groups_map'][g]['leafs']:
                     if not (l in _actual_traffic_for_all_leafs):
@@ -66,54 +72,64 @@ class Data:
                             _actual_traffic_for_all_leafs[l][i] += 1
 
                     if '~bitmap' in self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]:
-                        if not (l in _redundant_traffic_for_all_leafs):
-                            _redundant_traffic_for_all_leafs[l] = [0] * self.network['num_hosts_per_leaf']
+                        if not (l in _unwanted_traffic_for_all_leafs):
+                            _unwanted_traffic_for_all_leafs[l] = [0] * self.network['num_hosts_per_leaf']
                         for i, b in enumerate(self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['~bitmap']):
                             if b:
-                                _redundant_traffic_for_all_leafs[l][i] += 1
+                                _unwanted_traffic_for_all_leafs[l][i] += 1
 
-        return _actual_traffic_for_all_leafs, _redundant_traffic_for_all_leafs
-
-    @staticmethod
-    def traffic_overhead(actual_traffic, redundant_traffic):
-        _actual_traffic = 0
-        for l in actual_traffic:
-            _actual_traffic += sum(actual_traffic[l])
-
-        _redundant_traffic = 0
-        for l in redundant_traffic:
-            _redundant_traffic += sum(redundant_traffic[l])
-
-        return _redundant_traffic / (_actual_traffic + _redundant_traffic) * 100
+        return _actual_traffic_for_all_leafs, _unwanted_traffic_for_all_leafs
 
     @staticmethod
-    def actual_traffic_rate(actual_traffic):
-        _actual_traffic_rate = []
-        for l in actual_traffic:
-            _actual_traffic_rate += actual_traffic[l]
+    def traffic_overhead(actual_traffic_for_all_leafs, unwanted_traffic_for_all_leafs):
+        _actual_traffic_for_all_leafs = 0
+        for l in actual_traffic_for_all_leafs:
+            _actual_traffic_for_all_leafs += sum(actual_traffic_for_all_leafs[l])
 
-        return pd.Series(_actual_traffic_rate)
+        _unwanted_traffic_for_all_leafs = 0
+        for l in unwanted_traffic_for_all_leafs:
+            _unwanted_traffic_for_all_leafs += sum(unwanted_traffic_for_all_leafs[l])
+
+        return _unwanted_traffic_for_all_leafs / (_actual_traffic_for_all_leafs + _unwanted_traffic_for_all_leafs) * 100
 
     @staticmethod
-    def redundant_traffic_rate(redundant_traffic):
-        _redundant_traffic_rate = []
-        for l in redundant_traffic:
-            _redundant_traffic_rate += redundant_traffic[l]
+    def actual_traffic_per_link(traffic_for_all_leafs):
+        _traffic_per_link = []
+        for l in traffic_for_all_leafs:
+            _traffic_per_link += traffic_for_all_leafs[l]
 
-        return pd.Series(_redundant_traffic_rate)
+        return pd.Series(_traffic_per_link)
 
-    def total_traffic_rate(self, actual_traffic, redundant_traffic):
-        _total_traffic = dict()
-        for l in actual_traffic:
-            if l in redundant_traffic:
-                _total_traffic[l] = [0] * self.network['num_hosts_per_leaf']
+    @staticmethod
+    def unwanted_traffic_per_link(traffic_for_all_leafs):
+        _traffic_per_link = []
+        for l in traffic_for_all_leafs:
+            _traffic_per_link += traffic_for_all_leafs[l]
+
+        return pd.Series(_traffic_per_link)
+
+    def total_traffic_per_link(self, actual_traffic_for_all_leafs, unwanted_traffic_for_all_leafs):
+        _total_traffic_for_all_leafs = dict()
+        for l in actual_traffic_for_all_leafs:
+            if l in unwanted_traffic_for_all_leafs:
+                _total_traffic_for_all_leafs[l] = [0] * self.network['num_hosts_per_leaf']
                 for i in range(self.network['num_hosts_per_leaf']):
-                    _total_traffic[l][i] = actual_traffic[l][i] + redundant_traffic[l][i]
+                    _total_traffic_for_all_leafs[l][i] = actual_traffic_for_all_leafs[l][i] + unwanted_traffic_for_all_leafs[l][i]
             else:
-                _total_traffic[l] = actual_traffic[l]
+                _total_traffic_for_all_leafs[l] = actual_traffic_for_all_leafs[l]
 
-        _total_traffic_rate = []
-        for l in _total_traffic:
-            _total_traffic_rate += _total_traffic[l]
+        _total_traffic_per_link = []
+        for l in _total_traffic_for_all_leafs:
+            _total_traffic_per_link += _total_traffic_for_all_leafs[l]
 
-        return pd.Series(_total_traffic_rate)
+        return pd.Series(_total_traffic_per_link)
+
+    @staticmethod
+    def traffic_overhead_per_link(total_traffic_per_link, actual_traffic_per_link):
+        _traffic_overhead_per_link = []
+
+        for i in bar_range(len(total_traffic_per_link), desc='progress'):
+            _traffic_overhead_per_link += [(total_traffic_per_link[i] - actual_traffic_per_link[i]) /
+                                           total_traffic_per_link[i] * 100]
+
+        return pd.Series(_traffic_overhead_per_link)
