@@ -1,19 +1,16 @@
-import numpy as np
-import itertools
-
-
-def min_k_union(leafs_map, leafs, num_hosts_per_leaf, k):
-    _bitmap = np.array([0] * num_hosts_per_leaf)
+def min_k_union(leafs_map, leafs, k):
+    _bitmap = 0
     _leafs = []
     for _ in range(k):
-        leaf = min(leafs, key=lambda l: np.count_nonzero(leafs_map[l]['bitmap'] | _bitmap))
+        leaf = min(leafs, key=lambda l: bin(leafs_map[l]['bitmap'] | _bitmap)[2:].count('1'))
         leafs.remove(leaf)
         _bitmap |= leafs_map[leaf]['bitmap']
         _leafs += [leaf]
     return _bitmap, _leafs
 
 
-def run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_rules_per_leaf, num_hosts_per_leaf):
+def run(data, max_bitmaps, max_leafs_per_bitmap, perc_redundancy_per_bitmap, leafs_to_rules_count_map,
+        max_rules_per_leaf):
     if data['leaf_count'] <= max_bitmaps:
         return
 
@@ -32,18 +29,17 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_r
         __num_leafs_per_bitmap = _num_leafs_per_bitmap
         if num_unpacked_leafs > 0:
             __num_leafs_per_bitmap += 1
+            num_unpacked_leafs -= 1
 
-        _bitmap, _leafs = min_k_union(leafs_map, leafs, num_hosts_per_leaf, __num_leafs_per_bitmap)
+        _bitmap, _leafs = min_k_union(leafs_map, leafs, __num_leafs_per_bitmap)
 
         for l in _leafs:
             leafs_map[l]['has_bitmap'] = True
             leafs_map[l]['has_rule'] = False
             leafs_map[l]['~bitmap'] = _bitmap ^ leafs_map[l]['bitmap']
 
-        num_unpacked_leafs -= (__num_leafs_per_bitmap - _num_leafs_per_bitmap)
-
     # Initializing default bitmap
-    data['default_bitmap'] = np.array([0] * num_hosts_per_leaf)
+    data['default_bitmap'] = 0
 
     # Add a rule or assign leafs to default bitmap
     for l in leafs:

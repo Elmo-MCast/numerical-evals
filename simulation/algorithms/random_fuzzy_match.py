@@ -1,4 +1,3 @@
-import numpy as np
 import itertools
 import random
 
@@ -26,8 +25,7 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_r
                 combinations[i][c] = (
                     combinations[i - 1][c[:len(c) - 1]][0] | leafs_map[c[len(c) - 1]]['bitmap'],
                     combinations[i - 1][c[:len(c) - 1]][1] +
-                    np.count_nonzero(combinations[i - 1][c[:len(c) - 1]][0] ^
-                                     leafs_map[c[len(c) - 1]]['bitmap']))
+                    bin(combinations[i - 1][c[:len(c) - 1]][0] ^ leafs_map[c[len(c) - 1]]['bitmap'])[2:].count('1'))
 
     # Sort combinations of leafs based on their hamming distance value
     sorted_combinations = dict()
@@ -69,7 +67,7 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_r
     remaining_leafs = set(leafs) - seen_leafs
 
     # Initializing default bitmap
-    data['default_bitmap'] = np.array([0] * num_hosts_per_leaf)
+    data['default_bitmap'] = 0
 
     # Add a rule or assign leafs to default bitmap
     for l in remaining_leafs:

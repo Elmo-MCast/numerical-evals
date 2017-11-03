@@ -1,18 +1,15 @@
-import numpy as np
-
-
-def min_k_union(leafs_map, leafs, num_hosts_per_leaf, k):
-    _bitmap = np.array([0] * num_hosts_per_leaf)
+def min_k_union(leafs_map, leafs, k):
+    _bitmap = 0
     _leafs = []
     for _ in range(k):
-        leaf = min(leafs, key=lambda l: np.count_nonzero(leafs_map[l]['bitmap'] | _bitmap))
+        leaf = min(leafs, key=lambda l: bin(leafs_map[l]['bitmap'] | _bitmap)[2:].count('1'))
         leafs.remove(leaf)
         _bitmap |= leafs_map[leaf]['bitmap']
         _leafs += [leaf]
     return _bitmap, _leafs
 
 
-def run(data, max_bitmaps, leafs_to_rules_count_map, max_rules_per_leaf, num_hosts_per_leaf):
+def run(data, max_bitmaps, leafs_to_rules_count_map, max_rules_per_leaf):
     if data['leaf_count'] <= max_bitmaps:
         return
 
@@ -51,7 +48,7 @@ def run(data, max_bitmaps, leafs_to_rules_count_map, max_rules_per_leaf, num_hos
             leafs_map[l]['has_bitmap'] = True
             leafs_map[l]['has_rule'] = False
 
-        data['default_bitmap'] = np.array([0] * num_hosts_per_leaf)
+        data['default_bitmap'] = 0
         l, _ = ordered_leafs_list[max_bitmaps]
         leafs_map[l]['has_bitmap'] = False
         leafs_map[l]['has_rule'] = False
@@ -70,7 +67,7 @@ def run(data, max_bitmaps, leafs_to_rules_count_map, max_rules_per_leaf, num_hos
         # https://stackoverflow.com/questions/12424155/given-n-sets-of-elements-find-minimal-union-of-m-sets
 
         ordered_leafs_with_no_space = [l for l, _ in ordered_leafs_list[:num_leafs_with_no_space]]
-        default_bitmap, default_leafs = min_k_union(leafs_map, ordered_leafs_with_no_space, num_hosts_per_leaf,
+        default_bitmap, default_leafs = min_k_union(leafs_map, ordered_leafs_with_no_space,
                                                     num_leafs_with_no_space - max_bitmaps)
 
         for l in ordered_leafs_with_no_space:

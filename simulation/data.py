@@ -48,11 +48,12 @@ class Data:
                 _actual_traffic = 0
                 _redundant_traffic = 0
                 for l in self.tenants_maps[t]['groups_map'][g]['leafs']:
-                    _actual_traffic += np.count_nonzero(self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['bitmap'])
+                    _actual_traffic += \
+                        bin(self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['bitmap'])[2:].count('1')
 
                     if '~bitmap' in self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]:
                         _redundant_traffic += \
-                            np.count_nonzero(self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['~bitmap'])
+                            bin(self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['~bitmap'])[2:].count('1')
 
                 _redundancy_for_all_groups_in_all_tenants += \
                     [_redundant_traffic / (_actual_traffic + _redundant_traffic) * 100]
@@ -67,15 +68,16 @@ class Data:
                 for l in self.tenants_maps[t]['groups_map'][g]['leafs']:
                     if not (l in _actual_traffic_for_all_leafs):
                         _actual_traffic_for_all_leafs[l] = [0] * self.network['num_hosts_per_leaf']
-                    for i, b in enumerate(self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['bitmap']):
-                        if b:
+                    for i, b in enumerate(bin(self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['bitmap'])[:1:-1]):
+                        if b == '1':
                             _actual_traffic_for_all_leafs[l][i] += 1
 
                     if '~bitmap' in self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]:
                         if not (l in _unwanted_traffic_for_all_leafs):
                             _unwanted_traffic_for_all_leafs[l] = [0] * self.network['num_hosts_per_leaf']
-                        for i, b in enumerate(self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['~bitmap']):
-                            if b:
+                        for i, b in enumerate(
+                                bin(self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['~bitmap'])[:1:-1]):
+                            if b == '1':
                                 _unwanted_traffic_for_all_leafs[l][i] += 1
 
         return _actual_traffic_for_all_leafs, _unwanted_traffic_for_all_leafs
@@ -114,7 +116,8 @@ class Data:
             if l in unwanted_traffic_for_all_leafs:
                 _total_traffic_for_all_leafs[l] = [0] * self.network['num_hosts_per_leaf']
                 for i in range(self.network['num_hosts_per_leaf']):
-                    _total_traffic_for_all_leafs[l][i] = actual_traffic_for_all_leafs[l][i] + unwanted_traffic_for_all_leafs[l][i]
+                    _total_traffic_for_all_leafs[l][i] = actual_traffic_for_all_leafs[l][i] + \
+                                                         unwanted_traffic_for_all_leafs[l][i]
             else:
                 _total_traffic_for_all_leafs[l] = actual_traffic_for_all_leafs[l]
 

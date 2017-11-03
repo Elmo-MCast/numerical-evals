@@ -1,22 +1,19 @@
-import numpy as np
-
-
-def run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_rules_per_leaf, num_hosts_per_leaf):
+def run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_rules_per_leaf):
     if data['leaf_count'] <= max_bitmaps:
         return
 
     leafs_map = data['leafs_map']
 
     # Initializing default bitmap
-    data['default_bitmap'] = np.array([0] * num_hosts_per_leaf)
+    data['default_bitmap'] = 0
 
     # Generating bitmaps-to-leaf mapping
     bitmap_to_leafs_map = dict()
     for l in leafs_map:
-        if tuple(leafs_map[l]['bitmap']) in bitmap_to_leafs_map:
-            bitmap_to_leafs_map[tuple(leafs_map[l]['bitmap'])] += [l]
+        if leafs_map[l]['bitmap'] in bitmap_to_leafs_map:
+            bitmap_to_leafs_map[leafs_map[l]['bitmap']] += [l]
         else:
-            bitmap_to_leafs_map[tuple(leafs_map[l]['bitmap'])] = [l]
+            bitmap_to_leafs_map[leafs_map[l]['bitmap']] = [l]
 
     # Sorting bitmaps-to-leaf mapping based on the number of leafs per bitmap (descending order)
     ordered_bitmap_list = sorted(bitmap_to_leafs_map.items(), key=lambda item: len(item[1]), reverse=True)

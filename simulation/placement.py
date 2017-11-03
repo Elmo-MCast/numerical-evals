@@ -1,5 +1,4 @@
 import random
-import numpy as np
 from simulation.utils import bar_range
 
 
@@ -211,9 +210,8 @@ class Placement:
                             self.tenants_maps[t]['vms_map'][vm]['host']}
 
                 for l in self.tenants_maps[t]['groups_map'][g]['leafs_map']:
-                    self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['bitmap'] = np.array(
-                        [0] * self.network['num_hosts_per_leaf'])
+                    self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['bitmap'] = 0
 
                     for h in self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['hosts']:
-                        self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['bitmap'][
-                            h % self.network['num_hosts_per_leaf']] = 1
+                        self.tenants_maps[t]['groups_map'][g]['leafs_map'][l]['bitmap'] |= \
+                            1 << (h % self.network['num_hosts_per_leaf'])
