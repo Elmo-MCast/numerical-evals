@@ -2,9 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3f0c75d9-ed49-4a19-bc97-bf85c19dcdfe" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/simulation/algorithms/naive.py" afterPath="$PROJECT_DIR$/simulation/algorithms/single_match.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.py" afterPath="$PROJECT_DIR$/main.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/simulation/algorithms/greedy_match.py" afterPath="$PROJECT_DIR$/simulation/algorithms/greedy_match.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/notebooks/mcast-dcn.ipynb" afterPath="$PROJECT_DIR$/notebooks/mcast-dcn.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/simulation/algorithms/algorithms.py" afterPath="$PROJECT_DIR$/simulation/algorithms/algorithms.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/simulation/cloud.py" afterPath="$PROJECT_DIR$/simulation/cloud.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/simulation/optimization.py" afterPath="$PROJECT_DIR$/simulation/optimization.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -16,99 +19,37 @@
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/numerical_evals$tenants.coverage" NAME="tenants Coverage Results" MODIFIED="1507979170420" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/simulation" />
     <SUITE FILE_PATH="coverage/numerical_evals$temp.coverage" NAME="temp Coverage Results" MODIFIED="1509397336810" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/numerical_evals$main.coverage" NAME="main Coverage Results" MODIFIED="1509692970447" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/numerical_evals$main.coverage" NAME="main Coverage Results" MODIFIED="1509695798291" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-120">
-              <caret line="43" column="30" lean-forward="false" selection-start-line="43" selection-start-column="30" selection-end-line="43" selection-end-column="30" />
+            <state relative-caret-position="285">
+              <caret line="67" column="22" lean-forward="false" selection-start-line="67" selection-start-column="22" selection-end-line="67" selection-end-column="22" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="cloud.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/simulation/cloud.py">
+      <file leaf-file-name="fuzzy_match.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/simulation/algorithms/fuzzy_match.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="23" column="38" lean-forward="false" selection-start-line="23" selection-start-column="17" selection-end-line="23" selection-end-column="38" />
+            <state relative-caret-position="120">
+              <caret line="8" column="34" lean-forward="true" selection-start-line="8" selection-start-column="34" selection-end-line="8" selection-end-column="34" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="optimization.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/simulation/optimization.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="69">
-              <caret line="37" column="39" lean-forward="false" selection-start-line="37" selection-start-column="39" selection-end-line="37" selection-end-column="39" />
-              <folding>
-                <element signature="e#0#18#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="algorithms.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="algorithms.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/simulation/algorithms/algorithms.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="naive.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/simulation/algorithms/naive.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="639">
-              <caret line="82" column="73" lean-forward="false" selection-start-line="82" selection-start-column="73" selection-end-line="82" selection-end-column="73" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="exact_match.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/simulation/algorithms/exact_match.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="234">
-              <caret line="21" column="20" lean-forward="true" selection-start-line="21" selection-start-column="20" selection-end-line="21" selection-end-column="20" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="greedy_match.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/simulation/algorithms/greedy_match.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
-              <caret line="2" column="7" lean-forward="false" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="random.py" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/random.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="208">
-              <caret line="270" column="0" lean-forward="false" selection-start-line="270" selection-start-column="0" selection-end-line="270" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="random_fuzzy_match.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/simulation/algorithms/random_fuzzy_match.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1050">
-              <caret line="70" column="0" lean-forward="true" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
+            <state relative-caret-position="375">
+              <caret line="25" column="0" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
               <folding>
-                <element signature="e#0#16#0" expanded="true" />
+                <element signature="e#0#57#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -126,7 +67,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>colocate</find>
       <find>#</find>
       <find>placement</find>
       <find>_leafs_for_all_groups_in_all_tenants</find>
@@ -156,12 +96,18 @@
       <find>tuple</find>
       <find>bitmap</find>
       <find>bin</find>
+      <find>naive</find>
     </findStrings>
     <replaceStrings>
       <replace>sorted_tenants_map[t]</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="Muhammad Shahbaz &lt;mshahbaz@users.noreply.github.com&gt;" />
+      </list>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
@@ -187,13 +133,13 @@
         <option value="$PROJECT_DIR$/simulation/algorithms/naive.py" />
         <option value="$PROJECT_DIR$/simulation/data.py" />
         <option value="$PROJECT_DIR$/simulation/algorithms/exact_match.py" />
-        <option value="$PROJECT_DIR$/simulation/algorithms/fuzzy_match.py" />
-        <option value="$PROJECT_DIR$/simulation/algorithms/algorithms.py" />
         <option value="$PROJECT_DIR$/simulation/algorithms/random_fuzzy_match.py" />
         <option value="$PROJECT_DIR$/simulation/cloud.py" />
         <option value="$PROJECT_DIR$/simulation/optimization.py" />
-        <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/simulation/algorithms/greedy_match.py" />
+        <option value="$PROJECT_DIR$/main.py" />
+        <option value="$PROJECT_DIR$/simulation/algorithms/fuzzy_match.py" />
+        <option value="$PROJECT_DIR$/simulation/algorithms/algorithms.py" />
       </list>
     </option>
   </component>
@@ -489,15 +435,22 @@
       <option name="presentableId" value="Default" />
       <updated>1506196846152</updated>
     </task>
+    <task id="LOCAL-00001" summary="minor">
+      <created>1509739467402</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1509739467402</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="31" width="1922" height="1004" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3279483" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32842582" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32842582" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26387316" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -506,7 +459,7 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32842582" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.36240092" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36240092" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -523,20 +476,12 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="minor" />
+    <option name="LAST_COMMIT_MESSAGE" value="minor" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/simulation/algorithms/greedy_match.py</url>
-          <line>30</line>
-          <option name="timeStamp" value="249" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/simulation/algorithms/greedy_match.py</url>
-          <line>38</line>
-          <option name="timeStamp" value="251" />
-        </line-breakpoint>
-      </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
           <properties notifyOnTerminate="true" exception="BaseException">
@@ -544,7 +489,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="252" />
+      <option name="time" value="258" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -592,7 +537,7 @@
         <state relative-caret-position="325">
           <caret line="26" column="0" lean-forward="false" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
           <folding>
-            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -605,7 +550,7 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/simulation/main.py" />
-    <entry file="file://$PROJECT_DIR$/simulation/algorithms/naive.py">
+    <entry file="file://$PROJECT_DIR$/simulation/algorithms/single_match.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="936">
           <caret line="72" column="0" lean-forward="true" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
@@ -847,20 +792,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/simulation/algorithms/fuzzy_match.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="900">
-          <caret line="60" column="33" lean-forward="true" selection-start-line="60" selection-start-column="33" selection-end-line="60" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/simulation/algorithms/random_fuzzy_match.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1050">
           <caret line="70" column="0" lean-forward="true" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
           <folding>
-            <element signature="e#0#16#0" expanded="true" />
+            <element signature="e#0#16#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -870,7 +807,7 @@
         <state relative-caret-position="69">
           <caret line="37" column="39" lean-forward="false" selection-start-line="37" selection-start-column="39" selection-end-line="37" selection-end-column="39" />
           <folding>
-            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -891,22 +828,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/simulation/algorithms/algorithms.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/simulation/algorithms/naive.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="639">
-          <caret line="82" column="73" lean-forward="false" selection-start-line="82" selection-start-column="73" selection-end-line="82" selection-end-column="73" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/simulation/algorithms/exact_match.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="234">
@@ -915,19 +836,45 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/simulation/algorithms/single_match.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1230">
+          <caret line="82" column="73" lean-forward="false" selection-start-line="82" selection-start-column="73" selection-end-line="82" selection-end-column="73" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-120">
-          <caret line="43" column="30" lean-forward="false" selection-start-line="43" selection-start-column="30" selection-end-line="43" selection-end-column="30" />
+        <state relative-caret-position="285">
+          <caret line="67" column="22" lean-forward="false" selection-start-line="67" selection-start-column="22" selection-end-line="67" selection-end-column="22" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/simulation/algorithms/greedy_match.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="7" lean-forward="false" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+        <state relative-caret-position="450">
+          <caret line="30" column="39" lean-forward="true" selection-start-line="30" selection-start-column="39" selection-end-line="30" selection-end-column="39" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simulation/algorithms/fuzzy_match.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="34" lean-forward="true" selection-start-line="8" selection-start-column="34" selection-end-line="8" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simulation/algorithms/algorithms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="25" column="0" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#57#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
