@@ -23,7 +23,7 @@ class Cloud:
                  num_leafs_per_bitmap=3,
                  redundancy_per_bitmap=10,
                  max_batch_size=1,
-                 algorithm='naive'):  # options: naive, exact_match
+                 algorithm='single_match'):  # options: single_match, exact_match
         self.data = dict()
 
         Network(data=self.data,

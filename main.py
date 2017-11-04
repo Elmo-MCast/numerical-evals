@@ -43,7 +43,7 @@ elif False:
     NUM_LEAFS_PER_BITMAP = 1
     REDUNDANCY_PER_BITMAP = 48
     MAX_BATCH_SIZE = 1
-    ALGORITHM = 'naive'
+    ALGORITHM = 'single_match'
     SEED = 0
     LOGS_DIR = None
 elif True:
