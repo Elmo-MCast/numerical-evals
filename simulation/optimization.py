@@ -1,3 +1,4 @@
+from timeit import default_timer as timer
 import numpy as np
 from simulation.algorithms import algorithms
 from simulation.utils import bar_range
@@ -11,6 +12,7 @@ class Optimization:
         self.algorithm = algorithm
         self.num_leafs_per_bitmap = num_leafs_per_bitmap
         self.redundancy_per_bitmap = redundancy_per_bitmap
+        self.algorithm_elapse_time = []
 
         self.network = self.data['network']
         self.network_maps = self.network['maps']
@@ -22,7 +24,8 @@ class Optimization:
         self.data['optimization'] = {'max_batch_size': max_batch_size,
                                      'algorithm': algorithm,
                                      'max_leafs_per_bitmap': num_leafs_per_bitmap,
-                                     'redundancy_per_bitmap': redundancy_per_bitmap}
+                                     'redundancy_per_bitmap': redundancy_per_bitmap,
+                                     'algorithm_elapse_time': self.algorithm_elapse_time}
 
         self._optimize()
 
@@ -30,6 +33,7 @@ class Optimization:
         if self.max_batch_size <= 1:
             for t in bar_range(self.tenants['num_tenants'], desc='optimization'):
                 for g in range(self.tenants_maps[t]['group_count']):
+                    start = timer()
                     algorithms.run(
                         algorithm=self.algorithm,
                         data=self.tenants_maps[t]['groups_map'][g],
@@ -38,6 +42,8 @@ class Optimization:
                         redundancy_per_bitmap=self.redundancy_per_bitmap,
                         leafs_to_rules_count_map=self.placement['maps']['leafs_to_rules_count'],
                         max_rules_per_leaf=self.network['num_rules_per_leaf'])
+                    end = timer()
+                    self.algorithm_elapse_time += [end - start]
         else:
             batch_size = np.random.randint(low=1, high=self.max_batch_size + 1, size=1)[0]
             running_batch_size = 0

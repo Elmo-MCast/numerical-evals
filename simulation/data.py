@@ -9,6 +9,10 @@ class Data:
         self.tenants = cloud.data['tenants']
         self.tenants_maps = self.tenants['maps']
         self.placement = cloud.data['placement']
+        self.optimization = cloud.data['optimization']
+
+    def algorithm_elapse_time(self):
+        return pd.Series(self.optimization['algorithm_elapse_time'])
 
     def vm_count_for_all_tenants(self):
         return pd.Series([self.tenants_maps[t]['vm_count'] for t in range(self.tenants['num_tenants'])])

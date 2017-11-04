@@ -24,19 +24,20 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
     combinations[0] = list(combination.items())
 
     for i in range(1, num_leafs_per_bitmap):
-        if previous_combination:
-            combination = dict()
-            for c in itertools.combinations(leafs, i + 1):
-                previous_c = c[:i]
-                if previous_c in previous_combination:
-                    _bitmap = previous_combination[previous_c][0] | leafs_map[c[i]]['bitmap']
-                    _redundancy = sum([bin(_bitmap ^ leafs_map[l]['bitmap'])[2:].count('1') for l in c])
-                    combination[c] = (_bitmap, _redundancy)
+        combination = dict()
+        for c in itertools.combinations(leafs, i + 1):
+            previous_c = c[:i]
+            if previous_c in previous_combination:
+                _bitmap = previous_combination[previous_c][0] | leafs_map[c[i]]['bitmap']
+                _redundancy = sum([bin(_bitmap ^ leafs_map[l]['bitmap'])[2:].count('1') for l in c])
+                combination[c] = (_bitmap, _redundancy)
 
-            combination = sorted(combination.items(), key=lambda item: item[1][1])
-            j = next((x for x, y in enumerate(combination) if y[1][1] >= redundancy_per_bitmap), None)
-            if j is not None:
-                del combination[j:len(combination)]
+        combination = sorted(combination.items(), key=lambda item: item[1][1])
+        j = next((x for x, y in enumerate(combination) if y[1][1] >= redundancy_per_bitmap), None)
+        if j is not None:
+            del combination[j:len(combination)]
+
+        if combination:
             previous_combination = dict(combination)
             combinations[i] = combination
         else:

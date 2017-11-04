@@ -63,9 +63,9 @@ elif True:
     COLOCATE_NUM_HOSTS_PER_LEAF = 48
     NUM_BITMAPS = 5
     NUM_LEAFS_PER_BITMAP = 3
-    REDUNDANCY_PER_BITMAP = 48
+    REDUNDANCY_PER_BITMAP = (48*2)
     MAX_BATCH_SIZE = 1
-    ALGORITHM = 'random_fuzzy_match'
+    ALGORITHM = 'single_match'
     SEED = 0
     LOGS_DIR = None
 else:
