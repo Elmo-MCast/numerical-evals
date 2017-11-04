@@ -11,12 +11,11 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
 
     # Generate combinations of leafs
     num_unpacked_leafs = leaf_count % max_bitmaps
-    num_combinations = int(leaf_count / max_bitmaps) + (1 if num_unpacked_leafs > 0 else 0)
-    if num_combinations > max_leafs_per_bitmap:
-        num_combinations = max_leafs_per_bitmap
+    num_leafs_per_bitmap = int(leaf_count / max_bitmaps) + (1 if num_unpacked_leafs > 0 else 0)
+    if num_leafs_per_bitmap > max_leafs_per_bitmap:
+        num_leafs_per_bitmap = max_leafs_per_bitmap
         num_unpacked_leafs = 0
-
-    combinations = [None] * num_combinations
+    combinations = [None] * num_leafs_per_bitmap
 
     combination = dict()
     for c in itertools.combinations(leafs, 1):
@@ -24,7 +23,7 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
     previous_combination = combination
     combinations[0] = list(combination.items())
 
-    for i in range(1, num_combinations):
+    for i in range(1, num_leafs_per_bitmap):
         if previous_combination:
             combination = dict()
             for c in itertools.combinations(leafs, i + 1):
@@ -45,14 +44,14 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
 
     # Assign leafs to bitmaps using the sorted combinations of leafs
     seen_leafs = set()
-    _num_combinations = num_combinations if num_unpacked_leafs == 0 else num_combinations - 1
+    _num_leafs_per_bitmap = num_leafs_per_bitmap if num_unpacked_leafs == 0 else num_leafs_per_bitmap - 1
     for i in range(max_bitmaps):
-        __num_combinations = _num_combinations
+        __num_leafs_per_bitmap = _num_leafs_per_bitmap
         if num_unpacked_leafs > 0:
-            __num_combinations += 1
+            __num_leafs_per_bitmap += 1
 
         while True:
-            combination = combinations[__num_combinations - 1]
+            combination = combinations[__num_leafs_per_bitmap - 1]
             if combination:
                 current_item = combination[0]
                 c, b = current_item[0], current_item[1][0]
@@ -61,38 +60,41 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
                     continue
 
                 for l in c:
-                    leafs_map[l]['has_bitmap'] = True
-                    leafs_map[l]['has_rule'] = False
-                    leafs_map[l]['~bitmap'] = b ^ leafs_map[l]['bitmap']
+                    leaf = leafs_map[l]
+                    leaf['has_bitmap'] = True
+                    leaf['has_rule'] = False
+                    leaf['~bitmap'] = b ^ leaf['bitmap']
 
                 seen_leafs |= set(c)
                 combination.remove(current_item)
                 break
             else:
-                __num_combinations -= 1
+                __num_leafs_per_bitmap -= 1
 
-        if __num_combinations <= _num_combinations:
-            _num_combinations = __num_combinations
+        if __num_leafs_per_bitmap <= _num_leafs_per_bitmap:
+            _num_leafs_per_bitmap = __num_leafs_per_bitmap
             num_unpacked_leafs = 0
         else:
             num_unpacked_leafs -= 1
 
     remaining_leafs = set(leafs) - seen_leafs
 
-    # Initializing default bitmap
-    data['default_bitmap'] = 0
-
     # Add a rule or assign leafs to default bitmap
+    default_bitmap = 0
     for l in remaining_leafs:
+        leaf = leafs_map[l]
         if leafs_to_rules_count_map[l] < max_rules_per_leaf:  # Add a rule in leaf
-            leafs_map[l]['has_bitmap'] = False
-            leafs_map[l]['has_rule'] = True
+            leaf['has_bitmap'] = False
+            leaf['has_rule'] = True
             leafs_to_rules_count_map[l] += 1
         else:  # Assign leaf to default bitmap
-            leafs_map[l]['has_bitmap'] = False
-            leafs_map[l]['has_rule'] = False
-            data['default_bitmap'] |= leafs_map[l]['bitmap']
+            leaf['has_bitmap'] = False
+            leaf['has_rule'] = False
+            default_bitmap |= leaf['bitmap']
 
     for l in remaining_leafs:
-        if not leafs_map[l]['has_rule']:
-            leafs_map[l]['~bitmap'] = data['default_bitmap'] ^ leafs_map[l]['bitmap']
+        leaf = leafs_map[l]
+        if not leaf['has_rule']:
+            leaf['~bitmap'] = default_bitmap ^ leaf['bitmap']
+
+    data['default_bitmap'] = default_bitmap
