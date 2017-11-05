@@ -20,8 +20,7 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
 
     for i in range(1, num_leafs_per_bitmap):
         combination = []
-        for j in range(len(good_combination)):
-            c, (b, _) = good_combination[j]
+        for c, (b, _) in good_combination:
             for l in good_leafs:
                 if l not in c:
                     _c = c + [l]

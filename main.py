@@ -53,7 +53,7 @@ elif True:
     MAX_VMS_PER_HOST = 20
     NUM_TENANTS = 3000
     MIN_VMS_PER_TENANT = 10
-    MAX_VMS_PER_TENANT = 5000
+    MAX_VMS_PER_TENANT = 1000
     VM_DIST = "expon"  # options: expon
     NUM_GROUPS = 100000
     MIN_GROUP_SIZE = 5
@@ -63,7 +63,7 @@ elif True:
     COLOCATE_NUM_HOSTS_PER_LEAF = 48
     NUM_BITMAPS = 5
     NUM_LEAFS_PER_BITMAP = 3
-    REDUNDANCY_PER_BITMAP = 0
+    REDUNDANCY_PER_BITMAP = 2
     MAX_BATCH_SIZE = 1
     ALGORITHM = 'fuzzy_match'
     SEED = 0
