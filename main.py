@@ -53,7 +53,7 @@ elif True:
     MAX_VMS_PER_HOST = 20
     NUM_TENANTS = 3000
     MIN_VMS_PER_TENANT = 10
-    MAX_VMS_PER_TENANT = 1000
+    MAX_VMS_PER_TENANT = 5000
     VM_DIST = "expon"  # options: expon
     NUM_GROUPS = 100000
     MIN_GROUP_SIZE = 5

@@ -1,4 +1,6 @@
 from simulation.utils import popcount
+from timeit import default_timer as timer
+
 
 def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to_rules_count_map, max_rules_per_leaf):
     leaf_count = data['leaf_count']
@@ -20,6 +22,8 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
     good_combination = [([l], (leafs_map[l]['bitmap'], 0)) for l in good_leafs]
     combinations[0] = good_combination
 
+    # print('combination loop starts')
+    # start = timer()
     for i in range(1, num_leafs_per_bitmap):
         combination = []
         for c, (b, _) in good_combination:
@@ -27,7 +31,7 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
                 if l not in c:
                     _c = c + [l]
                     _b = b | leafs_map[l]['bitmap']
-                    _r = sum([popcount(_b ^ leafs_map[l]['bitmap']) for l in _c])
+                    _r = sum([popcount(_b ^ leafs_map[_l]['bitmap']) for _l in _c])
 
                     if _r <= redundancy_per_bitmap:
                         combination += [(_c, (_b, _r))]
@@ -35,45 +39,59 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
         if combination:
             good_leafs = list(set([y for x in combination for y in x[0]]))
             good_combination = combination
-            combinations[i] = sorted(combination, key=lambda item: item[1][1])
         else:
             break
+    # print('combination loop stops: %s seconds' % (timer() - start))
+
+    for i in range(1, num_leafs_per_bitmap):
+        if combinations[i]:
+            combinations[i] = sorted(combinations[i], key=lambda item: item[1][1])
 
     # Assign leafs to bitmaps using the sorted combinations of leafs
+    # print('assignment loop starts')
+    # start = timer()
     seen_leafs = set()
     _num_leafs_per_bitmap = num_leafs_per_bitmap if num_unpacked_leafs == 0 else num_leafs_per_bitmap - 1
+    _j = 0
     for i in range(max_bitmaps):
         __num_leafs_per_bitmap = _num_leafs_per_bitmap
         if num_unpacked_leafs > 0:
             __num_leafs_per_bitmap += 1
 
+        is_assigned = False
         while True:
             combination = combinations[__num_leafs_per_bitmap - 1]
             if combination:
-                current_item = combination[0]
-                c, b = current_item[0], current_item[1][0]
-                _c = set(c)
-                if len(_c - seen_leafs) != len(c):
-                    combination.remove(current_item)
-                    continue
+                for j in range(_j, len(combination)):
+                    current_item = combination[j]
+                    c, b = current_item[0], current_item[1][0]
+                    _c = set(c)
+                    if len(_c - seen_leafs) != len(c):
+                        continue
 
-                for l in c:
-                    leaf = leafs_map[l]
-                    leaf['has_bitmap'] = True
-                    leaf['has_rule'] = False
-                    leaf['~bitmap'] = b ^ leaf['bitmap']
+                    for l in c:
+                        leaf = leafs_map[l]
+                        leaf['has_bitmap'] = True
+                        leaf['has_rule'] = False
+                        leaf['~bitmap'] = b ^ leaf['bitmap']
 
-                seen_leafs |= _c
-                combination.remove(current_item)
+                    is_assigned = True
+                    _j = j + 1
+                    seen_leafs |= _c
+                    break
+
+            if is_assigned:
                 break
             else:
                 __num_leafs_per_bitmap -= 1
+                _j = 0
 
         if __num_leafs_per_bitmap <= _num_leafs_per_bitmap:
             _num_leafs_per_bitmap = __num_leafs_per_bitmap
             num_unpacked_leafs = 0
         else:
             num_unpacked_leafs -= 1
+    # print('assignment loop finishes: %s seconds\n' % (timer() - start))
 
     remaining_leafs = set(leafs) - seen_leafs
 
