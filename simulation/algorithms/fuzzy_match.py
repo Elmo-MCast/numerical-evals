@@ -1,3 +1,5 @@
+from simulation.utils import popcount
+
 def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to_rules_count_map, max_rules_per_leaf):
     leaf_count = data['leaf_count']
     if leaf_count <= max_bitmaps:
@@ -25,7 +27,7 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
                 if l not in c:
                     _c = c + [l]
                     _b = b | leafs_map[l]['bitmap']
-                    _r = sum([bin(_b ^ leafs_map[l]['bitmap'])[2:].count('1') for l in _c])
+                    _r = sum([popcount(_b ^ leafs_map[l]['bitmap']) for l in _c])
 
                     if _r <= redundancy_per_bitmap:
                         combination += [(_c, (_b, _r))]

@@ -1,5 +1,4 @@
 import pandas as pd
-import seaborn as sb
 
 
 class Plot:
@@ -34,17 +33,17 @@ class Plot:
                ylabel='Percentage of groups covered (all tenants)')
         self.plt.show()
 
-    def cdf_rules_for_all_leafs(self):
-        ax = sb.kdeplot(self.data.rules_for_all_leafs_pre_optimization, cumulative=True)
-        ax.set(xlabel="Number of rules using %s bitmaps (all leafs)" % self.data.placement['num_bitmaps'],
-               ylabel='CDF')
-        self.plt.show()
-
-    def cdf_redundancy_for_all_groups_in_all_tenants(self):
-        ax = sb.kdeplot(self.data.redundancy_for_all_groups_in_all_tenants, cumulative=True)
-        ax.set(xlabel="Redundancy for all groups using %s bitmaps (all leafs)" % self.data.placement['num_bitmaps'],
-               ylabel='CDF')
-        self.plt.show()
+    # def cdf_rules_for_all_leafs(self):
+    #     ax = sb.kdeplot(self.data.rules_for_all_leafs_pre_optimization, cumulative=True)
+    #     ax.set(xlabel="Number of rules using %s bitmaps (all leafs)" % self.data.placement['num_bitmaps'],
+    #            ylabel='CDF')
+    #     self.plt.show()
+    #
+    # def cdf_redundancy_for_all_groups_in_all_tenants(self):
+    #     ax = sb.kdeplot(self.data.redundancy_for_all_groups_in_all_tenants, cumulative=True)
+    #     ax.set(xlabel="Redundancy for all groups using %s bitmaps (all leafs)" % self.data.placement['num_bitmaps'],
+    #            ylabel='CDF')
+    #     self.plt.show()
 
     def hist_redundancy_for_all_groups_in_all_tenants(self):
         ax = self.data.redundancy_for_all_groups_in_all_tenants.plot(kind='hist')

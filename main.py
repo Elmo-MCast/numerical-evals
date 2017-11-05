@@ -63,7 +63,7 @@ elif True:
     COLOCATE_NUM_HOSTS_PER_LEAF = 48
     NUM_BITMAPS = 5
     NUM_LEAFS_PER_BITMAP = 3
-    REDUNDANCY_PER_BITMAP = 2
+    REDUNDANCY_PER_BITMAP = 0
     MAX_BATCH_SIZE = 1
     ALGORITHM = 'fuzzy_match'
     SEED = 0
@@ -134,6 +134,8 @@ cloud = Cloud(num_leafs=NUM_LEAFS,
               algorithm=ALGORITHM)
 
 data = Data(cloud)
+
+print(data.algorithm_elapse_time().describe())
 
 # if LOGS_DIR:
 #     _dir = LOGS_DIR + '/mcast-dcn/seed/%s/bitmaps/%s/colocate-hosts/%s' % \
