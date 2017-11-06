@@ -21,6 +21,7 @@ class Tenants:
         self.num_groups = num_groups
         self.min_group_size = min_group_size
         self.group_size_dist = group_size_dist
+        self.debug = debug
 
         self.data['tenants'] = {'num_tenants': num_tenants,
                                 'num_hosts': self.num_hosts,
@@ -44,27 +45,13 @@ class Tenants:
 
         self._get_tenant_to_vm_count_map()
 
-        if debug:
-            print(pd.Series(self.tenants_maps['vm_counts']).describe())
-            print("VM Count: %s" % self.tenants['vm_count'])
-
         self._get_tenant_to_group_count_map()
 
-        if debug:
-            print(pd.Series(self.tenants_maps['group_counts']).describe())
-            print("Sum: %s" % self.tenants['group_count'])
-
+        groups = self.tenants_maps['groups']
         for t in range(self.num_tenants):
-            self.tenants_maps['groups'][t] = {'sizes': None, 'vms': None}
+            groups[t] = {'sizes': None, 'vms': None}
 
         self._get_tenant_groups_to_sizes_map()
-
-        if debug:
-            _groups = self.tenants_maps['groups']
-            _group_sizes_for_all_tenants = []
-            for t in range(self.num_tenants):
-                _group_sizes_for_all_tenants += list(_groups[t]['sizes'])
-            print(pd.Series(_group_sizes_for_all_tenants).describe())
 
         # self._get_tenant_groups_to_vms_map()
         self._run_tenant_groups_to_vms_map()
@@ -76,13 +63,17 @@ class Tenants:
             outliers = np.where(samples < 0.02)
             vm_counts[outliers] = np.random.randint(low=self.min_vms, high=self.max_vms + 1, size=len(outliers[0]))
             non_outliers = np.where(samples >= 0.02)
-            vm_counts[non_outliers] = (((np.random.exponential(scale=1/4, size=len(non_outliers[0])) / 10)
+            vm_counts[non_outliers] = (((np.random.exponential(scale=1/4.06, size=len(non_outliers[0])) / 10)
                                        * (self.max_vms - self.min_vms)).astype(int)
                                        % (self.max_vms - self.min_vms) + self.min_vms)
             self.tenants['vm_count'] = sum(vm_counts)
             self.tenants_maps['vm_counts'] = vm_counts
         else:
             raise (Exception("invalid dist parameter for vm allocation"))
+
+        if self.debug:
+            print(pd.Series(self.tenants_maps['vm_counts']).describe())
+            print("VM Count: %s" % self.tenants['vm_count'])
 
     def _get_tenant_to_group_count_map(self):
         # ... weighted assignment of groups (based on VMs) to tenants
@@ -91,6 +82,10 @@ class Tenants:
 
         self.tenants['group_count'] = sum(group_counts)
         self.tenants_maps['group_counts'] = group_counts
+
+        if self.debug:
+            print(pd.Series(self.tenants_maps['group_counts']).describe())
+            print("Sum: %s" % self.tenants['group_count'])
 
     def _get_tenant_groups_to_sizes_map(self):
         if self.group_size_dist == 'uniform':
@@ -121,6 +116,13 @@ class Tenants:
                 groups[t]['sizes'] = sizes
         else:
             raise (Exception("invalid dist parameter for group size allocation"))
+
+        if self.debug:
+            _groups = self.tenants_maps['groups']
+            _group_sizes_for_all_tenants = []
+            for t in range(self.num_tenants):
+                _group_sizes_for_all_tenants += list(_groups[t]['sizes'])
+            print(pd.Series(_group_sizes_for_all_tenants).describe())
 
     # def _get_tenant_groups_to_vms_map(self):
     #     for t in bar_range(self.num_tenants, desc='tenants:groups->vms'):

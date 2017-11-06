@@ -59,7 +59,7 @@ elif True:
     NUM_GROUPS = 100000
     MIN_GROUP_SIZE = 5
     GROUP_SIZE_DIST = "wve"  # options: uniform and wve
-    PLACEMENT_DIST = "colocate-random-linear"  # options: uniform, colocate-random-linear,
+    PLACEMENT_DIST = "uniform"  # options: uniform, colocate-random-linear,
     # colocate-random-random, sorted-colocate-random-linear, and sorted-colocate-random-random
     COLOCATE_NUM_HOSTS_PER_LEAF = 48
     NUM_BITMAPS = 5
