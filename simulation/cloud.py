@@ -1,5 +1,4 @@
 from simulation.network import Network
-from simulation.optimization import Optimization
 from simulation.placement import Placement
 from simulation.tenants import Tenants
 
@@ -20,10 +19,6 @@ class Cloud:
                  placement_dist='uniform',  # options: uniform, colocate-random-linear, and colocate-random-random
                  colocate_num_hosts_per_leaf=48,
                  num_bitmaps=32,
-                 num_leafs_per_bitmap=3,
-                 redundancy_per_bitmap=10,
-                 max_batch_size=1,
-                 algorithm='single_match',  # options: single_match, exact_match
                  multi_threaded=True,
                  num_jobs=10):
         self.data = dict()
@@ -42,6 +37,3 @@ class Cloud:
 
         Placement(data=self.data, dist=placement_dist, num_bitmaps=num_bitmaps,
                   num_hosts_per_leaf=colocate_num_hosts_per_leaf, multi_threaded=multi_threaded, num_jobs=num_jobs)
-
-        Optimization(data=self.data, max_batch_size=max_batch_size, algorithm=algorithm,
-                     num_leafs_per_bitmap=num_leafs_per_bitmap, redundancy_per_bitmap=redundancy_per_bitmap)

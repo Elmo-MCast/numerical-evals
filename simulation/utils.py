@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import progressbar
 from cffi import FFI
+import pickle
 
 ffi = FFI()
 
@@ -34,6 +35,20 @@ uint64_t popcount(uint64_t x) {
 
 def popcount(x):
     return C.popcount(x)
+
+
+def dump_obj(o, f):
+    _f = open(f, 'wb')
+    pickle.dump(o, _f)
+    _f.close()
+
+
+def load_obj(f):
+    _f = open(f, 'rb')
+    o = pickle.load(_f)
+    _f.close()
+    return o
+
 
 # def ecdf(sample):
 #     # convert sample to a numpy array, if it isn't already

@@ -1,9 +1,7 @@
 import sys
 import random
-
 from simulation.cloud import Cloud
-from simulation.data import Data
-from simulation.log import *
+from simulation.utils import dump_obj
 
 if len(sys.argv) > 1:
     NUM_LEAFS = int(sys.argv[1])
@@ -20,11 +18,10 @@ if len(sys.argv) > 1:
     PLACEMENT_DIST = sys.argv[12]  # options: uniform, colocate-random-linear, and colocate-random-random
     COLOCATE_NUM_HOSTS_PER_LEAF = int(sys.argv[13])
     NUM_BITMAPS = int(sys.argv[14])
-    NUM_LEAFS_PER_BITMAP = int(sys.argv[15])
-    MAX_BATCH_SIZE = int(sys.argv[16])
-    ALGORITHM = sys.argv[17]
+    MULTI_THREADED = True if sys.argv[15] == 'True' else False
+    NUM_JOBS = int(sys.argv[16])
+    DUMP_FILE = sys.argv[17]
     SEED = int(sys.argv[18])
-    LOGS_DIR = sys.argv[19]
 elif False:
     NUM_LEAFS = 576
     NUM_HOSTS_PER_LEAF = 48
@@ -40,34 +37,30 @@ elif False:
     PLACEMENT_DIST = "colocate-random-linear"  # options: uniform, colocate-random-linear, and colocate-random-random
     COLOCATE_NUM_HOSTS_PER_LEAF = 48
     NUM_BITMAPS = 10
-    NUM_LEAFS_PER_BITMAP = 1
-    REDUNDANCY_PER_BITMAP = 48
-    MAX_BATCH_SIZE = 1
-    ALGORITHM = 'single_match'
+    MULTI_THREADED = True
+    NUM_JOBS = 5
+    DUMP_FILE = 'simulation/output/cloud.pkl'
     SEED = 0
-    LOGS_DIR = None
 elif True:
     NUM_LEAFS = 576
     NUM_HOSTS_PER_LEAF = 48
     NUM_RULES_PER_LEAF = 1
     MAX_VMS_PER_HOST = 20
-    NUM_TENANTS = 3000
+    NUM_TENANTS = 30
     MIN_VMS_PER_TENANT = 10
     MAX_VMS_PER_TENANT = 5000
     VM_DIST = "expon"  # options: expon
-    NUM_GROUPS = 100000
+    NUM_GROUPS = 1000
     MIN_GROUP_SIZE = 5
     GROUP_SIZE_DIST = "uniform"  # options: uniform and wve
     PLACEMENT_DIST = "colocate-random-linear"  # options: uniform, colocate-random-linear,
     # colocate-random-random, sorted-colocate-random-linear, and sorted-colocate-random-random
     COLOCATE_NUM_HOSTS_PER_LEAF = 48
     NUM_BITMAPS = 5
-    NUM_LEAFS_PER_BITMAP = 3
-    REDUNDANCY_PER_BITMAP = 0
-    MAX_BATCH_SIZE = 1
-    ALGORITHM = 'fuzzy_match'
+    MULTI_THREADED = True
+    NUM_JOBS = 5
+    DUMP_FILE = 'simulation/output/cloud.pkl'
     SEED = 0
-    LOGS_DIR = None
 else:
     raise (Exception('invalid parameters'))
 
@@ -87,10 +80,9 @@ print("""
      placement_dist=%s,
      colocate_hosts_per_leaf=%s,
      bitmaps=%s,
-     leafs_per_bitmap=%s,
-     redundancy_per_bitmap=%s,
-     batch_size=%s,
-     algorithm=%s,
+     multi_threaded=%s,
+     num_jobs=%s,
+     dump_file=%s,
      seed=%s)
 """ % (NUM_LEAFS,
        NUM_HOSTS_PER_LEAF,
@@ -106,10 +98,9 @@ print("""
        PLACEMENT_DIST,
        COLOCATE_NUM_HOSTS_PER_LEAF,
        NUM_BITMAPS,
-       NUM_LEAFS_PER_BITMAP,
-       REDUNDANCY_PER_BITMAP,
-       MAX_BATCH_SIZE,
-       ALGORITHM,
+       MULTI_THREADED,
+       NUM_JOBS,
+       DUMP_FILE,
        SEED))
 
 random.seed(SEED)
@@ -128,18 +119,7 @@ cloud = Cloud(num_leafs=NUM_LEAFS,
               placement_dist=PLACEMENT_DIST,  # options: uniform, colocate-random-linear, and colocate-random-random
               colocate_num_hosts_per_leaf=COLOCATE_NUM_HOSTS_PER_LEAF,
               num_bitmaps=NUM_BITMAPS,
-              num_leafs_per_bitmap=NUM_LEAFS_PER_BITMAP,
-              redundancy_per_bitmap=REDUNDANCY_PER_BITMAP,
-              max_batch_size=MAX_BATCH_SIZE,
-              algorithm=ALGORITHM)
+              multi_threaded=MULTI_THREADED,
+              num_jobs=NUM_JOBS)
 
-data = Data(cloud)
-
-print(data.algorithm_elapse_time().describe())
-
-# if LOGS_DIR:
-#     _dir = LOGS_DIR + '/mcast-dcn/seed/%s/bitmaps/%s/colocate-hosts/%s' % \
-#                       (SEED, NUM_BITMAPS, COLOCATE_NUM_HOSTS_PER_LEAF)
-#     os.makedirs(_dir, exist_ok=True)
-#
-#     log = Log(data, log_dir=_dir)
+dump_obj(cloud.data, DUMP_FILE)

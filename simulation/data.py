@@ -4,15 +4,15 @@ from simulation.utils import bar_range
 
 
 class Data:
-    def __init__(self, cloud):
-        self.network = cloud.data['network']
-        self.tenants = cloud.data['tenants']
+    def __init__(self, data):
+        self.network = data['network']
+        self.tenants = data['tenants']
         self.tenants_maps = self.tenants['maps']
-        self.placement = cloud.data['placement']
-        self.optimization = cloud.data['optimization']
+        self.placement = data['placement']
+        self.optimizer = data['optimizer']
 
     def algorithm_elapse_time(self):
-        return pd.Series(self.optimization['algorithm_elapse_time'])
+        return pd.Series(self.optimizer['algorithm_elapse_time'])
 
     def vm_count_for_all_tenants(self):
         return pd.Series([self.tenants_maps[t]['vm_count'] for t in range(self.tenants['num_tenants'])])
