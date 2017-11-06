@@ -142,7 +142,7 @@ class Tenants:
     @staticmethod
     def _get_tenant_groups_to_vms_map(vm_counts, group_counts, groups, num_tenants):
         groups_vms = [None] * num_tenants
-        for t in bar_range(num_tenants, desc="tenants:groups->vms"):
+        for t in range(num_tenants):
             vm_count = vm_counts[t]
             group_count = group_counts[t]
             group = groups[t]
@@ -168,7 +168,7 @@ class Tenants:
         # results = pool.map(unwrap_tenant_groups_to_vms_map, [i for i in inputs])
 
         num_cpus = multiprocessing.cpu_count()
-        results = Parallel(n_jobs=num_cpus, backend="multiprocessing")(
+        results = Parallel(n_jobs=num_cpus, backend="threading")(
             delayed(unwrap_tenant_groups_to_vms_map)(i) for i in inputs)
 
         groups = self.tenants_maps['groups']

@@ -331,7 +331,7 @@ class Placement:
                                                          vm_to_leaf_map, num_tenants, num_hosts_per_leaf):
         groups_leafs = [None] * num_tenants
         hosts, bitmap = 0, 1
-        for t in bar_range(num_tenants, desc='placement:leafs->bitmaps'):
+        for t in range(num_tenants):
             group_count = group_counts[t]
             vm_to_host = vm_to_host_map[t]
             vm_to_leaf = vm_to_leaf_map[t]
@@ -374,7 +374,7 @@ class Placement:
         # results = pool.map(unwrap_tenant_groups_leafs_to_hosts_and_bitmap_map, [i for i in inputs])
 
         num_cpus = multiprocessing.cpu_count()
-        results = Parallel(n_jobs=num_cpus, backend="multiprocessing")(
+        results = Parallel(n_jobs=num_cpus, backend="threading")(
             delayed(unwrap_tenant_groups_leafs_to_hosts_and_bitmap_map)(i) for i in inputs)
 
         p_groups = self.placement_maps['groups']
