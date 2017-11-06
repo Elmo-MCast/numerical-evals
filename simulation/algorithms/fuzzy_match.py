@@ -47,70 +47,70 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
         if combinations[i]:
             combinations[i] = sorted(combinations[i], key=lambda item: item[1][1])
 
-    # Assign leafs to bitmaps using the sorted combinations of leafs
-    # print('assignment loop starts')
-    # start = timer()
-    seen_leafs = set()
-    _num_leafs_per_bitmap = num_leafs_per_bitmap if num_unpacked_leafs == 0 else num_leafs_per_bitmap - 1
-    _j = 0
-    for i in range(max_bitmaps):
-        __num_leafs_per_bitmap = _num_leafs_per_bitmap
-        if num_unpacked_leafs > 0:
-            __num_leafs_per_bitmap += 1
-
-        is_assigned = False
-        while True:
-            combination = combinations[__num_leafs_per_bitmap - 1]
-            if combination:
-                for j in range(_j, len(combination)):
-                    current_item = combination[j]
-                    c, b = current_item[0], current_item[1][0]
-                    _c = set(c)
-                    if len(_c - seen_leafs) != len(c):
-                        continue
-
-                    for l in c:
-                        leaf = leafs_map[l]
-                        leaf['has_bitmap'] = True
-                        leaf['has_rule'] = False
-                        leaf['~bitmap'] = b ^ leaf['bitmap']
-
-                    is_assigned = True
-                    _j = j + 1
-                    seen_leafs |= _c
-                    break
-
-            if is_assigned:
-                break
-            else:
-                __num_leafs_per_bitmap -= 1
-                _j = 0
-
-        if __num_leafs_per_bitmap <= _num_leafs_per_bitmap:
-            _num_leafs_per_bitmap = __num_leafs_per_bitmap
-            num_unpacked_leafs = 0
-        else:
-            num_unpacked_leafs -= 1
-    # print('assignment loop finishes: %s seconds\n' % (timer() - start))
-
-    remaining_leafs = set(leafs) - seen_leafs
-
-    # Add a rule or assign leafs to default bitmap
-    default_bitmap = 0
-    for l in remaining_leafs:
-        leaf = leafs_map[l]
-        if leafs_to_rules_count_map[l] < max_rules_per_leaf:  # Add a rule in leaf
-            leaf['has_bitmap'] = False
-            leaf['has_rule'] = True
-            leafs_to_rules_count_map[l] += 1
-        else:  # Assign leaf to default bitmap
-            leaf['has_bitmap'] = False
-            leaf['has_rule'] = False
-            default_bitmap |= leaf['bitmap']
-
-    for l in remaining_leafs:
-        leaf = leafs_map[l]
-        if not leaf['has_rule']:
-            leaf['~bitmap'] = default_bitmap ^ leaf['bitmap']
-
-    data['default_bitmap'] = default_bitmap
+    # # Assign leafs to bitmaps using the sorted combinations of leafs
+    # # print('assignment loop starts')
+    # # start = timer()
+    # seen_leafs = set()
+    # _num_leafs_per_bitmap = num_leafs_per_bitmap if num_unpacked_leafs == 0 else num_leafs_per_bitmap - 1
+    # _j = 0
+    # for i in range(max_bitmaps):
+    #     __num_leafs_per_bitmap = _num_leafs_per_bitmap
+    #     if num_unpacked_leafs > 0:
+    #         __num_leafs_per_bitmap += 1
+    #
+    #     is_assigned = False
+    #     while True:
+    #         combination = combinations[__num_leafs_per_bitmap - 1]
+    #         if combination:
+    #             for j in range(_j, len(combination)):
+    #                 current_item = combination[j]
+    #                 c, b = current_item[0], current_item[1][0]
+    #                 _c = set(c)
+    #                 if len(_c - seen_leafs) != len(c):
+    #                     continue
+    #
+    #                 for l in c:
+    #                     leaf = leafs_map[l]
+    #                     leaf['has_bitmap'] = True
+    #                     leaf['has_rule'] = False
+    #                     leaf['~bitmap'] = b ^ leaf['bitmap']
+    #
+    #                 is_assigned = True
+    #                 _j = j + 1
+    #                 seen_leafs |= _c
+    #                 break
+    #
+    #         if is_assigned:
+    #             break
+    #         else:
+    #             __num_leafs_per_bitmap -= 1
+    #             _j = 0
+    #
+    #     if __num_leafs_per_bitmap <= _num_leafs_per_bitmap:
+    #         _num_leafs_per_bitmap = __num_leafs_per_bitmap
+    #         num_unpacked_leafs = 0
+    #     else:
+    #         num_unpacked_leafs -= 1
+    # # print('assignment loop finishes: %s seconds\n' % (timer() - start))
+    #
+    # remaining_leafs = set(leafs) - seen_leafs
+    #
+    # # Add a rule or assign leafs to default bitmap
+    # default_bitmap = 0
+    # for l in remaining_leafs:
+    #     leaf = leafs_map[l]
+    #     if leafs_to_rules_count_map[l] < max_rules_per_leaf:  # Add a rule in leaf
+    #         leaf['has_bitmap'] = False
+    #         leaf['has_rule'] = True
+    #         leafs_to_rules_count_map[l] += 1
+    #     else:  # Assign leaf to default bitmap
+    #         leaf['has_bitmap'] = False
+    #         leaf['has_rule'] = False
+    #         default_bitmap |= leaf['bitmap']
+    #
+    # for l in remaining_leafs:
+    #     leaf = leafs_map[l]
+    #     if not leaf['has_rule']:
+    #         leaf['~bitmap'] = default_bitmap ^ leaf['bitmap']
+    #
+    # data['default_bitmap'] = default_bitmap

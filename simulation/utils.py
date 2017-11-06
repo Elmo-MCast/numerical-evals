@@ -1,13 +1,17 @@
 import numpy as np
 import pandas as pd
-from tqdm import trange, tnrange
+from tqdm import tqdm, trange
 from cffi import FFI
 
 ffi = FFI()
 
 
-def bar_range(x, desc):
-    return trange(x, desc=desc)
+def bar_range(n, desc):
+    return trange(n, desc=desc)
+
+
+def bar_tqdm(r, desc):
+    return tqdm(r, desc=desc)
 
 
 ffi.cdef("""

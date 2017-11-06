@@ -1,5 +1,6 @@
 import sys
 import random
+import numpy as np
 
 from simulation.cloud import Cloud
 from simulation.data import Data
@@ -57,7 +58,7 @@ elif True:
     VM_DIST = "expon"  # options: expon
     NUM_GROUPS = 100000
     MIN_GROUP_SIZE = 5
-    GROUP_SIZE_DIST = "uniform"  # options: uniform and wve
+    GROUP_SIZE_DIST = "wve"  # options: uniform and wve
     PLACEMENT_DIST = "colocate-random-linear"  # options: uniform, colocate-random-linear,
     # colocate-random-random, sorted-colocate-random-linear, and sorted-colocate-random-random
     COLOCATE_NUM_HOSTS_PER_LEAF = 48
@@ -113,6 +114,7 @@ print("""
        SEED))
 
 random.seed(SEED)
+np.random.seed(SEED)
 
 cloud = Cloud(num_leafs=NUM_LEAFS,
               num_hosts_per_leaf=NUM_HOSTS_PER_LEAF,
@@ -133,9 +135,9 @@ cloud = Cloud(num_leafs=NUM_LEAFS,
               max_batch_size=MAX_BATCH_SIZE,
               algorithm=ALGORITHM)
 
-data = Data(cloud)
-
-print(data.algorithm_elapse_time().describe())
+# data = Data(cloud)
+#
+# print(data.algorithm_elapse_time().describe())
 
 # if LOGS_DIR:
 #     _dir = LOGS_DIR + '/mcast-dcn/seed/%s/bitmaps/%s/colocate-hosts/%s' % \

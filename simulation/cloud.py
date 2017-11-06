@@ -36,10 +36,10 @@ class Cloud:
                 num_tenants=num_tenants,
                 min_vms=min_vms_per_tenant, max_vms=max_vms_per_tenant, vm_dist=vm_dist,
                 num_groups=num_groups, min_group_size=min_group_size,
-                group_size_dist=group_size_dist, debug=False)
+                group_size_dist=group_size_dist, debug=True)
 
-        Placement(data=self.data, dist=placement_dist, num_bitmaps=num_bitmaps,
-                  num_hosts_per_leaf=colocate_num_hosts_per_leaf)
-
-        Optimization(data=self.data, max_batch_size=max_batch_size, algorithm=algorithm,
-                     num_leafs_per_bitmap=num_leafs_per_bitmap, redundancy_per_bitmap=redundancy_per_bitmap)
+        # Placement(data=self.data, dist=placement_dist, num_bitmaps=num_bitmaps,
+        #           num_hosts_per_leaf=colocate_num_hosts_per_leaf)
+        #
+        # Optimization(data=self.data, max_batch_size=max_batch_size, algorithm=algorithm,
+        #              num_leafs_per_bitmap=num_leafs_per_bitmap, redundancy_per_bitmap=redundancy_per_bitmap)
