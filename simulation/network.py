@@ -25,20 +25,15 @@ class Network:
 
     def _get_leaf_to_hosts_map(self):
         self.network_maps['leaf_to_hosts'] = [None] * self.num_leafs
+        _leaf_to_hosts = self.network_maps['leaf_to_hosts']
 
         for l in bar_range(self.num_leafs, desc='network:leaf->hosts'):
-            self.network_maps['leaf_to_hosts'][l] = [(l * self.num_hosts_per_leaf) + h
-                                                     for h in range(self.num_hosts_per_leaf)]
+            _leaf_to_hosts[l] = [(l * self.num_hosts_per_leaf) + h
+                                 for h in range(self.num_hosts_per_leaf)]
 
     def _get_host_to_leaf_map(self):
-        self.network_maps['host_to_leaf'] = []
+        _host_to_leaf = []
         for l in bar_range(self.num_leafs, desc='network:host->leaf'):
-            self.network_maps['host_to_leaf'] += [l for _ in range(self.num_hosts_per_leaf)]
+            _host_to_leaf += [l for _ in range(self.num_hosts_per_leaf)]
+        self.network_maps['host_to_leaf'] = _host_to_leaf
 
-
-if __name__ == "__main__":
-    data = dict()
-
-    Network(data, 48, 48)
-
-    print(data)
