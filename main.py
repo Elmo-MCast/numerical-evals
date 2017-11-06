@@ -48,7 +48,7 @@ elif False:
     SEED = 0
     LOGS_DIR = None
 elif True:
-    NUM_LEAFS = 576
+    NUM_LEAFS = 1056
     NUM_HOSTS_PER_LEAF = 48
     NUM_RULES_PER_LEAF = 1
     MAX_VMS_PER_HOST = 20
@@ -56,17 +56,18 @@ elif True:
     MIN_VMS_PER_TENANT = 10
     MAX_VMS_PER_TENANT = 5000
     VM_DIST = "expon"  # options: expon
-    NUM_GROUPS = 100000
+    NUM_GROUPS = 1000000
     MIN_GROUP_SIZE = 5
-    GROUP_SIZE_DIST = "wve"  # options: uniform and wve
-    PLACEMENT_DIST = "uniform"  # options: uniform, colocate-random-linear,
+    GROUP_SIZE_DIST = "uniform"  # options: uniform and wve
+    PLACEMENT_DIST = "colocate-random-linear"  # options: uniform, colocate-random-linear,
     # colocate-random-random, sorted-colocate-random-linear, and sorted-colocate-random-random
     COLOCATE_NUM_HOSTS_PER_LEAF = 48
-    NUM_BITMAPS = 5
+    NUM_BITMAPS = 10
     NUM_LEAFS_PER_BITMAP = 3
     REDUNDANCY_PER_BITMAP = 0
     MAX_BATCH_SIZE = 1
     ALGORITHM = 'fuzzy_match'
+    NUM_JOBS = 15
     SEED = 0
     LOGS_DIR = None
 else:
@@ -92,6 +93,7 @@ print("""
      redundancy_per_bitmap=%s,
      batch_size=%s,
      algorithm=%s,
+     num_jobs=%s,
      seed=%s)
 """ % (NUM_LEAFS,
        NUM_HOSTS_PER_LEAF,
@@ -111,6 +113,7 @@ print("""
        REDUNDANCY_PER_BITMAP,
        MAX_BATCH_SIZE,
        ALGORITHM,
+       NUM_JOBS,
        SEED))
 
 random.seed(SEED)
@@ -133,7 +136,8 @@ cloud = Cloud(num_leafs=NUM_LEAFS,
               num_leafs_per_bitmap=NUM_LEAFS_PER_BITMAP,
               redundancy_per_bitmap=REDUNDANCY_PER_BITMAP,
               max_batch_size=MAX_BATCH_SIZE,
-              algorithm=ALGORITHM)
+              algorithm=ALGORITHM,
+              num_jobs=NUM_JOBS)
 
 # data = Data(cloud)
 #

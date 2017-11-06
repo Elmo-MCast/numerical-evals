@@ -23,7 +23,8 @@ class Cloud:
                  num_leafs_per_bitmap=3,
                  redundancy_per_bitmap=10,
                  max_batch_size=1,
-                 algorithm='single_match'):  # options: single_match, exact_match
+                 algorithm='single_match',
+                 num_jobs=4):  # options: single_match, exact_match
         self.data = dict()
 
         Network(data=self.data,
@@ -36,10 +37,13 @@ class Cloud:
                 num_tenants=num_tenants,
                 min_vms=min_vms_per_tenant, max_vms=max_vms_per_tenant, vm_dist=vm_dist,
                 num_groups=num_groups, min_group_size=min_group_size,
-                group_size_dist=group_size_dist, debug=True)
+                group_size_dist=group_size_dist, num_jobs=num_jobs, debug=False)
 
         Placement(data=self.data, dist=placement_dist, num_bitmaps=num_bitmaps,
-                  num_hosts_per_leaf=colocate_num_hosts_per_leaf)
+                  num_hosts_per_leaf=colocate_num_hosts_per_leaf, num_jobs=num_jobs)
+
+        groups = self.data['placement']['maps']['groups']
+        pass
 
         # Optimization(data=self.data, max_batch_size=max_batch_size, algorithm=algorithm,
         #              num_leafs_per_bitmap=num_leafs_per_bitmap, redundancy_per_bitmap=redundancy_per_bitmap)

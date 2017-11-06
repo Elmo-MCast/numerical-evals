@@ -22,14 +22,16 @@ class Network:
         self.network_maps = self.network['maps']
 
         self._get_leaf_to_hosts_map()
+        print('network:leaf->hosts ... done')
 
         self._get_host_to_leaf_map()
+        print('network:host->leaf ... done')
 
     def _get_leaf_to_hosts_map(self):
         _leaf_to_hosts_map = np.empty(shape=(self.num_leafs, self.num_hosts_per_leaf), dtype=int)
 
         _leaf_to_hosts_map[0, :] = np.array(range(self.num_hosts_per_leaf))
-        for l in bar_tqdm(range(1, self.num_leafs), desc='network:leaf->hosts'):
+        for l in range(1, self.num_leafs):
             _leaf_to_hosts_map[l, :] = _leaf_to_hosts_map[l - 1, :] + self.num_hosts_per_leaf
 
         self.network_maps['leaf_to_hosts'] = _leaf_to_hosts_map
@@ -37,8 +39,8 @@ class Network:
     def _get_host_to_leaf_map(self):
         _host_to_leaf_map = np.empty(shape=self.num_hosts, dtype=int)
 
-        for l in bar_range(self.num_leafs, desc='network:host->leaf'):
+        for l in range(self.num_leafs):
             i = l * self.num_hosts_per_leaf
-            _host_to_leaf_map[i:i+self.num_hosts_per_leaf] = l
+            _host_to_leaf_map[i:i + self.num_hosts_per_leaf] = l
 
         self.network_maps['host_to_leaf'] = _host_to_leaf_map
