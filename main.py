@@ -67,7 +67,7 @@ elif True:
     REDUNDANCY_PER_BITMAP = 0
     MAX_BATCH_SIZE = 1
     ALGORITHM = 'fuzzy_match'
-    NUM_JOBS = 15
+    NUM_JOBS = 4
     SEED = 0
     LOGS_DIR = None
 else:

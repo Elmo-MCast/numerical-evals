@@ -4,8 +4,8 @@ from joblib import Parallel, delayed
 from simulation.utils import bar_range, bar_tqdm
 
 
-def unwrap_tenant_groups_to_leafs_and_count_map(arg, **kwarg):
-    return Placement._get_tenant_groups_to_leafs_and_count_map(*arg, **kwarg)
+# def unwrap_tenant_groups_to_leafs_and_count_map(arg, **kwarg):
+#     return Placement._get_tenant_groups_to_leafs_and_count_map(*arg, **kwarg)
 
 
 def unwrap_tenant_groups_leafs_to_hosts_and_bitmap_map(arg, **kwarg):
@@ -55,8 +55,8 @@ class Placement:
                              'leafs': None}}
 
         # self._get_tenant_groups_to_leafs_and_count_map()
-        self._run_tenant_groups_to_leafs_and_count_map()
-        print('placement:groups->leafs ... done')
+        # self._run_tenant_groups_to_leafs_and_count_map()
+        # print('placement:groups->leafs ... done')
 
         # self._get_tenant_groups_leafs_to_hosts_and_bitmap_map()
         self._run_tenant_groups_leafs_to_hosts_and_bitmap_map()
@@ -249,50 +249,50 @@ class Placement:
     #             p_leafs[g] = np.unique(vm_to_leaf[t_group_vms[g]])
     #             p_leaf_counts[g] = len(p_leafs[g])
 
-    @staticmethod
-    def _get_tenant_groups_to_leafs_and_count_map(group_counts, t_groups, vm_to_leaf_map, num_tenants):
-        groups = [{'leafs': None, 'leaf_counts': None} for _ in range(num_tenants)]
-        for t in range(num_tenants):
-            group_count = group_counts[t]
-            vm_to_leaf = vm_to_leaf_map[t]
-            t_group = t_groups[t]
-            t_group_vms = t_group['vms']
-            group = groups[t]
-            group['leafs'] = [None] * group_count
-            p_leafs = group['leafs']
-            group['leaf_counts'] = np.empty(shape=group_count, dtype=int)
-            p_leaf_counts = group['leaf_counts']
-            for g in range(group_count):
-                p_leafs[g] = np.unique(vm_to_leaf[t_group_vms[g]])
-                p_leaf_counts[g] = len(p_leafs[g])
-        return groups
-
-    def _run_tenant_groups_to_leafs_and_count_map(self):
-        if (self.num_tenants % self.num_jobs) != 0:
-            raise (Exception('input not divisible by num_jobs'))
-
-        input_size = int(self.num_tenants / self.num_jobs)
-        input_groups = [(i, i + input_size) for i in range(0, self.num_tenants, input_size)]
-        inputs = [(self.tenants_maps['group_counts'][i:j],
-                   self.tenants_maps['groups'][i:j],
-                   self.placement_maps['vm_to_leaf'][i:j],
-                   input_size) for i, j in input_groups]
-
-        # pool = multiprocessing.Pool()
-        # results = pool.map(unwrap_tenant_groups_to_leafs_and_count_map, [i for i in inputs])
-
-        num_cpus = multiprocessing.cpu_count()
-        results = Parallel(n_jobs=num_cpus, backend="threading")(
-            delayed(unwrap_tenant_groups_to_leafs_and_count_map)(i) for i in inputs)
-
-        p_groups = self.placement_maps['groups']
-        for i in range(len(results)):
-            result = results[i]
-            t_low, t_high = input_groups[i]
-            for j, t in enumerate(range(t_low, t_high)):
-                p_group = p_groups[t]
-                p_group['leafs'] = result[j]['leafs']
-                p_group['leaf_counts'] = result[j]['leaf_counts']
+    # @staticmethod
+    # def _get_tenant_groups_to_leafs_and_count_map(group_counts, t_groups, vm_to_leaf_map, num_tenants):
+    #     groups_leafs = [None] * num_tenants
+    #     groups_leaf_counts = [None] * num_tenants
+    #     for t in range(num_tenants):
+    #         group_count = group_counts[t]
+    #         vm_to_leaf = vm_to_leaf_map[t]
+    #         t_group = t_groups[t]
+    #         t_group_vms = t_group['vms']
+    #         groups_leafs[t] = [None] * group_count
+    #         group_leafs = groups_leafs[t]
+    #         groups_leaf_counts[t] = np.empty(shape=group_count, dtype=int)
+    #         group_leaf_counts = groups_leaf_counts[t]
+    #         for g in range(group_count):
+    #             group_leafs[g] = np.unique(vm_to_leaf[t_group_vms[g]])
+    #             group_leaf_counts[g] = len(group_leafs[g])
+    #     return groups_leafs, groups_leaf_counts
+    #
+    # def _run_tenant_groups_to_leafs_and_count_map(self):
+    #     if (self.num_tenants % self.num_jobs) != 0:
+    #         raise (Exception('input not divisible by num_jobs'))
+    #
+    #     input_size = int(self.num_tenants / self.num_jobs)
+    #     input_groups = [(i, i + input_size) for i in range(0, self.num_tenants, input_size)]
+    #     inputs = [(self.tenants_maps['group_counts'][i:j],
+    #                self.tenants_maps['groups'][i:j],
+    #                self.placement_maps['vm_to_leaf'][i:j],
+    #                input_size) for i, j in input_groups]
+    #
+    #     # pool = multiprocessing.Pool()
+    #     # results = pool.map(unwrap_tenant_groups_to_leafs_and_count_map, [i for i in inputs])
+    #
+    #     num_cpus = multiprocessing.cpu_count()
+    #     results = Parallel(n_jobs=num_cpus, backend="threading")(
+    #         delayed(unwrap_tenant_groups_to_leafs_and_count_map)(i) for i in inputs)
+    #
+    #     p_groups = self.placement_maps['groups']
+    #     for i in range(len(results)):
+    #         result = results[i]
+    #         t_low, t_high = input_groups[i]
+    #         for j, t in enumerate(range(t_low, t_high)):
+    #             p_group = p_groups[t]
+    #             p_group['leafs'] = result[0][j]
+    #             p_group['leaf_counts'] = result[1][j]
 
     # def _get_tenant_groups_leafs_to_hosts_and_bitmap_map(self):
     #     group_counts = self.tenants_maps['group_counts']
@@ -330,7 +330,8 @@ class Placement:
     def _get_tenant_groups_leafs_to_hosts_and_bitmap_map(group_counts, t_groups, vm_to_host_map,
                                                          vm_to_leaf_map, num_tenants, num_hosts_per_leaf):
         groups_leafs = [None] * num_tenants
-        for t in range(num_tenants):
+        hosts, bitmap = 0, 1
+        for t in bar_range(num_tenants, desc='placement:leafs->bitmaps'):
             group_count = group_counts[t]
             vm_to_host = vm_to_host_map[t]
             vm_to_leaf = vm_to_leaf_map[t]
@@ -345,14 +346,15 @@ class Placement:
                     l = vm_to_leaf[vm]
                     h = vm_to_host[vm]
                     if l in leafs:
-                        leafs[l]['hosts'] |= {h}
+                        leafs[l][hosts] += [h]
                     else:
-                        leafs[l] = dict()
-                        leafs[l]['hosts'] = {h}
+                        leafs[l] = [None, None]
+                        leafs[l][hosts] = [h]
                 for l in leafs:
-                    leafs[l]['bitmap'] = 0
-                    for h in leafs[l]['hosts']:
-                        leafs[l]['bitmap'] |= 1 << (h % num_hosts_per_leaf)
+                    leafs[l][hosts] = np.unique(leafs[l][hosts])
+                    leafs[l][bitmap] = 0
+                    for h in leafs[l][hosts]:
+                        leafs[l][bitmap] |= 1 << (h % num_hosts_per_leaf)
         return groups_leafs
 
     def _run_tenant_groups_leafs_to_hosts_and_bitmap_map(self):
@@ -372,7 +374,7 @@ class Placement:
         # results = pool.map(unwrap_tenant_groups_leafs_to_hosts_and_bitmap_map, [i for i in inputs])
 
         num_cpus = multiprocessing.cpu_count()
-        results = Parallel(n_jobs=num_cpus, backend="threading")(
+        results = Parallel(n_jobs=num_cpus, backend="multiprocessing")(
             delayed(unwrap_tenant_groups_leafs_to_hosts_and_bitmap_map)(i) for i in inputs)
 
         p_groups = self.placement_maps['groups']
