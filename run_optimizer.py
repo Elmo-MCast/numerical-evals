@@ -1,7 +1,7 @@
 import sys
 import random
 from simulation.optimizer import Optimizer
-from simulation.utils import load_obj, dump_obj
+from simulation.utils import pickle_dump_obj, pickle_load_obj
 
 if len(sys.argv) > 1:
     MAX_BATCH_SIZE=int(sys.argv[1])
@@ -45,9 +45,9 @@ print("""
 
 random.seed(SEED)
 
-data = load_obj(DATA_FILE)
+data = pickle_load_obj(DATA_FILE)
 
 optimizer = Optimizer(data, max_batch_size=MAX_BATCH_SIZE, algorithm=ALGORITHM, num_bitmaps=NUM_BITMAPS,
                       num_leafs_per_bitmap=NUM_LEAFS_PER_BITMAP, redundancy_per_bitmap=REDUNDANCY_PER_BITMAP)
 
-dump_obj(data, DUMP_FILE)
+pickle_dump_obj(data, DUMP_FILE)

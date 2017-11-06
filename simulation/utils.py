@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import progressbar
 from cffi import FFI
+import json
 import pickle
 
 ffi = FFI()
@@ -37,15 +38,28 @@ def popcount(x):
     return C.popcount(x)
 
 
-def dump_obj(o, f):
+def pickle_dump_obj(o, f):
     _f = open(f, 'wb')
     pickle.dump(o, _f)
     _f.close()
 
 
-def load_obj(f):
+def pickle_load_obj(f):
     _f = open(f, 'rb')
     o = pickle.load(_f)
+    _f.close()
+    return o
+
+
+def json_dump_obj(o, f):
+    _f = open(f, 'w')
+    json.dump(o, _f)
+    _f.close()
+
+
+def json_load_obj(f):
+    _f = open(f, 'r')
+    o = json.load(_f)
     _f.close()
     return o
 

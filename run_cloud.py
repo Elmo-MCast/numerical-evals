@@ -1,7 +1,7 @@
 import sys
 import random
 from simulation.cloud import Cloud
-from simulation.utils import dump_obj
+from simulation.utils import pickle_dump_obj
 
 if len(sys.argv) > 1:
     NUM_LEAFS = int(sys.argv[1])
@@ -44,18 +44,18 @@ elif True:
     NUM_HOSTS_PER_LEAF = 48
     NUM_RULES_PER_LEAF = 1
     MAX_VMS_PER_HOST = 20
-    NUM_TENANTS = 3000
+    NUM_TENANTS = 30
     MIN_VMS_PER_TENANT = 10
     MAX_VMS_PER_TENANT = 5000
     VM_DIST = "expon"  # options: expon
-    NUM_GROUPS = 100000
+    NUM_GROUPS = 1000
     MIN_GROUP_SIZE = 5
-    GROUP_SIZE_DIST = "wve"  # options: uniform and wve
+    GROUP_SIZE_DIST = "uniform"  # options: uniform and wve
     PLACEMENT_DIST = "colocate-random-linear"  # options: uniform, colocate-random-linear,
     # colocate-random-random, sorted-colocate-random-linear, and sorted-colocate-random-random
     COLOCATE_NUM_HOSTS_PER_LEAF = 48
     MULTI_THREADED = True
-    NUM_JOBS = 5
+    NUM_JOBS = 10
     DUMP_FILE = 'simulation/output/cloud.pkl'
     SEED = 0
 else:
@@ -116,4 +116,4 @@ cloud = Cloud(num_leafs=NUM_LEAFS,
               multi_threaded=MULTI_THREADED,
               num_jobs=NUM_JOBS)
 
-dump_obj(cloud.data, DUMP_FILE)
+pickle_dump_obj(cloud.data, DUMP_FILE)

@@ -1,7 +1,7 @@
 import sys
 import random
 from simulation.data import Data
-from simulation.utils import load_obj, dump_obj
+from simulation.utils import pickle_load_obj, pickle_dump_obj
 
 if len(sys.argv) > 1:
     DATA_FILE = sys.argv[5]
@@ -18,6 +18,6 @@ print("""
 
 random.seed(SEED)
 
-data = load_obj(DATA_FILE)
+data = pickle_load_obj(DATA_FILE)
 
 data = Data(data)
