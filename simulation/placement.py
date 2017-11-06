@@ -14,10 +14,9 @@ def unwrap_tenant_groups_leafs_to_hosts_and_bitmap_map(args, **kwargs):
 
 class Placement:
     def __init__(self, data, dist='uniform',  # options: uniform, colocate-random-linear, colocate-random-random
-                 num_bitmaps=32, num_hosts_per_leaf=48, multi_threaded=False, num_jobs=4):
+                 num_hosts_per_leaf=48, multi_threaded=False, num_jobs=4):
         self.data = data
         self.dist = dist
-        self.num_bitmaps = num_bitmaps
         self.placement_num_hosts_per_leaf = num_hosts_per_leaf
         self.multi_threaded = multi_threaded
         self.num_jobs = num_jobs
@@ -36,7 +35,6 @@ class Placement:
         self.max_vms_per_host = self.tenants['max_vms_per_host']
 
         self.data['placement'] = {'dist': dist,
-                                  'num_bitmaps': num_bitmaps,
                                   'num_hosts_per_leaf': num_hosts_per_leaf}
         self.placement = self.data['placement']
 

@@ -18,7 +18,6 @@ class Cloud:
                  group_size_dist='uniform',  # options: uniform and wve
                  placement_dist='uniform',  # options: uniform, colocate-random-linear, and colocate-random-random
                  colocate_num_hosts_per_leaf=48,
-                 num_bitmaps=32,
                  multi_threaded=True,
                  num_jobs=10):
         self.data = dict()
@@ -35,5 +34,5 @@ class Cloud:
                 num_groups=num_groups, min_group_size=min_group_size,
                 group_size_dist=group_size_dist, debug=False, multi_threaded=multi_threaded, num_jobs=num_jobs)
 
-        Placement(data=self.data, dist=placement_dist, num_bitmaps=num_bitmaps,
-                  num_hosts_per_leaf=colocate_num_hosts_per_leaf, multi_threaded=multi_threaded, num_jobs=num_jobs)
+        Placement(data=self.data, dist=placement_dist, num_hosts_per_leaf=colocate_num_hosts_per_leaf,
+                  multi_threaded=multi_threaded, num_jobs=num_jobs)

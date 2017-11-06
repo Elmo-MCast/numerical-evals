@@ -5,11 +5,12 @@ from simulation.utils import bar_range
 
 
 class Optimizer:
-    def __init__(self, data, max_batch_size=1, algorithm='single_match', num_leafs_per_bitmap=3,
+    def __init__(self, data, max_batch_size=1, algorithm='single_match', num_bitmaps=5, num_leafs_per_bitmap=3,
                  redundancy_per_bitmap=20):
         self.data = data
         self.max_batch_size = max_batch_size
         self.algorithm = algorithm
+        self.num_bitmaps = num_bitmaps
         self.num_leafs_per_bitmap = num_leafs_per_bitmap
         self.redundancy_per_bitmap = redundancy_per_bitmap
         self.algorithm_elapse_time = []
@@ -28,11 +29,11 @@ class Optimizer:
         self.placement = self.data['placement']
         self.placement['maps'] = {'leafs_to_rules_count': {l: 0 for l in range(self.num_leafs)}}
 
-        self.num_bitmaps = self.placement['num_bitmaps']
         self.leafs_to_rules_count_map = self.placement['maps']['leafs_to_rules_count']
 
         self.data['optimizer'] = {'max_batch_size': max_batch_size,
                                   'algorithm': algorithm,
+                                  'num_bitmaps': num_bitmaps,
                                   'max_leafs_per_bitmap': num_leafs_per_bitmap,
                                   'redundancy_per_bitmap': redundancy_per_bitmap,
                                   'algorithm_elapse_time': self.algorithm_elapse_time}

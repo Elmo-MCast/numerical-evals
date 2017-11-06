@@ -17,11 +17,10 @@ if len(sys.argv) > 1:
     GROUP_SIZE_DIST = sys.argv[11]  # options: uniform and wve
     PLACEMENT_DIST = sys.argv[12]  # options: uniform, colocate-random-linear, and colocate-random-random
     COLOCATE_NUM_HOSTS_PER_LEAF = int(sys.argv[13])
-    NUM_BITMAPS = int(sys.argv[14])
-    MULTI_THREADED = True if sys.argv[15] == 'True' else False
-    NUM_JOBS = int(sys.argv[16])
-    DUMP_FILE = sys.argv[17]
-    SEED = int(sys.argv[18])
+    MULTI_THREADED = True if sys.argv[14] == 'True' else False
+    NUM_JOBS = int(sys.argv[15])
+    DUMP_FILE = sys.argv[16]
+    SEED = int(sys.argv[17])
 elif False:
     NUM_LEAFS = 576
     NUM_HOSTS_PER_LEAF = 48
@@ -36,27 +35,25 @@ elif False:
     GROUP_SIZE_DIST = "uniform"  # options: uniform and wve
     PLACEMENT_DIST = "colocate-random-linear"  # options: uniform, colocate-random-linear, and colocate-random-random
     COLOCATE_NUM_HOSTS_PER_LEAF = 48
-    NUM_BITMAPS = 10
     MULTI_THREADED = True
     NUM_JOBS = 5
     DUMP_FILE = 'simulation/output/cloud.pkl'
     SEED = 0
 elif True:
-    NUM_LEAFS = 576
+    NUM_LEAFS = 1056
     NUM_HOSTS_PER_LEAF = 48
     NUM_RULES_PER_LEAF = 1
     MAX_VMS_PER_HOST = 20
-    NUM_TENANTS = 30
+    NUM_TENANTS = 3000
     MIN_VMS_PER_TENANT = 10
     MAX_VMS_PER_TENANT = 5000
     VM_DIST = "expon"  # options: expon
-    NUM_GROUPS = 1000
+    NUM_GROUPS = 100000
     MIN_GROUP_SIZE = 5
-    GROUP_SIZE_DIST = "uniform"  # options: uniform and wve
+    GROUP_SIZE_DIST = "wve"  # options: uniform and wve
     PLACEMENT_DIST = "colocate-random-linear"  # options: uniform, colocate-random-linear,
     # colocate-random-random, sorted-colocate-random-linear, and sorted-colocate-random-random
     COLOCATE_NUM_HOSTS_PER_LEAF = 48
-    NUM_BITMAPS = 5
     MULTI_THREADED = True
     NUM_JOBS = 5
     DUMP_FILE = 'simulation/output/cloud.pkl'
@@ -79,7 +76,6 @@ print("""
      group_size_dist=%s,
      placement_dist=%s,
      colocate_hosts_per_leaf=%s,
-     bitmaps=%s,
      multi_threaded=%s,
      num_jobs=%s,
      dump_file=%s,
@@ -97,7 +93,6 @@ print("""
        GROUP_SIZE_DIST,
        PLACEMENT_DIST,
        COLOCATE_NUM_HOSTS_PER_LEAF,
-       NUM_BITMAPS,
        MULTI_THREADED,
        NUM_JOBS,
        DUMP_FILE,
@@ -118,7 +113,6 @@ cloud = Cloud(num_leafs=NUM_LEAFS,
               group_size_dist=GROUP_SIZE_DIST,  # options: uniform and wve
               placement_dist=PLACEMENT_DIST,  # options: uniform, colocate-random-linear, and colocate-random-random
               colocate_num_hosts_per_leaf=COLOCATE_NUM_HOSTS_PER_LEAF,
-              num_bitmaps=NUM_BITMAPS,
               multi_threaded=MULTI_THREADED,
               num_jobs=NUM_JOBS)
 
