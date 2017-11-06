@@ -33,35 +33,37 @@ class Tenants:
                                 'group_size_dist': group_size_dist,
 
                                 'vm_count': 0,
-                                'vm_counts': None,
                                 'group_count': 0,
-                                'group_counts': None,
-                                'groups': [None] * self.num_tenants
-                                }
+                                'maps': {
+                                    'vm_counts': None,
+                                    'group_counts': None,
+                                    'groups': [None] * self.num_tenants}}
 
         self.tenants = self.data['tenants']
+        self.tenants_maps = self.tenants['maps']
 
         self._get_tenant_to_vm_count_map()
 
         if debug:
-            print(pd.Series(self.tenants['vm_counts']).describe())
+            print(pd.Series(self.tenants_maps['vm_counts']).describe())
             print("VM Count: %s" % self.tenants['vm_count'])
 
         self._get_tenant_to_group_count_map()
 
         if debug:
-            print(pd.Series(self.tenants['group_counts']).describe())
+            print(pd.Series(self.tenants_maps['group_counts']).describe())
             print("Sum: %s" % self.tenants['group_count'])
 
         for t in range(self.num_tenants):
-            self.tenants['groups'][t] = {'sizes': None, 'vms': None}
+            self.tenants_maps['groups'][t] = {'sizes': None, 'vms': None}
 
         self._get_tenant_groups_to_sizes_map()
 
         if debug:
+            _groups = self.tenants_maps['groups']
             _group_sizes_for_all_tenants = []
-            for t in range(self.tenants['num_tenants']):
-                _group_sizes_for_all_tenants += list(self.tenants['groups'][t]['sizes'])
+            for t in range(self.num_tenants):
+                _group_sizes_for_all_tenants += list(_groups[t]['sizes'])
             print(pd.Series(_group_sizes_for_all_tenants).describe())
 
         # self._get_tenant_groups_to_vms_map()
@@ -69,7 +71,7 @@ class Tenants:
 
     def _get_tenant_to_vm_count_map(self):
         if self.vm_dist == 'expon':
-            vm_counts = np.empty(shape=(self.num_tenants,), dtype=int)
+            vm_counts = np.empty(shape=self.num_tenants, dtype=int)
             samples = np.random.random(size=self.num_tenants)
             outliers = np.where(samples < 0.02)
             vm_counts[outliers] = np.random.randint(low=self.min_vms, high=self.max_vms + 1, size=len(outliers[0]))
@@ -78,31 +80,35 @@ class Tenants:
                                        * (self.max_vms - self.min_vms)).astype(int)
                                        % (self.max_vms - self.min_vms) + self.min_vms)
             self.tenants['vm_count'] = sum(vm_counts)
-            self.tenants['vm_counts'] = vm_counts
+            self.tenants_maps['vm_counts'] = vm_counts
         else:
             raise (Exception("invalid dist parameter for vm allocation"))
 
     def _get_tenant_to_group_count_map(self):
         # ... weighted assignment of groups (based on VMs) to tenants
         vm_count = self.tenants['vm_count']
-        group_counts = (self.tenants['vm_counts'] / vm_count * self.num_groups).astype(int)
+        group_counts = (self.tenants_maps['vm_counts'] / vm_count * self.num_groups).astype(int)
 
         self.tenants['group_count'] = sum(group_counts)
-        self.tenants['group_counts'] = group_counts
+        self.tenants_maps['group_counts'] = group_counts
 
     def _get_tenant_groups_to_sizes_map(self):
         if self.group_size_dist == 'uniform':
+            vm_counts = self.tenants_maps['vm_counts']
+            group_counts = self.tenants_maps['group_counts']
+            groups = self.tenants_maps['groups']
             for t in bar_range(self.num_tenants, desc='tenants:group sizes'):
-                vm_count = self.tenants['vm_counts'][t]
-                group_count = self.tenants['group_counts'][t]
-
-                self.tenants['groups'][t]['sizes'] = np.random.randint(low=self.min_group_size, high=vm_count + 1,
-                                                                       size=group_count)
+                vm_count = vm_counts[t]
+                group_count = group_counts[t]
+                groups[t]['sizes'] = np.random.randint(low=self.min_group_size, high=vm_count + 1, size=group_count)
         elif self.group_size_dist == 'wve':  # ... using mix3 distribution from the dcn-mcast paper.
+            vm_counts = self.tenants_maps['vm_counts']
+            group_counts = self.tenants_maps['group_counts']
+            groups = self.tenants_maps['groups']
             for t in bar_range(self.num_tenants, desc='tenants:group sizes'):
-                vm_count = self.tenants['vm_counts'][t]
-                group_count = self.tenants['group_counts'][t]
-                sizes = np.empty(shape=(group_count,), dtype=int)
+                vm_count = vm_counts[t]
+                group_count = group_counts[t]
+                sizes = np.empty(shape=group_count, dtype=int)
                 samples = np.random.random(size=group_count)
                 outliers = np.where(samples < 0.02)
                 sizes[outliers] = (vm_count - (np.random.gamma(shape=2, scale=0.1, size=len(outliers[0])) *
@@ -112,7 +118,7 @@ class Tenants:
                                        self.min_group_size - 1).astype(int) % vm_count + 1
                 indexes = np.where(sizes < self.min_group_size)
                 sizes[indexes] = self.min_group_size
-                self.tenants['groups'][t]['sizes'] = sizes
+                groups[t]['sizes'] = sizes
         else:
             raise (Exception("invalid dist parameter for group size allocation"))
 
@@ -132,9 +138,10 @@ class Tenants:
             vm_count = vm_counts[t]
             group_count = group_counts[t]
             group = groups[t]
+            group_sizes = group['sizes']
             group_vms = [None] * group_count
             for g in range(group_count):
-                group_vms[g] = np.random.choice(vm_count, group['sizes'][g], replace=False)
+                group_vms[g] = np.random.choice(vm_count, group_sizes[g], replace=False)
             groups_vms[t] = group_vms
         return groups_vms
 
@@ -145,16 +152,17 @@ class Tenants:
 
         input_size = int(self.num_tenants / num_jobs)
         input_groups = [(i, i + input_size) for i in range(0, self.num_tenants, input_size)]
-        inputs = [(self.tenants['vm_counts'][i:j],
-                   self.tenants['group_counts'][i:j],
-                   self.tenants['groups'][i:j],
+        inputs = [(self.tenants_maps['vm_counts'][i:j],
+                   self.tenants_maps['group_counts'][i:j],
+                   self.tenants_maps['groups'][i:j],
                    input_size) for i, j in input_groups]
 
         pool = multiprocessing.Pool()
         results = pool.map(unwrap_tenant_groups_to_vms_map, [i for i in inputs])
 
+        groups = self.tenants_maps['groups']
         for i in range(len(results)):
             result = results[i]
             t_low, t_high = input_groups[i]
             for j, t in enumerate(range(t_low, t_high)):
-                self.tenants['groups'][t]['vms'] = result[j]
+                groups[t]['vms'] = result[j]

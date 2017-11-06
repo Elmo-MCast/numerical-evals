@@ -35,7 +35,7 @@ class Network:
         self.network_maps['leaf_to_hosts'] = _leaf_to_hosts_map
 
     def _get_host_to_leaf_map(self):
-        _host_to_leaf_map = np.empty(shape=(self.num_hosts,), dtype=int)
+        _host_to_leaf_map = np.empty(shape=self.num_hosts, dtype=int)
 
         for l in bar_range(self.num_leafs, desc='network:host->leaf'):
             i = l * self.num_hosts_per_leaf

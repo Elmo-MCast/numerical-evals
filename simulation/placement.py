@@ -1,4 +1,5 @@
-import random
+import numpy as np
+import multiprocessing
 from simulation.utils import bar_range
 
 
@@ -13,6 +14,9 @@ class Placement:
         self.network_maps = self.network['maps']
         self.tenants = self.data['tenants']
         self.tenants_maps = self.tenants['maps']
+
+        self.num_hosts = self.tenants['num_hosts']
+        self.num_tenants = self.tenants['num_tenants']
 
         self.data['placement'] = {'dist': dist,
                                   'num_bitmaps': num_bitmaps,
@@ -36,11 +40,11 @@ class Placement:
         self._get_tenant_groups_leafs_to_hosts_and_bitmap_map()
 
     def _uniform(self):
-        available_hosts = [h for h in range(self.tenants['num_hosts'])]
-        available_hosts_count = [0] * self.tenants['num_hosts']
+        available_hosts = np.array(range(self.num_hosts))
+        available_hosts_count = np.zeros(shape=self.num_hosts)
 
-        for t in bar_range(self.tenants['num_tenants'], desc='placement:vms->host'):
-            hosts = random.sample(available_hosts, self.tenants_maps[t]['vm_count'])
+        for t in bar_range(self.num_tenants, desc='placement:vms->host'):
+            hosts = np.random.choice(available_hosts, self.tenants_maps[t]['vm_count'])
 
             for v, host in enumerate(hosts):
                 self.tenants_maps[t]['vms_map'][v]['host'] = host
