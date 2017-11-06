@@ -20,7 +20,6 @@ class Network:
         self.network_maps = self.network['maps']
 
         self._get_leaf_to_hosts_map()
-
         self._get_host_to_leaf_map()
 
     def _get_leaf_to_hosts_map(self):

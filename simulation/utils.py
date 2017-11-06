@@ -1,13 +1,22 @@
 import numpy as np
 import pandas as pd
-from tqdm import trange, tnrange
+import progressbar
 from cffi import FFI
 
 ffi = FFI()
 
 
 def bar_range(x, desc):
-    return trange(x, desc=desc)
+    widgets = [
+        '%s: ' % desc, progressbar.Percentage(),
+        ' ', progressbar.Bar(),
+        ' ', progressbar.ETA(),
+    ]
+    bar = progressbar.ProgressBar(widgets=widgets)
+    if isinstance(x, range):
+        return bar(x)
+    else:
+        return bar(range(x))
 
 
 ffi.cdef("""

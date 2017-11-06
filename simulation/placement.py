@@ -1,8 +1,11 @@
 import random
-from timeit import default_timer as timer
 import multiprocessing
 from joblib import Parallel, delayed
 from simulation.utils import bar_range
+
+
+def unwrap_tenant_groups_to_leafs_and_count_map(args, **kwargs):
+    return Placement._get_tenant_groups_to_leafs_and_count_map_mproc(*args, **kwargs)
 
 
 def unwrap_tenant_groups_leafs_to_hosts_and_bitmap_map(args, **kwargs):
@@ -11,7 +14,7 @@ def unwrap_tenant_groups_leafs_to_hosts_and_bitmap_map(args, **kwargs):
 
 class Placement:
     def __init__(self, data, dist='uniform',  # options: uniform, colocate-random-linear, colocate-random-random
-                 num_bitmaps=32, num_hosts_per_leaf=48, multi_threaded=True, num_jobs=8):
+                 num_bitmaps=32, num_hosts_per_leaf=48, multi_threaded=False, num_jobs=4):
         self.data = data
         self.dist = dist
         self.num_bitmaps = num_bitmaps
@@ -50,14 +53,12 @@ class Placement:
                 group_map['leafs_map'] = dict()
 
         self._get_tenant_vms_to_host_map()
-
         self._get_tenant_vms_to_leaf_map()
-
-        self._get_tenant_groups_to_leafs_and_count_map()
-
         if not self.multi_threaded:
+            self._get_tenant_groups_to_leafs_and_count_map()
             self._get_tenant_groups_leafs_to_hosts_and_bitmap_map()
         else:
+            self._run_tenant_groups_to_leafs_and_count_map()
             self._run_tenant_groups_leafs_to_hosts_and_bitmap_map()
 
     def _uniform(self):
@@ -207,7 +208,6 @@ class Placement:
 
     def _get_tenant_vms_to_leaf_map(self):
         host_to_leaf_map = self.network_maps['host_to_leaf']
-
         for t in bar_range(self.num_tenants, desc='placement:vms->leaf'):
             vm_count = self.tenants_maps[t]['vm_count']
             vms_map = self.tenants_maps[t]['vms_map']
@@ -223,6 +223,34 @@ class Placement:
                 group_map = groups_map[g]
                 group_map['leafs'] = list({vms_map[vm]['leaf'] for vm in group_map['vms']})
                 group_map['leaf_count'] = len(group_map['leafs'])
+
+    @staticmethod
+    def _get_tenant_groups_to_leafs_and_count_map_mproc(tenants_maps, num_tenants):
+        for t in bar_range(num_tenants, desc='placement:groups->leafs'):
+            group_count = tenants_maps[t]['group_count']
+            groups_map = tenants_maps[t]['groups_map']
+            vms_map = tenants_maps[t]['vms_map']
+            for g in range(group_count):
+                group_map = groups_map[g]
+                group_map['leafs'] = list({vms_map[vm]['leaf'] for vm in group_map['vms']})
+                group_map['leaf_count'] = len(group_map['leafs'])
+        return tenants_maps
+
+    def _run_tenant_groups_to_leafs_and_count_map(self):
+        if (self.num_tenants % self.num_jobs) != 0:
+            raise (Exception('input not divisible by num_jobs'))
+
+        input_size = int(self.num_tenants / self.num_jobs)
+        input_groups = [(i, i + input_size) for i in range(0, self.num_tenants, input_size)]
+        inputs = [(self.tenants_maps[i:j],
+                   input_size) for i, j in input_groups]
+
+        # pool = multiprocessing.Pool()
+        # results = pool.map(unwrap_tenant_groups_to_leafs_and_count_map, [i for i in inputs])
+
+        num_cpus = multiprocessing.cpu_count()
+        Parallel(n_jobs=num_cpus, backend="threading")(
+            delayed(unwrap_tenant_groups_to_leafs_and_count_map)(i) for i in inputs)
 
     def _get_tenant_groups_leafs_to_hosts_and_bitmap_map(self):
         for t in bar_range(self.num_tenants, desc='placement:leafs->bitmap'):
@@ -251,7 +279,6 @@ class Placement:
     @staticmethod
     def _get_tenant_groups_leafs_to_hosts_and_bitmap_map_mproc(tenants_maps, num_tenants, num_hosts_per_leaf):
         for t in bar_range(num_tenants, desc='placement:leafs->bitmap'):
-        # for t in range(num_tenants):
             group_count = tenants_maps[t]['group_count']
             groups_map = tenants_maps[t]['groups_map']
             vms_map = tenants_maps[t]['vms_map']
@@ -276,7 +303,6 @@ class Placement:
         return tenants_maps
 
     def _run_tenant_groups_leafs_to_hosts_and_bitmap_map(self):
-        start = timer()
         if (self.num_tenants % self.num_jobs) != 0:
             raise (Exception('input not divisible by num_jobs'))
 
@@ -286,17 +312,9 @@ class Placement:
                    input_size,
                    self.num_hosts_per_leaf) for i, j in input_groups]
 
-        pool = multiprocessing.Pool()
-        results = pool.map(unwrap_tenant_groups_leafs_to_hosts_and_bitmap_map, [i for i in inputs])
+        # pool = multiprocessing.Pool()
+        # results = pool.map(unwrap_tenant_groups_leafs_to_hosts_and_bitmap_map, [i for i in inputs])
 
-        # num_cpus = multiprocessing.cpu_count()
-        # results = Parallel(n_jobs=num_cpus, backend="threading")(
-        #     delayed(unwrap_tenant_groups_leafs_to_hosts_and_bitmap_map)(i) for i in inputs)
-
-        for i in range(len(results)):
-            result = results[i]
-            t_low, t_high = input_groups[i]
-            for j, t in enumerate(range(t_low, t_high)):
-                self.tenants_maps[t] = result[j]
-
-        print('placement:leafs->bitmap: elapse time (%s)' % (timer() - start))
+        num_cpus = multiprocessing.cpu_count()
+        Parallel(n_jobs=num_cpus, backend="threading")(
+            delayed(unwrap_tenant_groups_leafs_to_hosts_and_bitmap_map)(i) for i in inputs)

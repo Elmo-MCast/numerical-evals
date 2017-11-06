@@ -1,6 +1,5 @@
 import random
 import pandas as pd
-from timeit import default_timer as timer
 import multiprocessing
 from joblib import Parallel, delayed
 from simulation.utils import bar_range
@@ -12,8 +11,8 @@ def unwrap_tenant_groups_to_vms_map(args, **kwargs):
 
 class Tenants:
     def __init__(self, data, max_vms_per_host=20, num_tenants=3000, min_vms=10, max_vms=5000, vm_dist='expon',
-                 num_groups=100000, min_group_size=5, group_size_dist='uniform', debug=False, multi_threaded=True,
-                 num_jobs=8):
+                 num_groups=100000, min_group_size=5, group_size_dist='uniform', debug=False, multi_threaded=False,
+                 num_jobs=4):
         self.data = data
         self.num_tenants = num_tenants
         self.num_hosts = self.data['network']['num_hosts']
@@ -49,7 +48,6 @@ class Tenants:
         self.tenants_maps = self.tenants['maps']
 
         self._get_tenant_to_vm_count_map()
-
         self._get_tenant_to_group_count_map()
 
         for t in range(self.num_tenants):
@@ -57,7 +55,6 @@ class Tenants:
                 [{'size': None, 'vms': None} for _ in range(self.tenants_maps[t]['group_count'])]
 
         self._get_tenant_groups_to_sizes_map()
-
         if not self.multi_threaded:
             self._get_tenant_groups_to_vms_map()
         else:
@@ -142,17 +139,16 @@ class Tenants:
 
     @staticmethod
     def _get_tenant_groups_to_vms_map_mproc(tenants_maps, num_tenants):
-        for t in bar_range(num_tenants, desc='tenants:groups->vms'):
-        # for t in range(num_tenants):
+        for t in bar_range(range(num_tenants), 'tenants:groups->vms'):
             vm_count = tenants_maps[t]['vm_count']
             group_count = tenants_maps[t]['group_count']
             groups_map = tenants_maps[t]['groups_map']
             for g in range(group_count):
                 groups_map[g]['vms'] = random.sample(range(vm_count), groups_map[g]['size'])
+
         return tenants_maps
 
     def _run_tenant_groups_leafs_to_hosts_and_bitmap_map(self):
-        start = timer()
         if (self.num_tenants % self.num_jobs) != 0:
             raise (Exception('input not divisible by num_jobs'))
 
@@ -161,17 +157,9 @@ class Tenants:
         inputs = [(self.tenants_maps[i:j],
                    input_size) for i, j in input_groups]
 
-        pool = multiprocessing.Pool()
-        results = pool.map(unwrap_tenant_groups_to_vms_map, [i for i in inputs])
+        # pool = multiprocessing.Pool()
+        # results = pool.map(unwrap_tenant_groups_to_vms_map, [i for i in inputs])
 
-        # num_cpus = multiprocessing.cpu_count()
-        # results = Parallel(n_jobs=num_cpus, backend="multiprocessing")(
-        #     delayed(unwrap_tenant_groups_to_vms_map)(i) for i in inputs)
-
-        for i in range(len(results)):
-            result = results[i]
-            t_low, t_high = input_groups[i]
-            for j, t in enumerate(range(t_low, t_high)):
-                self.tenants_maps[t] = result[j]
-
-        print('tenants:groups->vms: elapse time (%s)' % (timer() - start))
+        num_cpus = multiprocessing.cpu_count()
+        Parallel(n_jobs=num_cpus, backend="threading")(
+            delayed(unwrap_tenant_groups_to_vms_map)(i) for i in inputs)
