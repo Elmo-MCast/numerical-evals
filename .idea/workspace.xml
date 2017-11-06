@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3f0c75d9-ed49-4a19-bc97-bf85c19dcdfe" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/run_data.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/run_optimizer.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/temp.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/main.py" afterPath="$PROJECT_DIR$/run_cloud.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/simulation/optimization.py" afterPath="$PROJECT_DIR$/simulation/optimizer.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/notebooks/mcast-dcn (pypy).ipynb" afterPath="$PROJECT_DIR$/notebooks/mcast-dcn (pypy).ipynb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/simulation/algorithms/exact_match.py" afterPath="$PROJECT_DIR$/simulation/algorithms/exact_match.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/simulation/cloud.py" afterPath="$PROJECT_DIR$/simulation/cloud.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/simulation/data.py" afterPath="$PROJECT_DIR$/simulation/data.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/simulation/utils.py" afterPath="$PROJECT_DIR$/simulation/utils.py" />
-    </list>
+    <list default="true" id="3f0c75d9-ed49-4a19-bc97-bf85c19dcdfe" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -535,7 +523,14 @@
       <option name="project" value="LOCAL" />
       <updated>1509872552707</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="minor">
+      <created>1510006075734</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1510006075734</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="ToolWindowManager">
