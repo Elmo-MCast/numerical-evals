@@ -7,17 +7,17 @@ import simulation.algorithms.random_fuzzy_match as random_fuzzy_match
 
 def run(algorithm, data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to_rules_count,
         max_rules_per_leaf):
-    if algorithm == 'single_match':
+    if algorithm == 'single-match':
         single_match.run(data, max_bitmaps, leafs_to_rules_count, max_rules_per_leaf)
-    elif algorithm == 'exact_match':
+    elif algorithm == 'exact-match':
         exact_match.run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count, max_rules_per_leaf)
-    elif algorithm == 'greedy_match':
+    elif algorithm == 'greedy-match':
         greedy_match.run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to_rules_count,
                          max_rules_per_leaf)
-    elif algorithm == 'fuzzy_match':
+    elif algorithm == 'fuzzy-match':
         fuzzy_match.run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to_rules_count,
                         max_rules_per_leaf)
-    elif algorithm == 'random_fuzzy_match':
+    elif algorithm == 'random-fuzzy-match':
         random_fuzzy_match.run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap,
                                leafs_to_rules_count, max_rules_per_leaf)
     else:

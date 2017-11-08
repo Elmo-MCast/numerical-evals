@@ -6,7 +6,7 @@ from simulation.utils import bar_range
 
 class Optimizer:
     def __init__(self, data,
-                 max_batch_size=1, algorithm='single_match',
+                 max_batch_size=1, algorithm='single-match',
                  num_leafs_per_bitmap=3, redundancy_per_bitmap=20, num_rules_per_leaf=6400,
                  num_leafs=576, num_bitmaps=10, num_tenants=3000):
         self.data = data

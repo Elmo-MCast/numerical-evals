@@ -16,10 +16,10 @@ if len(sys.argv) > 1:
     CLOUD_PARAMS = DATA_FILE.split('.')[-1].split('_')
     NUM_LEAFS = int(CLOUD_PARAMS[0])
     NUM_TENANTS = int(CLOUD_PARAMS[4])
-    SEED = int(CLOUD_PARAMS[16])
+    SEED = int(CLOUD_PARAMS[-1])
 elif True:
     MAX_BATCH_SIZE = 1
-    ALGORITHM = 'single_match'
+    ALGORITHM = 'single-match'
     NUM_BITMAPS = 10
     NUM_LEAFS_PER_BITMAP = 3
     REDUNDANCY_PER_BITMAP = 2
@@ -70,4 +70,4 @@ optimizer = Optimizer(data, max_batch_size=MAX_BATCH_SIZE, algorithm=ALGORITHM,
                       num_rules_per_leaf=NUM_RULES_PER_LEAF, num_leafs=NUM_LEAFS, num_bitmaps=NUM_BITMAPS,
                       num_tenants=NUM_TENANTS)
 
-pickle_dump_obj(optimizer.data, DUMP_FILE_PREFIX + "." + "_".join(sys.argv[1:-2]) + "." + "_".join(CLOUD_PARAMS))
+pickle_dump_obj(optimizer.data, DUMP_FILE_PREFIX + "." + "_".join(CLOUD_PARAMS) + "." + "_".join(sys.argv[1:-2]))
