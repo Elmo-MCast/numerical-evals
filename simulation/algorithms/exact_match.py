@@ -51,6 +51,7 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_r
             bitmap_count += 1
             leafs_per_bitmap_count = 0
 
+    # Calculate redundancy
     for l in leafs_map:
         leaf = leafs_map[l]
         if not (leaf['has_bitmap'] or leaf['has_rule']):

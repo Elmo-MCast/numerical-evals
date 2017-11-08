@@ -1,12 +1,11 @@
 import sys
 import random
 from simulation.cloud import Cloud
-from simulation.utils import pickle_dump_obj
+from simulation.utils import bar_range, pickle_dump_obj
 
 if len(sys.argv) > 1:
     NUM_LEAFS = int(sys.argv[1])
     NUM_HOSTS_PER_LEAF = int(sys.argv[2])
-    NUM_RULES_PER_LEAF = int(sys.argv[3])
     MAX_VMS_PER_HOST = int(sys.argv[4])
     NUM_TENANTS = int(sys.argv[5])
     MIN_VMS_PER_TENANT = int(sys.argv[6])
@@ -17,14 +16,14 @@ if len(sys.argv) > 1:
     GROUP_SIZE_DIST = sys.argv[11]  # options: uniform and wve
     PLACEMENT_DIST = sys.argv[12]  # options: uniform, colocate-random-linear, and colocate-random-random
     COLOCATE_NUM_HOSTS_PER_LEAF = int(sys.argv[13])
-    MULTI_THREADED = True if sys.argv[14] == 'True' else False
-    NUM_JOBS = int(sys.argv[15])
-    DUMP_FILE = sys.argv[16]
+    NUM_BITMAPS = int(sys.argv[14])
+    MULTI_THREADED = True if sys.argv[15] == 'True' else False
+    NUM_JOBS = int(sys.argv[16])
     SEED = int(sys.argv[17])
+    DUMP_FILE_PREFIX = sys.argv[18]
 elif False:
     NUM_LEAFS = 576
     NUM_HOSTS_PER_LEAF = 48
-    NUM_RULES_PER_LEAF = 1000
     MAX_VMS_PER_HOST = 20
     NUM_TENANTS = 3000
     MIN_VMS_PER_TENANT = 10
@@ -35,14 +34,14 @@ elif False:
     GROUP_SIZE_DIST = "uniform"  # options: uniform and wve
     PLACEMENT_DIST = "colocate-random-linear"  # options: uniform, colocate-random-linear, and colocate-random-random
     COLOCATE_NUM_HOSTS_PER_LEAF = 48
+    NUM_BITMAPS = 10
     MULTI_THREADED = True
     NUM_JOBS = 5
-    DUMP_FILE = 'simulation/output/cloud.pkl'
     SEED = 0
+    DUMP_FILE_PREFIX = 'output/cloud.pkl'
 elif True:
-    NUM_LEAFS = 1056
+    NUM_LEAFS = 576
     NUM_HOSTS_PER_LEAF = 48
-    NUM_RULES_PER_LEAF = 1
     MAX_VMS_PER_HOST = 20
     NUM_TENANTS = 30
     MIN_VMS_PER_TENANT = 10
@@ -54,10 +53,11 @@ elif True:
     PLACEMENT_DIST = "colocate-random-linear"  # options: uniform, colocate-random-linear,
     # colocate-random-random, sorted-colocate-random-linear, and sorted-colocate-random-random
     COLOCATE_NUM_HOSTS_PER_LEAF = 48
+    NUM_BITMAPS = 10
     MULTI_THREADED = True
-    NUM_JOBS = 10
-    DUMP_FILE = 'simulation/output/cloud.pkl'
+    NUM_JOBS = 5
     SEED = 0
+    DUMP_FILE_PREFIX = 'output/cloud.pkl'
 else:
     raise (Exception('invalid parameters'))
 
@@ -65,7 +65,6 @@ print("""
 -> cloud (
      leafs=%s, 
      hosts_per_leaf=%s, 
-     rules_per_leaf=%s,
      vms_per_host=%s,
      tenants=%s, 
      min_vms_per_tenant=%s,
@@ -76,13 +75,13 @@ print("""
      group_size_dist=%s,
      placement_dist=%s,
      colocate_hosts_per_leaf=%s,
+     num_bitmaps=%s,
      multi_threaded=%s,
      num_jobs=%s,
-     dump_file=%s,
+     dump_file_prefix=%s,
      seed=%s)
 """ % (NUM_LEAFS,
        NUM_HOSTS_PER_LEAF,
-       NUM_RULES_PER_LEAF,
        MAX_VMS_PER_HOST,
        NUM_TENANTS,
        MIN_VMS_PER_TENANT,
@@ -93,16 +92,16 @@ print("""
        GROUP_SIZE_DIST,
        PLACEMENT_DIST,
        COLOCATE_NUM_HOSTS_PER_LEAF,
+       NUM_BITMAPS,
        MULTI_THREADED,
        NUM_JOBS,
-       DUMP_FILE,
+       DUMP_FILE_PREFIX,
        SEED))
 
 random.seed(SEED)
 
 cloud = Cloud(num_leafs=NUM_LEAFS,
               num_hosts_per_leaf=NUM_HOSTS_PER_LEAF,
-              num_rules_per_leaf=NUM_RULES_PER_LEAF,
               max_vms_per_host=MAX_VMS_PER_HOST,
               num_tenants=NUM_TENANTS,
               min_vms_per_tenant=MIN_VMS_PER_TENANT,
@@ -113,7 +112,8 @@ cloud = Cloud(num_leafs=NUM_LEAFS,
               group_size_dist=GROUP_SIZE_DIST,  # options: uniform and wve
               placement_dist=PLACEMENT_DIST,  # options: uniform, colocate-random-linear, and colocate-random-random
               colocate_num_hosts_per_leaf=COLOCATE_NUM_HOSTS_PER_LEAF,
+              num_bitmaps=NUM_BITMAPS,
               multi_threaded=MULTI_THREADED,
               num_jobs=NUM_JOBS)
 
-pickle_dump_obj(cloud.data, DUMP_FILE)
+pickle_dump_obj(cloud.prune(), DUMP_FILE_PREFIX + "." + "_".join(sys.argv[1:-1]))

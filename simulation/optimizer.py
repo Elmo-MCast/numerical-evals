@@ -5,46 +5,36 @@ from simulation.utils import bar_range
 
 
 class Optimizer:
-    def __init__(self, data, max_batch_size=1, algorithm='single_match', num_bitmaps=5, num_leafs_per_bitmap=3,
-                 redundancy_per_bitmap=20):
+    def __init__(self, data,
+                 max_batch_size=1, algorithm='single_match',
+                 num_leafs_per_bitmap=3, redundancy_per_bitmap=20, num_rules_per_leaf=6400,
+                 num_leafs=576, num_bitmaps=10, num_tenants=3000):
         self.data = data
         self.max_batch_size = max_batch_size
         self.algorithm = algorithm
-        self.num_bitmaps = num_bitmaps
         self.num_leafs_per_bitmap = num_leafs_per_bitmap
         self.redundancy_per_bitmap = redundancy_per_bitmap
+        self.num_rules_per_leaf = num_rules_per_leaf
+        self.num_leafs = num_leafs
+        self.num_tenants = num_tenants
         self.algorithm_elapse_time = []
-
-        self.network = self.data['network']
-        self.network_maps = self.network['maps']
-
-        self.num_leafs = self.network['num_leafs']
-        self.num_rules_per_leaf = self.network['num_rules_per_leaf']
+        self.leafs_to_rules_count = [0] * self.num_leafs
+        self.num_bitmaps = num_bitmaps
 
         self.tenants = self.data['tenants']
         self.tenants_maps = self.tenants['maps']
 
-        self.num_tenants = self.tenants['num_tenants']
-
-        self.placement = self.data['placement']
-        self.placement['maps'] = {'leafs_to_rules_count': {l: 0 for l in range(self.num_leafs)}}
-
-        self.leafs_to_rules_count_map = self.placement['maps']['leafs_to_rules_count']
-
-        self.data['optimizer'] = {'max_batch_size': max_batch_size,
-                                  'algorithm': algorithm,
-                                  'num_bitmaps': num_bitmaps,
-                                  'max_leafs_per_bitmap': num_leafs_per_bitmap,
-                                  'redundancy_per_bitmap': redundancy_per_bitmap,
-                                  'algorithm_elapse_time': self.algorithm_elapse_time}
+        self.data['optimizer'] = {'algorithm_elapse_time': self.algorithm_elapse_time,
+                                  'leafs_to_rules_count': self.leafs_to_rules_count}
 
         self._optimize()
 
     def _optimize(self):
         if self.max_batch_size <= 1:
             for t in bar_range(self.num_tenants, desc='optimizer'):
-                group_count = self.tenants_maps[t]['group_count']
-                groups_map = self.tenants_maps[t]['groups_map']
+                tenant_maps = self.tenants_maps[t]
+                group_count = tenant_maps['group_count']
+                groups_map = tenant_maps['groups_map']
                 for g in range(group_count):
                     start = timer()
                     algorithms.run(
@@ -53,7 +43,7 @@ class Optimizer:
                         max_bitmaps=self.num_bitmaps,
                         max_leafs_per_bitmap=self.num_leafs_per_bitmap,
                         redundancy_per_bitmap=self.redundancy_per_bitmap,
-                        leafs_to_rules_count_map=self.leafs_to_rules_count_map,
+                        leafs_to_rules_count=self.leafs_to_rules_count,
                         max_rules_per_leaf=self.num_rules_per_leaf)
                     end = timer()
                     self.algorithm_elapse_time += [end - start]
@@ -63,8 +53,9 @@ class Optimizer:
             running_batch_list = []
 
             for t in bar_range(self.num_tenants, desc='optimizer'):
-                group_count = self.tenants_maps[t]['group_count']
-                groups_map = self.tenants_maps[t]['groups_map']
+                tenant_maps = self.tenants_maps[t]
+                group_count = tenant_maps['group_count']
+                groups_map = tenant_maps['groups_map']
                 for g in range(group_count):
                     running_batch_list += [groups_map[g]]
                     running_batch_size += 1
@@ -79,7 +70,7 @@ class Optimizer:
                                 max_bitmaps=self.num_bitmaps,
                                 max_leafs_per_bitmap=self.num_leafs_per_bitmap,
                                 redundancy_per_bitmap=self.redundancy_per_bitmap,
-                                leafs_to_rules_count_map=self.leafs_to_rules_count_map,
+                                leafs_to_rules_count=self.leafs_to_rules_count,
                                 max_rules_per_leaf=self.num_rules_per_leaf)
 
                         batch_size = np.random.randint(low=1, high=self.max_batch_size + 1, size=1)[0]
@@ -96,5 +87,5 @@ class Optimizer:
                             max_bitmaps=self.num_bitmaps,
                             max_leafs_per_bitmap=self.num_leafs_per_bitmap,
                             redundancy_per_bitmap=self.redundancy_per_bitmap,
-                            leafs_to_rules_count_map=self.leafs_to_rules_count_map,
+                            leafs_to_rules_count=self.leafs_to_rules_count,
                             max_rules_per_leaf=self.num_rules_per_leaf)

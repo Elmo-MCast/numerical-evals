@@ -36,7 +36,7 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
         combination = sorted(combination.items(), key=lambda item: item[1][1])
         j = next((x for x, y in enumerate(combination) if y[1][1] >= redundancy_per_bitmap), None)
         if j is not None:
-            del combination[j:len(combination)]
+            del combination[j:]
 
         if combination:
             if random.randint(0, 2) == 0:

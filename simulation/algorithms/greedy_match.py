@@ -1,8 +1,11 @@
+from simulation.utils import popcount
+
+
 def min_k_union(leafs_map, leafs, k):
     _bitmap = 0
     _leafs = []
     for _ in range(k):
-        leaf = min(leafs, key=lambda l: bin(leafs_map[l]['bitmap'] | _bitmap)[2:].count('1'))
+        leaf = min(leafs, key=lambda l: popcount(leafs_map[l]['bitmap'] | _bitmap))
         leafs.remove(leaf)
         _bitmap |= leafs_map[leaf]['bitmap']
         _leafs += [leaf]
@@ -18,6 +21,7 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
     leafs_map = data['leafs_map']
     leafs = [l for l in leafs_map]
 
+    # Get packing of leafs per bitmap
     num_unpacked_leafs = leaf_count % max_bitmaps
     num_leafs_per_bitmap = int(leaf_count / max_bitmaps) + (1 if num_unpacked_leafs > 0 else 0)
     if num_leafs_per_bitmap > max_leafs_per_bitmap:
@@ -33,8 +37,7 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
 
         for j in range(__num_leafs_per_bitmap, 0, -1):
             _bitmap, _leafs = min_k_union(leafs_map, leafs, j)
-            _redundancy = sum([bin(_bitmap ^ leafs_map[l]['bitmap'])[2:].count('1') for l in _leafs])
-
+            _redundancy = sum([popcount(_bitmap ^ leafs_map[l]['bitmap']) for l in _leafs])
             if _redundancy <= redundancy_per_bitmap:
                 for l in _leafs:
                     leaf = leafs_map[l]
@@ -61,6 +64,7 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
             leaf['has_rule'] = False
             default_bitmap |= leaf['bitmap']
 
+    # Calculate redundancy
     for l in leafs:
         leaf = leafs_map[l]
         if not leaf['has_rule']:

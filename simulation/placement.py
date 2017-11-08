@@ -13,37 +13,35 @@ def unwrap_tenant_groups_leafs_to_hosts_and_bitmap_map(args, **kwargs):
 
 
 class Placement:
-    def __init__(self, data, dist='uniform',  # options: uniform, colocate-random-linear, colocate-random-random
-                 num_hosts_per_leaf=48, multi_threaded=False, num_jobs=4):
+    def __init__(self, data,
+                 num_leafs=576, num_hosts_per_leaf=48,
+                 num_tenants=3000, max_vms_per_host=20,
+                 num_bitmaps=10, dist='uniform', colocate_num_hosts_per_leaf=48,
+                 multi_threaded=False, num_jobs=4):
         self.data = data
         self.dist = dist
-        self.placement_num_hosts_per_leaf = num_hosts_per_leaf
+        self.num_leafs = num_leafs
+        self.num_hosts_per_leaf = num_hosts_per_leaf
+        self.num_hosts = num_leafs * num_hosts_per_leaf
+        self.colocate_num_hosts_per_leaf = colocate_num_hosts_per_leaf
+        self.num_tenants = num_tenants
+        self.max_vms_per_host = max_vms_per_host
         self.multi_threaded = multi_threaded
         self.num_jobs = num_jobs
+        self.num_bitmaps = num_bitmaps
 
         self.network = self.data['network']
         self.network_maps = self.network['maps']
 
-        self.num_leafs = self.network['num_leafs']
-        self.num_hosts_per_leaf = self.network['num_hosts_per_leaf']
-
         self.tenants = self.data['tenants']
         self.tenants_maps = self.tenants['maps']
 
-        self.num_hosts = self.tenants['num_hosts']
-        self.num_tenants = self.tenants['num_tenants']
-        self.max_vms_per_host = self.tenants['max_vms_per_host']
+        for t in range(self.num_tenants):
+            tenant_maps = self.tenants_maps[t]
+            tenant_maps['vms_map'] = [{'host': None, 'leaf': None} for _ in range(tenant_maps['vm_count'])]
 
-        self.data['placement'] = {'dist': dist,
-                                  'num_hosts_per_leaf': num_hosts_per_leaf}
-        self.placement = self.data['placement']
-
-        for t in range(self.tenants['num_tenants']):
-            self.tenants_maps[t]['vms_map'] = \
-                [{'host': None, 'leaf': None} for _ in range(self.tenants_maps[t]['vm_count'])]
-
-            group_count = self.tenants_maps[t]['group_count']
-            groups_map = self.tenants_maps[t]['groups_map']
+            group_count = tenant_maps['group_count']
+            groups_map = tenant_maps['groups_map']
             for g in range(group_count):
                 group_map = groups_map[g]
                 group_map['leaf_count'] = None
@@ -60,13 +58,13 @@ class Placement:
             self._run_tenant_groups_leafs_to_hosts_and_bitmap_map()
 
     def _uniform(self):
-        available_hosts = [h for h in range(self.tenants['num_hosts'])]
+        available_hosts = [h for h in range(self.num_hosts)]
         available_hosts_count = [0] * self.num_hosts
 
         for t in bar_range(self.num_tenants, desc='placement:vms->host'):
-            hosts = random.sample(available_hosts, self.tenants_maps[t]['vm_count'])
-
-            vms_map = self.tenants_maps[t]['vms_map']
+            tenant_maps = self.tenants_maps[t]
+            hosts = random.sample(available_hosts, tenant_maps['vm_count'])
+            vms_map = tenant_maps['vms_map']
             for v, host in enumerate(hosts):
                 vms_map[v]['host'] = host
                 available_hosts_count[host] += 1
@@ -94,9 +92,10 @@ class Placement:
         else:
             tenants_maps = self.tenants_maps
         for t in bar_range(self.num_tenants, desc='placement:vms->host'):
-            vms_map = tenants_maps[t]['vms_map']
+            tenant_maps = tenants_maps[t]
+            vms_map = tenant_maps['vms_map']
             running_index = 0
-            running_count = tenants_maps[t]['vm_count']
+            running_count = tenant_maps['vm_count']
             while running_count > 0:
                 selected_leaf = random.sample(available_leafs, 1)[0]
                 selected_hosts_per_leaf = available_hosts_per_leaf[selected_leaf]
@@ -104,8 +103,8 @@ class Placement:
                 selected_hosts_count_per_leaf = available_hosts_count_per_leaf[selected_leaf]
 
                 # to ensure that we always pick hosts <= self.placement['num_hosts_per_leaf'] at each leaf
-                if selected_leaf_hosts_count > self.placement_num_hosts_per_leaf:
-                    selected_leaf_hosts_count = self.placement_num_hosts_per_leaf
+                if selected_leaf_hosts_count > self.colocate_num_hosts_per_leaf:
+                    selected_leaf_hosts_count = self.colocate_num_hosts_per_leaf
 
                 if int(running_count / selected_leaf_hosts_count) > 0:
                     for h in range(selected_leaf_hosts_count):
@@ -146,9 +145,10 @@ class Placement:
         else:
             tenants_maps = self.tenants_maps
         for t in bar_range(self.num_tenants, desc='placement:vms->host'):
-            vms_map = tenants_maps[t]['vms_map']
+            tenant_maps = tenants_maps[t]
+            vms_map = tenant_maps['vms_map']
             running_index = 0
-            running_count = tenants_maps[t]['vm_count']
+            running_count = tenant_maps['vm_count']
             while running_count > 0:
                 selected_leaf = random.sample(available_leafs, 1)[0]
                 selected_leaf_hosts = available_hosts_per_leaf[selected_leaf]
@@ -156,9 +156,9 @@ class Placement:
                 selected_hosts_count_per_leaf = available_hosts_count_per_leaf[selected_leaf]
 
                 # to ensure that we always pick hosts <= self.placement['num_hosts_per_leaf'] at each leaf
-                if selected_leaf_hosts_count > self.placement_num_hosts_per_leaf:
-                    selected_leaf_hosts = random.sample(selected_leaf_hosts, self.placement_num_hosts_per_leaf)
-                    selected_leaf_hosts_count = self.placement_num_hosts_per_leaf
+                if selected_leaf_hosts_count > self.colocate_num_hosts_per_leaf:
+                    selected_leaf_hosts = random.sample(selected_leaf_hosts, self.colocate_num_hosts_per_leaf)
+                    selected_leaf_hosts_count = self.colocate_num_hosts_per_leaf
 
                 if int(running_count / selected_leaf_hosts_count) > 0:
                     for h in range(selected_leaf_hosts_count):
@@ -207,16 +207,19 @@ class Placement:
     def _get_tenant_vms_to_leaf_map(self):
         host_to_leaf_map = self.network_maps['host_to_leaf']
         for t in bar_range(self.num_tenants, desc='placement:vms->leaf'):
-            vm_count = self.tenants_maps[t]['vm_count']
-            vms_map = self.tenants_maps[t]['vms_map']
+            tenant_maps = self.tenants_maps[t]
+            vm_count = tenant_maps['vm_count']
+            vms_map = tenant_maps['vms_map']
             for vm in range(vm_count):
-                vms_map[vm]['leaf'] = host_to_leaf_map[vms_map[vm]['host']]
+                vm_map = vms_map[vm]
+                vm_map['leaf'] = host_to_leaf_map[vm_map['host']]
 
     def _get_tenant_groups_to_leafs_and_count_map(self):
         for t in bar_range(self.num_tenants, desc='placement:groups->leafs'):
-            group_count = self.tenants_maps[t]['group_count']
-            groups_map = self.tenants_maps[t]['groups_map']
-            vms_map = self.tenants_maps[t]['vms_map']
+            tenant_maps = self.tenants_maps[t]
+            group_count = tenant_maps['group_count']
+            groups_map = tenant_maps['groups_map']
+            vms_map = tenant_maps['vms_map']
             for g in range(group_count):
                 group_map = groups_map[g]
                 group_map['leafs'] = list({vms_map[vm]['leaf'] for vm in group_map['vms']})
@@ -225,9 +228,10 @@ class Placement:
     @staticmethod
     def _get_tenant_groups_to_leafs_and_count_map_mproc(tenants_maps, num_tenants):
         for t in bar_range(num_tenants, desc='placement:groups->leafs'):
-            group_count = tenants_maps[t]['group_count']
-            groups_map = tenants_maps[t]['groups_map']
-            vms_map = tenants_maps[t]['vms_map']
+            tenant_maps = tenants_maps[t]
+            group_count = tenant_maps['group_count']
+            groups_map = tenant_maps['groups_map']
+            vms_map = tenant_maps['vms_map']
             for g in range(group_count):
                 group_map = groups_map[g]
                 group_map['leafs'] = list({vms_map[vm]['leaf'] for vm in group_map['vms']})
@@ -252,52 +256,57 @@ class Placement:
 
     def _get_tenant_groups_leafs_to_hosts_and_bitmap_map(self):
         for t in bar_range(self.num_tenants, desc='placement:leafs->bitmap'):
-            group_count = self.tenants_maps[t]['group_count']
-            groups_map = self.tenants_maps[t]['groups_map']
-            vms_map = self.tenants_maps[t]['vms_map']
+            tenant_maps = self.tenants_maps[t]
+            group_count = tenant_maps['group_count']
+            groups_map = tenant_maps['groups_map']
+            vms_map = tenant_maps['vms_map']
 
             for g in range(group_count):
                 group_map = groups_map[g]
-                for vm in group_map['vms']:
-                    vm_map = vms_map[vm]
-                    if vm_map['leaf'] in group_map['leafs_map']:
-                        group_map['leafs_map'][vm_map['leaf']]['hosts'] |= {vm_map['host']}
-                    else:
-                        group_map['leafs_map'][vm_map['leaf']] = dict()
-                        group_map['leafs_map'][vm_map['leaf']]['hosts'] = {vm_map['host']}
+                if group_map['leaf_count'] > self.num_bitmaps:
+                    leafs_map = group_map['leafs_map']
+                    for vm in group_map['vms']:
+                        vm_map = vms_map[vm]
+                        if vm_map['leaf'] in leafs_map:
+                            leafs_map[vm_map['leaf']]['hosts'] |= {vm_map['host']}
+                        else:
+                            leafs_map[vm_map['leaf']] = dict()
+                            leafs_map[vm_map['leaf']]['hosts'] = {vm_map['host']}
 
-                leafs_map = group_map['leafs_map']
-                for l in group_map['leafs_map']:
-                    leaf_map = leafs_map[l]
-                    leaf_map['bitmap'] = 0
+                    for l in group_map['leafs_map']:
+                        leaf_map = leafs_map[l]
+                        leaf_map['bitmap'] = 0
 
-                    for h in leaf_map['hosts']:
-                        leaf_map['bitmap'] |= 1 << (h % self.num_hosts_per_leaf)
+                        for h in leaf_map['hosts']:
+                            leaf_map['bitmap'] |= 1 << (h % self.num_hosts_per_leaf)
 
     @staticmethod
-    def _get_tenant_groups_leafs_to_hosts_and_bitmap_map_mproc(tenants_maps, num_tenants, num_hosts_per_leaf):
+    def _get_tenant_groups_leafs_to_hosts_and_bitmap_map_mproc(tenants_maps, num_tenants, num_hosts_per_leaf,
+                                                               num_bitmaps):
         for t in bar_range(num_tenants, desc='placement:leafs->bitmap'):
-            group_count = tenants_maps[t]['group_count']
-            groups_map = tenants_maps[t]['groups_map']
-            vms_map = tenants_maps[t]['vms_map']
+            tenant_maps = tenants_maps[t]
+            group_count = tenant_maps['group_count']
+            groups_map = tenant_maps['groups_map']
+            vms_map = tenant_maps['vms_map']
 
             for g in range(group_count):
                 group_map = groups_map[g]
-                for vm in group_map['vms']:
-                    vm_map = vms_map[vm]
-                    if vm_map['leaf'] in group_map['leafs_map']:
-                        group_map['leafs_map'][vm_map['leaf']]['hosts'] |= {vm_map['host']}
-                    else:
-                        group_map['leafs_map'][vm_map['leaf']] = dict()
-                        group_map['leafs_map'][vm_map['leaf']]['hosts'] = {vm_map['host']}
+                if group_map['leaf_count'] > num_bitmaps:
+                    leafs_map = group_map['leafs_map']
+                    for vm in group_map['vms']:
+                        vm_map = vms_map[vm]
+                        if vm_map['leaf'] in leafs_map:
+                            leafs_map[vm_map['leaf']]['hosts'] |= {vm_map['host']}
+                        else:
+                            leafs_map[vm_map['leaf']] = dict()
+                            leafs_map[vm_map['leaf']]['hosts'] = {vm_map['host']}
 
-                leafs_map = group_map['leafs_map']
-                for l in group_map['leafs_map']:
-                    leaf_map = leafs_map[l]
-                    leaf_map['bitmap'] = 0
+                    for l in leafs_map:
+                        leaf_map = leafs_map[l]
+                        leaf_map['bitmap'] = 0
 
-                    for h in leaf_map['hosts']:
-                        leaf_map['bitmap'] |= 1 << (h % num_hosts_per_leaf)
+                        for h in leaf_map['hosts']:
+                            leaf_map['bitmap'] |= 1 << (h % num_hosts_per_leaf)
         return tenants_maps
 
     def _run_tenant_groups_leafs_to_hosts_and_bitmap_map(self):
@@ -308,7 +317,8 @@ class Placement:
         input_groups = [(i, i + input_size) for i in range(0, self.num_tenants, input_size)]
         inputs = [(self.tenants_maps[i:j],
                    input_size,
-                   self.num_hosts_per_leaf) for i, j in input_groups]
+                   self.num_hosts_per_leaf,
+                   self.num_bitmaps) for i, j in input_groups]
 
         # pool = multiprocessing.Pool()
         # results = pool.map(unwrap_tenant_groups_leafs_to_hosts_and_bitmap_map, [i for i in inputs])

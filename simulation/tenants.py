@@ -10,12 +10,13 @@ def unwrap_tenant_groups_to_vms_map(args, **kwargs):
 
 
 class Tenants:
-    def __init__(self, data, max_vms_per_host=20, num_tenants=3000, min_vms=10, max_vms=5000, vm_dist='expon',
-                 num_groups=100000, min_group_size=5, group_size_dist='uniform', debug=False, multi_threaded=False,
-                 num_jobs=4):
+    def __init__(self, data, num_leafs=1056, num_hosts_per_leaf=48,
+                 max_vms_per_host=20, num_tenants=3000, min_vms=10, max_vms=5000, vm_dist='expon',
+                 num_groups=100000, min_group_size=5, group_size_dist='uniform',
+                 debug=False, multi_threaded=False, num_jobs=4):
         self.data = data
         self.num_tenants = num_tenants
-        self.num_hosts = self.data['network']['num_hosts']
+        self.num_hosts = num_leafs * num_hosts_per_leaf
         self.max_vms_per_host = max_vms_per_host
         self.min_vms = min_vms
         self.max_vms = max_vms
@@ -27,17 +28,7 @@ class Tenants:
         self.num_jobs = num_jobs
         self.debug = debug
 
-        self.data['tenants'] = {'num_tenants': num_tenants,
-                                'num_hosts': self.num_hosts,
-                                'max_vms_per_host': max_vms_per_host,
-                                'min_vms': min_vms,
-                                'max_vms': max_vms,
-                                'vm_dist': vm_dist,
-                                'num_groups': num_groups,
-                                'min_group_size': min_group_size,
-                                'group_size_dist': group_size_dist,
-
-                                'vm_count': 0,
+        self.data['tenants'] = {'vm_count': 0,
                                 'group_count': 0,
                                 'maps': [{'vm_count': None,
                                           'group_count': None,
@@ -51,8 +42,9 @@ class Tenants:
         self._get_tenant_to_group_count_map()
 
         for t in range(self.num_tenants):
-            self.tenants_maps[t]['groups_map'] = \
-                [{'size': None, 'vms': None} for _ in range(self.tenants_maps[t]['group_count'])]
+            tenant_maps = self.tenants_maps[t]
+            tenant_maps['groups_map'] = \
+                [{'size': None, 'vms': None} for _ in range(tenant_maps['group_count'])]
 
         self._get_tenant_groups_to_sizes_map()
         if not self.multi_threaded:
@@ -86,8 +78,9 @@ class Tenants:
         _vm_count = self.tenants['vm_count']
         _group_count = 0
         for t in bar_range(self.num_tenants, desc='tenants:group count'):
-            group_count = int(self.tenants_maps[t]['vm_count'] / _vm_count * self.num_groups)
-            self.tenants_maps[t]['group_count'] = group_count
+            tenant_maps = self.tenants_maps[t]
+            group_count = int(tenant_maps['vm_count'] / _vm_count * self.num_groups)
+            tenant_maps['group_count'] = group_count
             _group_count += group_count
         self.tenants['group_count'] = _group_count
 
@@ -98,17 +91,19 @@ class Tenants:
     def _get_tenant_groups_to_sizes_map(self):
         if self.group_size_dist == 'uniform':
             for t in bar_range(self.num_tenants, desc='tenants:group sizes'):
-                vm_count = self.tenants_maps[t]['vm_count']
-                group_count = self.tenants_maps[t]['group_count']
-                groups_map = self.tenants_maps[t]['groups_map']
+                tenant_maps = self.tenants_maps[t]
+                vm_count = tenant_maps['vm_count']
+                group_count = tenant_maps['group_count']
+                groups_map = tenant_maps['groups_map']
                 for g in range(group_count):
                     size = random.randint(self.min_group_size, vm_count)
                     groups_map[g]['size'] = size
         elif self.group_size_dist == 'wve':  # ... using mix3 distribution from the dcn-mcast paper.
             for t in bar_range(self.num_tenants, desc='tenants:group sizes'):
-                vm_count = self.tenants_maps[t]['vm_count']
-                group_count = self.tenants_maps[t]['group_count']
-                groups_map = self.tenants_maps[t]['groups_map']
+                tenant_maps = self.tenants_maps[t]
+                vm_count = tenant_maps['vm_count']
+                group_count = tenant_maps['group_count']
+                groups_map = tenant_maps['groups_map']
                 for g in range(group_count):
                     sample = random.random()
                     if sample < 0.02:
@@ -123,29 +118,33 @@ class Tenants:
         if self.debug:
             _group_sizes_for_all_tenants = []
             for t in range(self.num_tenants):
-                group_count = self.tenants_maps[t]['group_count']
-                groups_map = self.tenants_maps[t]['groups_map']
+                tenant_maps = self.tenants_maps[t]
+                group_count = tenant_maps['group_count']
+                groups_map = tenant_maps['groups_map']
                 for g in range(group_count):
                     _group_sizes_for_all_tenants += [groups_map[g]['size']]
             print(pd.Series(_group_sizes_for_all_tenants).describe())
 
     def _get_tenant_groups_to_vms_map(self):
         for t in bar_range(self.num_tenants, desc='tenants:groups->vms'):
-            vm_count = self.tenants_maps[t]['vm_count']
-            group_count = self.tenants_maps[t]['group_count']
-            groups_map = self.tenants_maps[t]['groups_map']
+            tenant_maps = self.tenants_maps[t]
+            vm_count = tenant_maps['vm_count']
+            group_count = tenant_maps['group_count']
+            groups_map = tenant_maps['groups_map']
             for g in range(group_count):
-                groups_map[g]['vms'] = random.sample(range(vm_count), groups_map[g]['size'])
+                group_map = groups_map[g]
+                group_map['vms'] = random.sample(range(vm_count), group_map['size'])
 
     @staticmethod
     def _get_tenant_groups_to_vms_map_mproc(tenants_maps, num_tenants):
         for t in bar_range(range(num_tenants), 'tenants:groups->vms'):
-            vm_count = tenants_maps[t]['vm_count']
-            group_count = tenants_maps[t]['group_count']
-            groups_map = tenants_maps[t]['groups_map']
+            tenant_maps = tenants_maps[t]
+            vm_count = tenant_maps['vm_count']
+            group_count = tenant_maps['group_count']
+            groups_map = tenant_maps['groups_map']
             for g in range(group_count):
-                groups_map[g]['vms'] = random.sample(range(vm_count), groups_map[g]['size'])
-
+                group_map = groups_map[g]
+                group_map['vms'] = random.sample(range(vm_count), group_map['size'])
         return tenants_maps
 
     def _run_tenant_groups_leafs_to_hosts_and_bitmap_map(self):
