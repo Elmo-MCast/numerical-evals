@@ -91,6 +91,8 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
             num_unpacked_leafs = 0
         else:
             num_unpacked_leafs -= 1
+            if num_unpacked_leafs == 0:
+                _j = 0
     # print('assignment loop finishes: %s seconds\n' % (timer() - start))
 
     remaining_leafs = set(leafs) - seen_leafs
