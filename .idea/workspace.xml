@@ -2,17 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3f0c75d9-ed49-4a19-bc97-bf85c19dcdfe" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/simulation/plot.py" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/numerical-evals.iml" afterPath="$PROJECT_DIR$/.idea/numerical-evals.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/notebooks/baseerat.ipynb" afterPath="$PROJECT_DIR$/notebooks/baseerat.ipynb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/notebooks/temp_pypy.ipynb" afterPath="$PROJECT_DIR$/notebooks/temp_pypy.ipynb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/run_cloud.py" afterPath="$PROJECT_DIR$/run_cloud.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/run_data.py" afterPath="$PROJECT_DIR$/run_data.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/run_optimizer.py" afterPath="$PROJECT_DIR$/run_optimizer.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/run_optimizer.sh" afterPath="$PROJECT_DIR$/run_optimizer.sh" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/simulation/algorithms/fuzzy_match.py" afterPath="$PROJECT_DIR$/simulation/algorithms/fuzzy_match.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/simulation/algorithms/random_fuzzy_match.py" afterPath="$PROJECT_DIR$/simulation/algorithms/random_fuzzy_match.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -703,7 +693,14 @@
       <option name="project" value="LOCAL" />
       <updated>1510171003290</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="minor">
+      <created>1510182756690</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1510182756690</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -950,6 +947,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="467">
           <caret line="102" column="61" lean-forward="true" selection-start-line="102" selection-start-column="61" selection-end-line="102" selection-end-column="61" />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -957,6 +957,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1097">
           <caret line="101" column="44" lean-forward="false" selection-start-line="101" selection-start-column="44" selection-end-line="101" selection-end-column="44" />
+          <folding />
         </state>
       </provider>
     </entry>
