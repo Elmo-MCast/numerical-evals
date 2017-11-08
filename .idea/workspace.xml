@@ -3,10 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="3f0c75d9-ed49-4a19-bc97-bf85c19dcdfe" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/run_cloud.py" afterPath="$PROJECT_DIR$/run_cloud.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/run_cloud.sh" afterPath="$PROJECT_DIR$/run_cloud.sh" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/run_optimizer.py" afterPath="$PROJECT_DIR$/run_optimizer.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/run_optimizer.sh" afterPath="$PROJECT_DIR$/run_optimizer.sh" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -632,7 +628,14 @@
       <option name="project" value="LOCAL" />
       <updated>1510121466038</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="minor">
+      <created>1510125221428</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1510125221428</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="ToolWindowManager">
