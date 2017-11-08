@@ -1,3 +1,4 @@
+import os
 import sys
 import random
 from simulation.optimizer import Optimizer
@@ -63,6 +64,11 @@ print("""
 
 random.seed(SEED)
 
+dump_file = DUMP_FILE_PREFIX + "." + "_".join(CLOUD_PARAMS) + "." + "_".join(sys.argv[1:-2])
+
+if os.path.isfile(dump_file):
+    exit(0)
+
 data = pickle_load_obj(DATA_FILE)
 
 optimizer = Optimizer(data, max_batch_size=MAX_BATCH_SIZE, algorithm=ALGORITHM,
@@ -70,4 +76,4 @@ optimizer = Optimizer(data, max_batch_size=MAX_BATCH_SIZE, algorithm=ALGORITHM,
                       num_rules_per_leaf=NUM_RULES_PER_LEAF, num_leafs=NUM_LEAFS, num_bitmaps=NUM_BITMAPS,
                       num_tenants=NUM_TENANTS)
 
-pickle_dump_obj(optimizer.data, DUMP_FILE_PREFIX + "." + "_".join(CLOUD_PARAMS) + "." + "_".join(sys.argv[1:-2]))
+pickle_dump_obj(optimizer.data, dump_file)

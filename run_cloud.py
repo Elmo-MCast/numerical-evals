@@ -1,3 +1,4 @@
+import os
 import sys
 import random
 from simulation.cloud import Cloud
@@ -95,6 +96,11 @@ print("""
 
 random.seed(SEED)
 
+dump_file = DUMP_FILE_PREFIX + "." + "_".join(sys.argv[1:-1])
+
+if os.path.isfile(dump_file):
+    exit(0)
+
 cloud = Cloud(num_leafs=NUM_LEAFS,
               num_hosts_per_leaf=NUM_HOSTS_PER_LEAF,
               max_vms_per_host=MAX_VMS_PER_HOST,
@@ -110,4 +116,4 @@ cloud = Cloud(num_leafs=NUM_LEAFS,
               multi_threaded=MULTI_THREADED,
               num_jobs=NUM_JOBS)
 
-pickle_dump_obj(cloud.prune(), DUMP_FILE_PREFIX + "." + "_".join(sys.argv[1:-1]))
+pickle_dump_obj(cloud.prune(), dump_file)
