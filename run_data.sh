@@ -11,7 +11,11 @@ PYTHON=python3  # options: pypy3 or python or python3
 
 for file in ${DATA_FILE_PREFIX}
 do
-    ${PYTHON} run_data.py ${file} \
-                          ${LOG_DIR}
+    for i in 0 1 2 3  # for parallelism (make sure to update it properly for each execution)
+    do
+        ${PYTHON} run_data.py ${file} \
+                              ${LOG_DIR} &
+    done
+    wait
 done
 

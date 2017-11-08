@@ -4,7 +4,6 @@
 
 NUM_LEAFS=576
 NUM_HOSTS_PER_LEAF=48
-NUM_RULES_PER_LEAF=6400
 MAX_VMS_PER_HOST=20
 NUM_TENANTS=3000
 MIN_VMS_PER_TENANT=10
@@ -25,7 +24,7 @@ PYTHON=python3  # options: pypy3 or python or python3
 
 # running parameters
 
-for seed in 0 1
+for seed in 0
 do
     for group_size_dist in "uniform" "wve"
     do
@@ -35,7 +34,6 @@ do
             do
                 ${PYTHON} run_cloud.py  ${NUM_LEAFS} \
                                         ${NUM_HOSTS_PER_LEAF} \
-                                        ${NUM_RULES_PER_LEAF} \
                                         ${MAX_VMS_PER_HOST} \
                                         ${NUM_TENANTS} \
                                         ${MIN_VMS_PER_TENANT} \

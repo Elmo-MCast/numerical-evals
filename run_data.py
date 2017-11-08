@@ -10,7 +10,7 @@ if len(sys.argv) > 1:
 
     _TEMP = DATA_FILE.split('.')
     CLOUD_PARAMS = _TEMP[-2].split('_')
-    NUM_TENANTS = int(CLOUD_PARAMS[4])
+    NUM_TENANTS = int(CLOUD_PARAMS[3])
     NUM_HOSTS_PER_LEAF = int(CLOUD_PARAMS[1])
     SEED = int(CLOUD_PARAMS[-1])
 

@@ -17,7 +17,7 @@ PYTHON=python3  # options: pypy3 or python or python3
 
 for file in ${DATA_FILE_PREFIX}
 do
-    for num_bitmaps in 10 20 30
+    for num_bitmaps in 10 20
     do
         ${PYTHON} run_optimizer.py  ${MAX_BATCH_SIZE} \
                                     "single-match" \
