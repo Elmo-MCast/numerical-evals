@@ -4,9 +4,11 @@ from simulation.utils import bar_range, popcount
 
 
 class Data:
-    def __init__(self, data, num_tenants=3000, num_hosts_per_leaf=48, log_dir=None):
+    def __init__(self, data, num_tenants=3000, num_hosts_per_leaf=48, num_bitmaps=10,
+                 log_dir=None):
         self.num_tenants = num_tenants
         self.num_hosts_per_leaf = num_hosts_per_leaf
+        self.num_bitmaps = num_bitmaps
         self.log_dir = log_dir
 
         self.tenants = data['tenants']
@@ -64,7 +66,7 @@ class Data:
         percentage_categories = pd.Series(np.cumsum(categories.sort_index()).astype(np.double) /
                                           self.tenants['group_count'] * 100)
         if self.log_dir is not None:
-            percentage_categories.to_csv(self.log_dir + "/percentage_categories.csv")
+            percentage_categories.to_csv(self.log_dir + "/percentage_of_groups_covered_with_varying_bitmaps.csv")
         return percentage_categories
 
     def rules_for_all_leafs(self):
@@ -75,7 +77,7 @@ class Data:
 
     def redundancy_for_all_groups_in_all_tenants(self):
         _redundancy_for_all_groups_in_all_tenants = []
-        for t in bar_range(self.tenants['num_tenants'], desc='progress'):
+        for t in bar_range(self.num_tenants, desc='progress'):
             tenant_maps = self.tenants_maps[t]
             group_count = tenant_maps['group_count']
             groups_map = tenant_maps['groups_map']
@@ -100,8 +102,8 @@ class Data:
         return _redundancy_for_all_groups_in_all_tenants
 
     def traffic_stats(self):
-        _actual_traffic_for_all_leafs = pd.DataFrame()
-        _unwanted_traffic_for_all_leafs = pd.DataFrame()
+        _actual_traffic_for_all_leafs = dict()
+        _unwanted_traffic_for_all_leafs = dict()
         for t in bar_range(self.num_tenants, desc='progress'):
             tenant_maps = self.tenants_maps[t]
             group_count = tenant_maps['group_count']
@@ -124,13 +126,9 @@ class Data:
                             if b == '1':
                                 _unwanted_traffic_for_all_leafs[l][i] += 1
 
-        if self.log_dir is not None:
-            _actual_traffic_for_all_leafs.to_csv(self.log_dir + "/actual_traffic_for_all_leafs.csv")
-            _unwanted_traffic_for_all_leafs.to_csv(self.log_dir + "/unwanted_traffic_for_all_leafs.csv")
         return _actual_traffic_for_all_leafs, _unwanted_traffic_for_all_leafs
 
-    @staticmethod
-    def traffic_overhead(actual_traffic_for_all_leafs, unwanted_traffic_for_all_leafs):
+    def traffic_overhead(self, actual_traffic_for_all_leafs, unwanted_traffic_for_all_leafs):
         _actual_traffic_for_all_leafs = 0
         for l in actual_traffic_for_all_leafs:
             _actual_traffic_for_all_leafs += sum(actual_traffic_for_all_leafs[l])
@@ -139,23 +137,32 @@ class Data:
         for l in unwanted_traffic_for_all_leafs:
             _unwanted_traffic_for_all_leafs += sum(unwanted_traffic_for_all_leafs[l])
 
-        return _unwanted_traffic_for_all_leafs / (_actual_traffic_for_all_leafs + _unwanted_traffic_for_all_leafs) * 100
+        _traffic_overhead = (pd.Series(_unwanted_traffic_for_all_leafs /
+                             (_actual_traffic_for_all_leafs + _unwanted_traffic_for_all_leafs) * 100))
 
-    @staticmethod
-    def actual_traffic_per_link(traffic_for_all_leafs):
+        if self.log_dir is not None:
+            _traffic_overhead.to_csv(self.log_dir + "/traffic_overhead.csv")
+        return _traffic_overhead
+
+    def actual_traffic_per_link(self, traffic_for_all_leafs):
         _traffic_per_link = []
         for l in traffic_for_all_leafs:
             _traffic_per_link += traffic_for_all_leafs[l]
+        _traffic_per_link = pd.Series(_traffic_per_link)
 
-        return pd.Series(_traffic_per_link)
+        if self.log_dir is not None:
+            _traffic_per_link.to_csv(self.log_dir + "/actual_traffic_per_link.csv")
+        return _traffic_per_link
 
-    @staticmethod
-    def unwanted_traffic_per_link(traffic_for_all_leafs):
+    def unwanted_traffic_per_link(self, traffic_for_all_leafs):
         _traffic_per_link = []
         for l in traffic_for_all_leafs:
             _traffic_per_link += traffic_for_all_leafs[l]
+        _traffic_per_link = pd.Series(_traffic_per_link)
 
-        return pd.Series(_traffic_per_link)
+        if self.log_dir is not None:
+            _traffic_per_link.to_csv(self.log_dir + "/unwanted_traffic_per_link.csv")
+        return _traffic_per_link
 
     def total_traffic_per_link(self, actual_traffic_for_all_leafs, unwanted_traffic_for_all_leafs):
         _total_traffic_for_all_leafs = dict()
@@ -171,15 +178,36 @@ class Data:
         _total_traffic_per_link = []
         for l in _total_traffic_for_all_leafs:
             _total_traffic_per_link += _total_traffic_for_all_leafs[l]
+        _total_traffic_per_link = pd.Series(_total_traffic_per_link)
 
-        return pd.Series(_total_traffic_per_link)
+        if self.log_dir is not None:
+            _total_traffic_per_link.to_csv(self.log_dir + "/total_traffic_per_link.csv")
+        return _total_traffic_per_link
 
-    @staticmethod
-    def traffic_overhead_per_link(total_traffic_per_link, actual_traffic_per_link):
+    def traffic_overhead_per_link(self, total_traffic_per_link, actual_traffic_per_link):
         _traffic_overhead_per_link = []
-
         for i in bar_range(len(total_traffic_per_link), desc='progress'):
-            _traffic_overhead_per_link += [(total_traffic_per_link[i] - actual_traffic_per_link[i]) /
-                                           total_traffic_per_link[i] * 100]
+            if total_traffic_per_link[i] != 0:
+                _traffic_overhead_per_link += [(total_traffic_per_link[i] - actual_traffic_per_link[i]) /
+                                               total_traffic_per_link[i] * 100]
+        _traffic_overhead_per_link = pd.Series(_traffic_overhead_per_link)
 
-        return pd.Series(_traffic_overhead_per_link)
+        if self.log_dir is not None:
+            _traffic_overhead_per_link.to_csv(self.log_dir + "/traffic_overhead_per_link.csv")
+        return _traffic_overhead_per_link
+
+    def log(self):
+        self.algorithm_elapse_time()
+        self.vm_count_for_all_tenants()
+        self.group_count_for_all_tenants()
+        self.group_sizes_for_all_tenants()
+        self.leafs_for_all_groups_in_all_tenants()
+        self.percentage_of_groups_covered_with_varying_bitmaps(self.num_bitmaps)
+        self.rules_for_all_leafs()
+        self.redundancy_for_all_groups_in_all_tenants()
+        at_dict, ut_dict = self.traffic_stats()
+        self.traffic_overhead(at_dict, ut_dict)
+        at = self.actual_traffic_per_link(at_dict)
+        ut = self.unwanted_traffic_per_link(ut_dict)
+        tt = self.total_traffic_per_link(at_dict, ut_dict)
+        self.traffic_overhead_per_link(tt, at)

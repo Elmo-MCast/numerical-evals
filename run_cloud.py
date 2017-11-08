@@ -16,11 +16,10 @@ if len(sys.argv) > 1:
     GROUP_SIZE_DIST = sys.argv[11]  # options: uniform and wve
     PLACEMENT_DIST = sys.argv[12]  # options: uniform, colocate-random-linear, and colocate-random-random
     COLOCATE_NUM_HOSTS_PER_LEAF = int(sys.argv[13])
-    NUM_BITMAPS = int(sys.argv[14])
-    MULTI_THREADED = True if sys.argv[15] == 'True' else False
-    NUM_JOBS = int(sys.argv[16])
-    SEED = int(sys.argv[17])
-    DUMP_FILE_PREFIX = sys.argv[18]
+    MULTI_THREADED = True if sys.argv[14] == 'True' else False
+    NUM_JOBS = int(sys.argv[15])
+    SEED = int(sys.argv[16])
+    DUMP_FILE_PREFIX = sys.argv[17]
 elif False:
     NUM_LEAFS = 576
     NUM_HOSTS_PER_LEAF = 48
@@ -34,7 +33,6 @@ elif False:
     GROUP_SIZE_DIST = "uniform"  # options: uniform and wve
     PLACEMENT_DIST = "colocate-random-linear"  # options: uniform, colocate-random-linear, and colocate-random-random
     COLOCATE_NUM_HOSTS_PER_LEAF = 48
-    NUM_BITMAPS = 10
     MULTI_THREADED = True
     NUM_JOBS = 5
     SEED = 0
@@ -53,7 +51,6 @@ elif True:
     PLACEMENT_DIST = "colocate-random-linear"  # options: uniform, colocate-random-linear,
     # colocate-random-random, sorted-colocate-random-linear, and sorted-colocate-random-random
     COLOCATE_NUM_HOSTS_PER_LEAF = 48
-    NUM_BITMAPS = 10
     MULTI_THREADED = True
     NUM_JOBS = 5
     SEED = 0
@@ -75,7 +72,6 @@ print("""
      group_size_dist=%s,
      placement_dist=%s,
      colocate_hosts_per_leaf=%s,
-     num_bitmaps=%s,
      multi_threaded=%s,
      num_jobs=%s,
      dump_file_prefix=%s,
@@ -92,7 +88,6 @@ print("""
        GROUP_SIZE_DIST,
        PLACEMENT_DIST,
        COLOCATE_NUM_HOSTS_PER_LEAF,
-       NUM_BITMAPS,
        MULTI_THREADED,
        NUM_JOBS,
        DUMP_FILE_PREFIX,
@@ -112,7 +107,6 @@ cloud = Cloud(num_leafs=NUM_LEAFS,
               group_size_dist=GROUP_SIZE_DIST,  # options: uniform and wve
               placement_dist=PLACEMENT_DIST,  # options: uniform, colocate-random-linear, and colocate-random-random
               colocate_num_hosts_per_leaf=COLOCATE_NUM_HOSTS_PER_LEAF,
-              num_bitmaps=NUM_BITMAPS,
               multi_threaded=MULTI_THREADED,
               num_jobs=NUM_JOBS)
 

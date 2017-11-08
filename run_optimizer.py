@@ -6,20 +6,21 @@ from simulation.utils import pickle_dump_obj, pickle_load_obj
 if len(sys.argv) > 1:
     MAX_BATCH_SIZE=int(sys.argv[1])
     ALGORITHM = sys.argv[2]
-    NUM_LEAFS_PER_BITMAP = int(sys.argv[3])
-    REDUNDANCY_PER_BITMAP = int(sys.argv[4])
-    NUM_RULES_PER_LEAF = int(sys.argv[5])
-    DATA_FILE = sys.argv[6]
-    DUMP_FILE_PREFIX = sys.argv[7]
+    NUM_BITMAPS = int(sys.argv[3])
+    NUM_LEAFS_PER_BITMAP = int(sys.argv[4])
+    REDUNDANCY_PER_BITMAP = int(sys.argv[5])
+    NUM_RULES_PER_LEAF = int(sys.argv[6])
+    DATA_FILE = sys.argv[7]
+    DUMP_FILE_PREFIX = sys.argv[8]
 
     CLOUD_PARAMS = DATA_FILE.split('.')[-1].split('_')
     NUM_LEAFS = int(CLOUD_PARAMS[0])
-    NUM_BITMAPS = int(CLOUD_PARAMS[13])
     NUM_TENANTS = int(CLOUD_PARAMS[4])
     SEED = int(CLOUD_PARAMS[16])
 elif True:
     MAX_BATCH_SIZE = 1
     ALGORITHM = 'single_match'
+    NUM_BITMAPS = 10
     NUM_LEAFS_PER_BITMAP = 3
     REDUNDANCY_PER_BITMAP = 2
     NUM_RULES_PER_LEAF = 6400
@@ -28,7 +29,6 @@ elif True:
 
     CLOUD_PARAMS = []
     NUM_LEAFS = 576
-    NUM_BITMAPS = 10
     NUM_TENANTS = 30
     SEED = 0
 else:

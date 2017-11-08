@@ -18,7 +18,6 @@ class Cloud:
                  group_size_dist='uniform',  # options: uniform and wve
                  placement_dist='uniform',  # options: uniform, colocate-random-linear, and colocate-random-random
                  colocate_num_hosts_per_leaf=48,
-                 num_bitmaps=10,
                  multi_threaded=True,
                  num_jobs=10):
         self.data = dict()
@@ -37,7 +36,7 @@ class Cloud:
         Placement(data=self.data,
                   num_leafs=num_leafs, num_hosts_per_leaf=num_hosts_per_leaf,
                   num_tenants=num_tenants, max_vms_per_host=max_vms_per_host,
-                  num_bitmaps=num_bitmaps, dist=placement_dist, colocate_num_hosts_per_leaf=colocate_num_hosts_per_leaf,
+                  dist=placement_dist, colocate_num_hosts_per_leaf=colocate_num_hosts_per_leaf,
                   multi_threaded=multi_threaded, num_jobs=num_jobs)
 
     def prune(self):
