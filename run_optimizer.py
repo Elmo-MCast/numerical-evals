@@ -20,17 +20,17 @@ if len(sys.argv) > 1:
     SEED = int(CLOUD_PARAMS[-1])
 elif True:
     MAX_BATCH_SIZE = 1
-    ALGORITHM = 'single-match'
-    NUM_BITMAPS = 10
-    NUM_LEAFS_PER_BITMAP = 3
-    REDUNDANCY_PER_BITMAP = 2
-    NUM_RULES_PER_LEAF = 6400
+    ALGORITHM = 'fuzzy-match'
+    NUM_BITMAPS = 30
+    NUM_LEAFS_PER_BITMAP = 2
+    REDUNDANCY_PER_BITMAP = 4
+    NUM_RULES_PER_LEAF = 1000
     DATA_FILE = 'output/cloud.pkl.'
     DUMP_FILE_PREFIX = 'output/optimizer.pkl'
 
     CLOUD_PARAMS = []
     NUM_LEAFS = 576
-    NUM_TENANTS = 30
+    NUM_TENANTS = 3000
     SEED = 0
 else:
     raise (Exception('invalid parameters'))
@@ -67,6 +67,7 @@ random.seed(SEED)
 dump_file = DUMP_FILE_PREFIX + "." + "_".join(CLOUD_PARAMS) + "." + "_".join(sys.argv[1:-2])
 
 if os.path.isfile(dump_file):
+    print('%s, already exists.' % dump_file)
     exit(0)
 
 data = pickle_load_obj(DATA_FILE)

@@ -55,6 +55,7 @@ random.seed(SEED)
 log_dir = LOG_DIR + "/" + "_".join(CLOUD_PARAMS) + "." + "_".join(OPTIMIZER_PARAMS)
 
 if os.path.isdir(log_dir):
+    print('%s, already exists.' % log_dir)
     exit(0)
 
 os.system('mkdir -p %s' % log_dir)

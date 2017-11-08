@@ -1,4 +1,5 @@
-import itertools
+from simulation.utils import popcount
+from timeit import default_timer as timer
 import random
 
 
@@ -18,36 +19,33 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
         num_unpacked_leafs = 0
     combinations = [None] * num_leafs_per_bitmap
 
-    combination = dict()
-    for c in itertools.combinations(leafs, 1):
-        combination[c] = (leafs_map[c[0]]['bitmap'], 0)
-    previous_combination = combination
-    combinations[0] = list(combination.items())
+    good_leafs = [l for l in leafs]
+    good_combination = [([l], (leafs_map[l]['bitmap'], 0)) for l in good_leafs]
+    combinations[0] = good_combination
 
     for i in range(1, num_leafs_per_bitmap):
-        combination = dict()
-        for c in itertools.combinations(leafs, i + 1):
-            previous_c = c[:i]
-            if previous_c in previous_combination:
-                _bitmap = previous_combination[previous_c][0] | leafs_map[c[i]]['bitmap']
-                _redundancy = sum([bin(_bitmap ^ leafs_map[l]['bitmap'])[2:].count('1') for l in c])
-                combination[c] = (_bitmap, _redundancy)
+        combination = []
+        for c, (b, _) in good_combination:
+            for l in good_leafs:
+                if l not in c:
+                    _c = c + [l]
+                    _b = b | leafs_map[l]['bitmap']
+                    _r = sum([popcount(_b ^ leafs_map[_l]['bitmap']) for _l in _c])
 
-        combination = sorted(combination.items(), key=lambda item: item[1][1])
-        j = next((x for x, y in enumerate(combination) if y[1][1] >= redundancy_per_bitmap), None)
-        if j is not None:
-            del combination[j:]
+                    if _r <= redundancy_per_bitmap:
+                        combination += [(_c, (_b, _r))]
 
         if combination:
-            if random.randint(0, 2) == 0:
-                combination.remove(combination[0])
-            if combination:
-                previous_combination = dict(combination)
-                combinations[i] = combination
-            else:
-                break
+            good_leafs = list(set([y for x in combination for y in x[0]]))
+            good_combination = combination
         else:
             break
+
+    for i in range(1, num_leafs_per_bitmap):
+        if combinations[i]:
+            combinations[i] = sorted(combinations[i], key=lambda item: item[1][1])
+            if random.randint(0, 2) == 0:
+                combinations[i] = combinations[i][1:]
 
     # Assign leafs to bitmaps using the sorted combinations of leafs
     seen_leafs = set()
@@ -63,7 +61,7 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
                 current_item = combination[0]
                 c, b = current_item[0], current_item[1][0]
                 if len(set(c) - seen_leafs) != len(c):
-                    combination.remove(current_item)
+                    combinations[__num_leafs_per_bitmap - 1] = combination[1:]
                     continue
 
                 for l in c:
@@ -73,7 +71,7 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
                     leaf['~bitmap'] = b ^ leaf['bitmap']
 
                 seen_leafs |= set(c)
-                combination.remove(current_item)
+                combinations[__num_leafs_per_bitmap - 1] = combination[1:]
                 break
             else:
                 __num_leafs_per_bitmap -= 1
