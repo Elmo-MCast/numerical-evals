@@ -20,7 +20,7 @@ if len(sys.argv) > 1:
     SEED = int(CLOUD_PARAMS[-1])
 elif True:
     MAX_BATCH_SIZE = 1
-    ALGORITHM = 'fuzzy-match'
+    ALGORITHM = 'greedy-match'
     NUM_BITMAPS = 30
     NUM_LEAFS_PER_BITMAP = 2
     REDUNDANCY_PER_BITMAP = 4

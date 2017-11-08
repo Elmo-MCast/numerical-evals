@@ -37,12 +37,9 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
         if combination:
             good_leafs = list(set([y for x in combination for y in x[0]]))
             good_combination = combination
+            combinations[i] = sorted(combination, key=lambda item: item[1][1])
         else:
             break
-
-    for i in range(1, num_leafs_per_bitmap):
-        if combinations[i]:
-            combinations[i] = sorted(combinations[i], key=lambda item: item[1][1])
 
     # Assign leafs to bitmaps using the sorted combinations of leafs
     seen_leafs = set()
