@@ -9,7 +9,7 @@ NUM_LEAFS_PER_BITMAP=3
 REDUNDANCY_PER_BITMAP=2
 NUM_RULES_PER_LEAF=1000
 DATA_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/output/cloud.pkl.*"
-DUMP_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/output/optimizer.pkl"
+DUMP_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/temp-output/optimizer.pkl"
 
 PYTHON=pypy3  # options: pypy3 or python or python3
 
@@ -28,7 +28,7 @@ do
 #                                    ${file} \
 #                                    ${DUMP_FILE_PREFIX} &
 
-        for num_leafs_per_bitmap in 1 2
+        for num_leafs_per_bitmap in 4
         do
 #            ${PYTHON} run_optimizer.py  ${MAX_BATCH_SIZE} \
 #                                        "exact-match" \
@@ -72,4 +72,3 @@ do
         done
     done
 done
-

@@ -9,7 +9,7 @@ NUM_TENANTS=3000
 MIN_VMS_PER_TENANT=10
 MAX_VMS_PER_TENANT=5000
 VM_DIST="expon"  # options: expon
-NUM_GROUPS=100000
+NUM_GROUPS=1000000
 MIN_GROUP_SIZE=5
 GROUP_SIZE_DIST="uniform"  # options: uniform and wve
 PLACEMENT_DIST="colocate-random-linear"  # options: uniform, colocate-random-linear,
@@ -18,9 +18,9 @@ COLOCATE_NUM_HOSTS_PER_LEAF=48
 MULTI_THREADED="True"
 NUM_JOBS=5
 SEED=0
-DUMP_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/output/cloud.pkl"
+DUMP_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/output-1M/cloud.pkl"
 
-PYTHON=python3  # options: pypy3 or python or python3
+PYTHON=pypy3  # options: pypy3 or python or python3
 
 # running parameters
 
@@ -47,10 +47,9 @@ do
                                         ${MULTI_THREADED} \
                                         ${NUM_JOBS} \
                                         ${seed} \
-                                        ${DUMP_FILE_PREFIX} &
+                                        ${DUMP_FILE_PREFIX}
             done
         done
     done
-    wait
 done
 
