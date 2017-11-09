@@ -28,29 +28,29 @@ do
                                                 ${file} \
                                                 ${DUMP_FILE_PREFIX} &
 
-        for num_leafs_per_bitmap in 4
+        for num_leafs_per_bitmap in 1 2 4
         do
-            ${PYTHON} run_optimizer.py  ${MAX_BATCH_SIZE} \
-                                        "exact-match" \
-                                        ${num_bitmaps} \
-                                        ${num_leafs_per_bitmap} \
-                                        0 \
-                                        ${NUM_RULES_PER_LEAF} \
-                                        ${file} \
-                                        ${DUMP_FILE_PREFIX} &
+            ${PYTHON} run_optimizer_with_data.py    ${MAX_BATCH_SIZE} \
+                                                    "exact-match" \
+                                                    ${num_bitmaps} \
+                                                    ${num_leafs_per_bitmap} \
+                                                    0 \
+                                                    ${NUM_RULES_PER_LEAF} \
+                                                    ${file} \
+                                                    ${DUMP_FILE_PREFIX} &
 
             for redundancy_per_bitmap in 0 2 4
             do
-                ${PYTHON} run_optimizer.py  ${MAX_BATCH_SIZE} \
-                                            "greedy-match" \
-                                            ${num_bitmaps} \
-                                            ${num_leafs_per_bitmap} \
-                                            ${redundancy_per_bitmap} \
-                                            ${NUM_RULES_PER_LEAF} \
-                                            ${file} \
-                                            ${DUMP_FILE_PREFIX} &
+                ${PYTHON} run_optimizer_with_data.py    ${MAX_BATCH_SIZE} \
+                                                        "greedy-match" \
+                                                        ${num_bitmaps} \
+                                                        ${num_leafs_per_bitmap} \
+                                                        ${redundancy_per_bitmap} \
+                                                        ${NUM_RULES_PER_LEAF} \
+                                                        ${file} \
+                                                        ${DUMP_FILE_PREFIX} &
 
-#                ${PYTHON} run_optimizer.py  ${MAX_BATCH_SIZE} \
+#                ${PYTHON} run_optimizer_with_data.py  ${MAX_BATCH_SIZE} \
 #                                            "fuzzy-match" \
 #                                            ${num_bitmaps} \
 #                                            ${num_leafs_per_bitmap} \
@@ -59,7 +59,7 @@ do
 #                                            ${file} \
 #                                            ${DUMP_FILE_PREFIX} &
 #
-#                ${PYTHON} run_optimizer.py  ${MAX_BATCH_SIZE} \
+#                ${PYTHON} run_optimizer_with_data.py  ${MAX_BATCH_SIZE} \
 #                                            "random-fuzzy-match" \
 #                                            ${num_bitmaps} \
 #                                            ${num_leafs_per_bitmap} \
