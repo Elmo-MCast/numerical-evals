@@ -52,4 +52,5 @@ do
         done
     done
 done
+wait
 

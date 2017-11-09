@@ -14,4 +14,4 @@ do
     ${PYTHON} run_data.py ${file} \
                           ${LOG_DIR}
 done
-
+wait
