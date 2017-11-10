@@ -60,8 +60,7 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
 
                 for l in c:
                     leaf = leafs_map[l]
-                    leaf['has_bitmap'] = True
-                    leaf['has_rule'] = False
+                    leaf['has_bitmap'] = i
                     leaf['~bitmap'] = b ^ leaf['bitmap']
 
                 seen_leafs |= set(c)
@@ -83,17 +82,14 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
     for l in remaining_leafs:
         leaf = leafs_map[l]
         if leafs_to_rules_count_map[l] < max_rules_per_leaf:  # Add a rule in leaf
-            leaf['has_bitmap'] = False
             leaf['has_rule'] = True
             leafs_to_rules_count_map[l] += 1
         else:  # Assign leaf to default bitmap
-            leaf['has_bitmap'] = False
-            leaf['has_rule'] = False
             default_bitmap |= leaf['bitmap']
 
     for l in remaining_leafs:
         leaf = leafs_map[l]
-        if not leaf['has_rule']:
+        if 'has_rule' not in leaf:
             leaf['~bitmap'] = default_bitmap ^ leaf['bitmap']
 
     data['default_bitmap'] = default_bitmap
