@@ -49,9 +49,9 @@ elif True:
     NUM_GROUPS = 100000
     MIN_GROUP_SIZE = 5
     GROUP_SIZE_DIST = "wve"  # options: uniform and wve
-    PLACEMENT_DIST = "colocate-random-linear"  # options: uniform, colocate-random-linear,
+    PLACEMENT_DIST = "colocate-random-random"  # options: uniform, colocate-random-linear,
     # colocate-random-random, sorted-colocate-random-linear, and sorted-colocate-random-random
-    COLOCATE_NUM_HOSTS_PER_LEAF = 48
+    COLOCATE_NUM_HOSTS_PER_LEAF = 24
     MULTI_THREADED = True
     NUM_JOBS = 5
     SEED = 0

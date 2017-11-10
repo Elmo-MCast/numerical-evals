@@ -7,9 +7,9 @@ ALGORITHM="single_match"
 NUM_BITMAPS=10
 NUM_LEAFS_PER_BITMAP=3
 REDUNDANCY_PER_BITMAP=2
-NUM_RULES_PER_LEAF=10000
-DATA_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/output-1M/cloud.pkl.*"
-DUMP_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/logs-1M/optimizer.pkl"
+NUM_RULES_PER_LEAF=1000
+DATA_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/output-100K-uniform/cloud.pkl.*"
+DUMP_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/logs-100K-uniform/optimizer.pkl"
 
 PYTHON=pypy3  # options: pypy3 or python or python3
 
@@ -22,13 +22,13 @@ do
         ${PYTHON} run_optimizer_with_data.py    ${MAX_BATCH_SIZE} \
                                                 "single-match" \
                                                 ${num_bitmaps} \
-                                                0 \
+                                                1 \
                                                 0 \
                                                 ${NUM_RULES_PER_LEAF} \
                                                 ${file} \
                                                 ${DUMP_FILE_PREFIX} &
 
-        for num_leafs_per_bitmap in 1 2 4
+        for num_leafs_per_bitmap in 1 2
         do
             ${PYTHON} run_optimizer_with_data.py    ${MAX_BATCH_SIZE} \
                                                     "exact-match" \
@@ -41,6 +41,11 @@ do
 
             for redundancy_per_bitmap in 0 2 4
             do
+                if [ ${num_leafs_per_bitmap} -eq 1 ] && [ ${redundancy_per_bitmap} -gt 0 ]
+                then
+                    continue
+                fi
+
                 ${PYTHON} run_optimizer_with_data.py    ${MAX_BATCH_SIZE} \
                                                         "greedy-match" \
                                                         ${num_bitmaps} \
@@ -50,23 +55,23 @@ do
                                                         ${file} \
                                                         ${DUMP_FILE_PREFIX} &
 
-#                ${PYTHON} run_optimizer_with_data.py  ${MAX_BATCH_SIZE} \
-#                                            "fuzzy-match" \
-#                                            ${num_bitmaps} \
-#                                            ${num_leafs_per_bitmap} \
-#                                            ${redundancy_per_bitmap} \
-#                                            ${NUM_RULES_PER_LEAF} \
-#                                            ${file} \
-#                                            ${DUMP_FILE_PREFIX} &
-#
-#                ${PYTHON} run_optimizer_with_data.py  ${MAX_BATCH_SIZE} \
-#                                            "random-fuzzy-match" \
-#                                            ${num_bitmaps} \
-#                                            ${num_leafs_per_bitmap} \
-#                                            ${redundancy_per_bitmap} \
-#                                            ${NUM_RULES_PER_LEAF} \
-#                                            ${file} \
-#                                            ${DUMP_FILE_PREFIX} &
+                ${PYTHON} run_optimizer_with_data.py  ${MAX_BATCH_SIZE} \
+                                            "fuzzy-match" \
+                                            ${num_bitmaps} \
+                                            ${num_leafs_per_bitmap} \
+                                            ${redundancy_per_bitmap} \
+                                            ${NUM_RULES_PER_LEAF} \
+                                            ${file} \
+                                            ${DUMP_FILE_PREFIX} &
+
+                ${PYTHON} run_optimizer_with_data.py  ${MAX_BATCH_SIZE} \
+                                            "random-fuzzy-match" \
+                                            ${num_bitmaps} \
+                                            ${num_leafs_per_bitmap} \
+                                            ${redundancy_per_bitmap} \
+                                            ${NUM_RULES_PER_LEAF} \
+                                            ${file} \
+                                            ${DUMP_FILE_PREFIX} &
             done
             wait
         done
