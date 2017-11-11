@@ -1,6 +1,6 @@
 import random
 import copy
-from simulation.algorithms import single_match, exact_match, fuzzy_match
+from simulation.algorithms import single_match, exact_match, fuzzy_match, random_fuzzy_match, greedy_match
 
 random.seed(0)
 
@@ -34,14 +34,24 @@ def test1_data():
 def test1_run():
     data = test1_data()
 
-    (data0, max_bitmaps0, max_leafs_per_bitmap0, _,
-     leafs_to_rules_count0, max_rules_per_leaf0) = copy.deepcopy(data)
-    exact_match.run(data0, max_bitmaps0, max_leafs_per_bitmap0, leafs_to_rules_count0, max_rules_per_leaf0)
+    single_data = copy.deepcopy(data)
+    single_match.run(single_data[0], single_data[1], single_data[4], single_data[5])
 
-    (data1, max_bitmaps1, max_leafs_per_bitmap1, redundancy_per_bitmap1,
-     leafs_to_rules_count1, max_rules_per_leaf1) = copy.deepcopy(data)
-    fuzzy_match.run(data1, max_bitmaps1, max_leafs_per_bitmap1, redundancy_per_bitmap1, leafs_to_rules_count1,
-                    max_rules_per_leaf1)
+    exact_data = copy.deepcopy(data)
+    exact_match.run(exact_data[0], exact_data[1], exact_data[2], exact_data[4], exact_data[5])
+
+    greedy_data = copy.deepcopy(data)
+    greedy_match.run(greedy_data[0], greedy_data[1], greedy_data[2], greedy_data[3], greedy_data[4],
+                     greedy_data[5])
+
+    fuzzy_data = copy.deepcopy(data)
+    fuzzy_match.run(fuzzy_data[0], fuzzy_data[1], fuzzy_data[2], fuzzy_data[3], fuzzy_data[4],
+                    fuzzy_data[5])
+
+    random_fuzzy_data = copy.deepcopy(data)
+    random_fuzzy_match.run(random_fuzzy_data[0], random_fuzzy_data[1], random_fuzzy_data[2], random_fuzzy_data[3],
+                           random_fuzzy_data[4], random_fuzzy_data[5])
+
     pass
 
 

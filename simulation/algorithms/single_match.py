@@ -37,43 +37,16 @@ def run(data, max_bitmaps, leafs_to_rules_count_map, max_rules_per_leaf):
             l, _ = ordered_leafs_list[i]
             leaf = leafs_map[l]
             leaf['has_bitmap'] = True
-            leaf['has_rule'] = False
 
         for i in range(max_bitmaps, leaf_count):
             l, _ = ordered_leafs_list[i]
             leaf = leafs_map[l]
-            leaf['has_bitmap'] = False
             leaf['has_rule'] = True
             leafs_to_rules_count_map[l] += 1
 
-    # If no. of leafs with no space is one more than the no. of available bitmaps then assign them a bitmap and
-    # last one to the default bitmap ...
-    elif (num_leafs_with_no_space - max_bitmaps) == 1:
-        for i in range(max_bitmaps):
-            l, _ = ordered_leafs_list[i]
-            leaf = leafs_map[l]
-            leaf['has_bitmap'] = True
-            leaf['has_rule'] = False
-
-        default_bitmap = 0
-        l, _ = ordered_leafs_list[max_bitmaps]
-        leaf = leafs_map[l]
-        leaf['has_bitmap'] = False
-        leaf['has_rule'] = False
-        default_bitmap |= leaf['bitmap']
-
-        for i in range(num_leafs_with_no_space, leaf_count):
-            l, _ = ordered_leafs_list[i]
-            leaf = leafs_map[l]
-            leaf['has_bitmap'] = False
-            leaf['has_rule'] = True
-            leafs_to_rules_count_map[l] += 1
-
-        data['default_bitmap'] = default_bitmap
-
-    # If no. of leafs with no space is two or more than the no. of available bitmaps then assign them a bitmap and
+    # If no. of leafs with no space is greater than the no. of available bitmaps then assign them a bitmap and
     # rest the default bitmap ...
-    else:  # (num_leafs_with_no_space - max_bitmaps) >= 2
+    else:  # (num_leafs_with_no_space - max_bitmaps) >= 1
         # Note: this problem is equivalent to MIN-K-UNION problem. I'm using a heuristic posted here:
         # https://stackoverflow.com/questions/12424155/given-n-sets-of-elements-find-minimal-union-of-m-sets
 
@@ -84,12 +57,9 @@ def run(data, max_bitmaps, leafs_to_rules_count_map, max_rules_per_leaf):
         for l in ordered_leafs_with_no_space:
             leaf = leafs_map[l]
             leaf['has_bitmap'] = True
-            leaf['has_rule'] = False
 
         for l in default_leafs:
             leaf = leafs_map[l]
-            leaf['has_bitmap'] = False
-            leaf['has_rule'] = False
             leaf['~bitmap'] = default_bitmap ^ leaf['bitmap']
 
         data['default_bitmap'] = default_bitmap
@@ -97,6 +67,5 @@ def run(data, max_bitmaps, leafs_to_rules_count_map, max_rules_per_leaf):
         for i in range(num_leafs_with_no_space, leaf_count):
             l, _ = ordered_leafs_list[i]
             leaf = leafs_map[l]
-            leaf['has_bitmap'] = False
             leaf['has_rule'] = True
             leafs_to_rules_count_map[l] += 1
