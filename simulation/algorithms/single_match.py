@@ -31,7 +31,7 @@ def run(data, max_bitmaps, leafs_to_rules_count_map, max_rules_per_leaf):
             else:
                 break
 
-    # If no. of leafs with no space is less than the no. of available bitmaps then assign them a bitmap ...
+    # If no. of leafs with no space is less than or equal to the no. of available bitmaps then assign them a bitmap ...
     if (num_leafs_with_no_space - max_bitmaps) <= 0:
         for i in range(max_bitmaps):
             l, _ = ordered_leafs_list[i]

@@ -1,4 +1,4 @@
-def run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_rules_per_leaf):
+def run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_rules_per_leaf, is_strict=False):
     leaf_count = data['leaf_count']
     if leaf_count <= max_bitmaps:
         return
@@ -20,7 +20,7 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_r
     # Assigning leafs to bitmaps, rules, and default bitmap
     bitmap_count = 0
     leafs_per_bitmap_count = 0
-    leafs_budget_count = (max_bitmaps * max_leafs_per_bitmap) - max_bitmaps
+    leafs_budget_count = (max_bitmaps * max_leafs_per_bitmap) - max_bitmaps if not is_strict else 0
     default_bitmap = 0
     for _, leafs in ordered_bitmap_list:
         for l in leafs:
@@ -29,11 +29,16 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_r
                 leaf['has_bitmap'] = bitmap_count
                 leafs_per_bitmap_count += 1
 
-                # Select next bitmap, when no. of leafs assigned is equal to (1 + leafs_budget_count)
-                if leafs_per_bitmap_count == (1 + leafs_budget_count):
-                    leafs_budget_count = 0
-                    bitmap_count += 1
-                    leafs_per_bitmap_count = 0
+                if not is_strict:
+                    # Select next bitmap, when no. of leafs assigned is equal to (1 + leafs_budget_count)
+                    if leafs_per_bitmap_count == (1 + leafs_budget_count):
+                        leafs_budget_count = 0
+                        bitmap_count += 1
+                        leafs_per_bitmap_count = 0
+                else:
+                    if leafs_per_bitmap_count == max_leafs_per_bitmap:
+                        bitmap_count += 1
+                        leafs_per_bitmap_count = 0
             else:
                 if leafs_to_rules_count_map[l] < max_rules_per_leaf:  # Add a rule in leaf
                     leaf['has_rule'] = True
@@ -43,7 +48,8 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_r
 
         # Select next bitmap, if the current bitmap contains any leaf
         if bitmap_count < max_bitmaps and leafs_per_bitmap_count > 0:
-            leafs_budget_count -= (leafs_per_bitmap_count - 1)
+            if not is_strict:
+                leafs_budget_count -= (leafs_per_bitmap_count - 1)
             bitmap_count += 1
             leafs_per_bitmap_count = 0
 

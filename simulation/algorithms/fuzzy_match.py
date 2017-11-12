@@ -1,5 +1,4 @@
 from simulation.utils import popcount
-from timeit import default_timer as timer
 
 
 def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to_rules_count_map, max_rules_per_leaf):

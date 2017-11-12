@@ -6,7 +6,7 @@ random.seed(0)
 
 
 def test1_data():
-    max_bitmaps = 2
+    max_bitmaps = 3
     max_leafs_per_bitmap = 2
     redundancy_per_bitmap = 0
     num_leafs = 576
@@ -38,7 +38,7 @@ def test1_run():
     single_match.run(single_data[0], single_data[1], single_data[4], single_data[5])
 
     exact_data = copy.deepcopy(data)
-    exact_match.run(exact_data[0], exact_data[1], exact_data[2], exact_data[4], exact_data[5])
+    exact_match.run(exact_data[0], exact_data[1], exact_data[2], exact_data[4], exact_data[5], is_strict=False)
 
     greedy_data = copy.deepcopy(data)
     greedy_match.run(greedy_data[0], greedy_data[1], greedy_data[2], greedy_data[3], greedy_data[4],

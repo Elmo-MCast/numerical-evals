@@ -1,5 +1,4 @@
 from simulation.utils import popcount
-from timeit import default_timer as timer
 import random
 
 
