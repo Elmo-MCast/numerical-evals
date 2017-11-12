@@ -42,11 +42,11 @@ elif True:
     NUM_LEAFS = 576
     NUM_HOSTS_PER_LEAF = 48
     MAX_VMS_PER_HOST = 20
-    NUM_TENANTS = 3000
+    NUM_TENANTS = 30
     MIN_VMS_PER_TENANT = 10
     MAX_VMS_PER_TENANT = 5000
     VM_DIST = "expon"  # options: expon
-    NUM_GROUPS = 100000
+    NUM_GROUPS = 1000
     MIN_GROUP_SIZE = 5
     GROUP_SIZE_DIST = "wve"  # options: uniform and wve
     PLACEMENT_DIST = "colocate-random-random"  # options: uniform, colocate-random-linear,

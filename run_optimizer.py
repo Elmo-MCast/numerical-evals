@@ -20,7 +20,7 @@ if len(sys.argv) > 1:
     SEED = int(CLOUD_PARAMS[-1])
 elif True:
     MAX_BATCH_SIZE = 1
-    ALGORITHM = 'fuzzy-match'
+    ALGORITHM = 'single-match'
     NUM_BITMAPS = 30
     NUM_LEAFS_PER_BITMAP = 2
     REDUNDANCY_PER_BITMAP = 0
@@ -30,7 +30,7 @@ elif True:
 
     CLOUD_PARAMS = []
     NUM_LEAFS = 576
-    NUM_TENANTS = 3000
+    NUM_TENANTS = 30
     SEED = 0
 else:
     raise (Exception('invalid parameters'))

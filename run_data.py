@@ -11,6 +11,7 @@ if len(sys.argv) > 1:
     _TEMP = DATA_FILE.split('.')
     CLOUD_PARAMS = _TEMP[-2].split('_')
     NUM_TENANTS = int(CLOUD_PARAMS[3])
+    NUM_LEAFS = int(CLOUD_PARAMS[0])
     NUM_HOSTS_PER_LEAF = int(CLOUD_PARAMS[1])
     SEED = int(CLOUD_PARAMS[-1])
 
@@ -19,21 +20,23 @@ if len(sys.argv) > 1:
 
 elif True:
     DATA_FILE = 'output/optimizer.pkl..'
-    LOG_DIR = 'log'
+    LOG_DIR = 'logs/logs'
 
     CLOUD_PARAMS = []
     NUM_TENANTS = 30
+    NUM_LEAFS = 576
     NUM_HOSTS_PER_LEAF = 48
     SEED = 0
 
     OPTIMIZER_PARAMS = []
-    NUM_BITMAPS = 10
+    NUM_BITMAPS = 30
 else:
     raise (Exception('invalid parameters'))
 
 print("""
 -> data (
     num_tenants=%s,
+    num_leafs=%s,
     num_hosts_per_leaf=%s,
     num_bitmaps=%s,
     data_file=%s,
@@ -42,6 +45,7 @@ print("""
     cloud_params=[%s],
     optimizer_params=[%s])
 """ %(NUM_TENANTS,
+      NUM_LEAFS,
       NUM_HOSTS_PER_LEAF,
       NUM_BITMAPS,
       DATA_FILE,
@@ -62,7 +66,7 @@ os.system('mkdir -p %s' % log_dir)
 
 data = pickle_load_obj(DATA_FILE)
 
-data = Data(data, num_tenants=NUM_TENANTS, num_hosts_per_leaf=NUM_HOSTS_PER_LEAF, num_bitmaps=NUM_BITMAPS,
-            log_dir=log_dir)
+data = Data(data, num_tenants=NUM_TENANTS, num_leafs=NUM_LEAFS, num_hosts_per_leaf=NUM_HOSTS_PER_LEAF,
+            num_bitmaps=NUM_BITMAPS, log_dir=log_dir)
 
 data.log()
