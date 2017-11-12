@@ -1,0 +1,81 @@
+def fuzzy_match (
+    leafs,
+    leafs_to_rules_map,
+    max_rules_per_leaf,
+    max_bitmaps,
+    max_leafs_per_bitmap,
+    redundancy_per_bitmap )
+
+    leaf_count = len(leafs)
+
+    if leaf_count <= max_bitmaps:
+        return
+
+    combinations = a list of combinations of leafs with bitwise or of their bitmap and hamming distances (e.g.,
+                   combinations[2] gives a list of pairs of leafs and their bitmap and hamming distance
+                   (leafs, (bitmap, hamming distance))
+
+    # Note: hamming distance is calculated as follows:
+    #     bitmap = bitwise_or(leaf['bitmap'] for leaf in combination)
+    #     hamming_distance = sum([popcount(bitmap ^ leaf['bitmap']) for leaf in combination])
+
+    # Note: for random_fuzzy_match algorithm, we drop first element of each combinations list with 1/3 probability,
+    # except the first combinations list (i.e., combinations[1] having only on leaf)
+
+    seen_leafs = set()
+
+    for i in range(max_bitmaps):
+
+        j = max_leafs_per_bitmap
+
+        while True:
+
+            combination = combinations[j - 1]
+
+            if len(combination) != 0:
+
+                combination_leafs, (combination_bitmap, _) = combination[0]
+
+                if combination_leafs in seen_leafs:
+
+                    combinations[j - 1] = combination[1:]  # Dropping current combination
+
+                    continue
+
+                for leaf in combination_leafs:
+
+                    leaf['has_bitmap'] = True
+
+                    leaf['~bitmap'] = combination_bitmap ^ leaf['bitmap']
+
+                seen_leafs |= set(leafs)
+
+                combinations[j - 1] = combination[1:]
+
+            else:
+
+                j -= 1
+
+    remaining_leafs = set(leafs) - seen_leafs
+
+    default_bitmap = 0
+
+    for leaf in remaining_leafs:
+
+        if leafs_to_rules_map[leaf] < max_rules_per_leaf:
+
+            leaf['has_rule'] = True
+
+            leafs_to_rules_map[leaf] += 1
+
+        else:
+
+            default_bitmap |= leaf['bitmap']
+
+    for leaf in remaining_leafs:
+
+        if ('has_bitmap' and 'has_rule') not in leaf:
+
+            leaf['~bitmap'] = default_bitmap ^ leaf['bitmap']
+
+    return leafs, leafs_to_rules_map, default_bitmap

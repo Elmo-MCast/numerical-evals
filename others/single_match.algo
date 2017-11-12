@@ -1,0 +1,55 @@
+def single_match (
+    leafs,
+    leafs_to_rules_map,
+    max_rules_per_leaf,
+    max_bitmaps )
+
+    leaf_count = len(leafs)
+
+    if leaf_count <= max_bitmaps:
+        return
+
+    ordered_leafs = sorted leafs in descending order of their installed flow table entries (i.e., leaf having larger
+                    flow entries come first)
+
+    num_leafs_with_no_space = all leafs with no flow table space available
+
+    if num_leafs_with_no_space <= max_bitmaps:
+
+        for i in range(max_bitmaps):
+
+            ordered_leafs[i]['has_bitmap'] = True # Assign bitmap to leafs with the least (or no) available flow rule
+                                                  # space
+
+        for i in range(max_bitmaps, leaf_count):
+
+            leaf = ordered_leafs[i]
+
+            leaf['has_rule'] = True
+
+            leafs_to_rules_map[leaf] += 1
+
+    else if num_leafs_with_no_space > max_bitmaps:
+
+        ordered_leafs_with_no_space = ordered_leafs[0 : num_leafs_with_no_space]
+
+        default_bitmap, default_bitmap_leafs, bitmap_leafs = min_k_union ( ordered_leafs_with_no_space,
+                                                                           num_leafs_with_no_space - max_bitmaps )
+
+        for leaf in bitmap_leafs:
+
+            leaf['has_bitmap'] = True
+
+        for leaf in default_bitmap_leafs:
+
+            leaf['~bitmap'] = default_bitmap ^ leaf['bitmap']
+
+        for i in range(num_leafs_with_no_space, leaf_count):
+
+            leaf = ordered_leafs[i]
+
+            leaf['has_rule'] = True
+
+            leafs_to_rules_map[leaf] += 1
+
+    return leafs, leafs_to_rules_map, default_bitmap
