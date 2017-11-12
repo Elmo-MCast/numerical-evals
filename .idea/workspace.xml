@@ -2,11 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3f0c75d9-ed49-4a19-bc97-bf85c19dcdfe" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/others/exact_match.algo" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/others/fuzzy_match.algo" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/others/greedy_match.algo" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/others/single_match.algo" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/others/exact_match.algo" afterPath="$PROJECT_DIR$/others/exact_match.algo" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/others/fuzzy_match.algo" afterPath="$PROJECT_DIR$/others/fuzzy_match.algo" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/others/greedy_match.algo" afterPath="$PROJECT_DIR$/others/greedy_match.algo" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/others/single_match.algo" afterPath="$PROJECT_DIR$/others/single_match.algo" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -39,21 +39,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="run_optimizer_with_data.sh" pinned="false" current-in-tab="false">
+      <file leaf-file-name="run_optimizer_with_data.sh" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/run_optimizer_with_data.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="826">
-              <caret line="83" column="0" lean-forward="false" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="single_match.algo" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/others/single_match.algo">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="105">
+              <caret line="7" column="22" lean-forward="true" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -71,9 +61,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>tenants_maps</find>
-      <find>data</find>
-      <find>log_dir</find>
       <find>if group_map['leaf_count'] &gt; num_bitmaps:</find>
       <find>group_map['leaf_count'] &gt; self.num_bitmaps</find>
       <find>num_bitmaps</find>
@@ -101,6 +88,9 @@
       <find>is_strict</find>
       <find>NUM_RULES_PER_LEAF</find>
       <find>leafs</find>
+      <find>leaf_to_rule_map</find>
+      <find>bitmaps_to_leafs_map</find>
+      <find>leafs_to_rules_map</find>
     </findStrings>
     <replaceStrings>
       <replace>sorted_tenants_map[t]</replace>
@@ -108,6 +98,8 @@
       <replace>DUMP_FILES</replace>
       <replace>run_optimizer_with_data</replace>
       <replace>greedy_data</replace>
+      <replace>bitmap_to_leafs_map</replace>
+      <replace>leaf_to_rule_map</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -121,8 +113,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/temp.sh" />
-        <option value="$PROJECT_DIR$/run-mcast-dcn.sh" />
         <option value="$PROJECT_DIR$/baseerat.sh" />
         <option value="$PROJECT_DIR$/notebooks/mcast-dcn.ipynb" />
         <option value="$PROJECT_DIR$/simulation/algorithms.py" />
@@ -170,6 +160,8 @@
         <option value="$PROJECT_DIR$/simulation/algorithms/exact_match.py" />
         <option value="$PROJECT_DIR$/others/single-match.algo" />
         <option value="$PROJECT_DIR$/others/exact-match.algo" />
+        <option value="$PROJECT_DIR$/others/single_match.algo" />
+        <option value="$PROJECT_DIR$/others/exact_match.algo" />
         <option value="$PROJECT_DIR$/others/greedy_match.algo" />
         <option value="$PROJECT_DIR$/others/fuzzy_match.algo" />
       </list>
@@ -208,11 +200,6 @@
             <path>
               <item name="numerical-evals" type="b2602c69:ProjectViewProjectNode" />
               <item name="numerical-evals" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="numerical-evals" type="b2602c69:ProjectViewProjectNode" />
-              <item name="numerical-evals" type="462c0819:PsiDirectoryNode" />
-              <item name="others" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="numerical-evals" type="b2602c69:ProjectViewProjectNode" />
@@ -836,7 +823,14 @@
       <option name="project" value="LOCAL" />
       <updated>1510470065137</updated>
     </task>
-    <option name="localTasksCounter" value="47" />
+    <task id="LOCAL-00047" summary="minor">
+      <created>1510479825842</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1510479825842</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1166,14 +1160,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/others/greedy_match.algo">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="271">
-          <caret line="19" column="90" lean-forward="false" selection-start-line="19" selection-start-column="90" selection-end-line="19" selection-end-column="90" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/simulation/algorithms/greedy_match.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="339">
@@ -1198,22 +1184,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/others/fuzzy_match.algo">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="23" lean-forward="true" selection-start-line="3" selection-start-column="23" selection-end-line="3" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/others/exact_match.algo">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="16" lean-forward="true" selection-start-line="4" selection-start-column="16" selection-end-line="4" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/simulation/data.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="5760">
@@ -1222,18 +1192,42 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/run_optimizer_with_data.sh">
+    <entry file="file://$PROJECT_DIR$/others/single_match.algo">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="826">
-          <caret line="83" column="0" lean-forward="false" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
+        <state relative-caret-position="30">
+          <caret line="2" column="20" lean-forward="false" selection-start-line="2" selection-start-column="4" selection-end-line="2" selection-end-column="20" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/others/single_match.algo">
+    <entry file="file://$PROJECT_DIR$/others/fuzzy_match.algo">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="346">
+          <caret line="53" column="0" lean-forward="true" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/others/greedy_match.algo">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="166">
+          <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/others/exact_match.algo">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="121">
+          <caret line="20" column="0" lean-forward="true" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run_optimizer_with_data.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="22" lean-forward="true" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="22" />
           <folding />
         </state>
       </provider>

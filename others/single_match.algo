@@ -1,6 +1,6 @@
 def single_match (
     leafs,
-    leafs_to_rules_map,
+    leaf_to_rule_map,
     max_rules_per_leaf,
     max_bitmaps )
 
@@ -9,7 +9,7 @@ def single_match (
     if leaf_count <= max_bitmaps:
         return
 
-    ordered_leafs = sorted leafs in descending order of their installed flow table entries (i.e., leaf having larger
+    ordered_leafs = sorted leafs in descending order of number of flow table entries (i.e., leaf having larger
                     flow entries come first)
 
     num_leafs_with_no_space = all leafs with no flow table space available
@@ -27,7 +27,7 @@ def single_match (
 
             leaf['has_rule'] = True
 
-            leafs_to_rules_map[leaf] += 1
+            leaf_to_rule_map[leaf] += 1
 
     else if num_leafs_with_no_space > max_bitmaps:
 
@@ -50,6 +50,6 @@ def single_match (
 
             leaf['has_rule'] = True
 
-            leafs_to_rules_map[leaf] += 1
+            leaf_to_rule_map[leaf] += 1
 
-    return leafs, leafs_to_rules_map, default_bitmap
+    return leafs, leaf_to_rule_map, default_bitmap
