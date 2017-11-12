@@ -52,6 +52,8 @@ def fuzzy_match (
 
                 combinations[j - 1] = combination[1:]
 
+                break
+
             else:
 
                 j -= 1

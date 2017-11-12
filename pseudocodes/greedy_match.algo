@@ -29,6 +29,8 @@ def greedy_match (
 
                 leafs = set(leafs) - set(bitmap_leafs)
 
+                break
+
     default_bitmap = 0
 
     for leaf in leafs:
