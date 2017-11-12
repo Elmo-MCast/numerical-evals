@@ -31,7 +31,7 @@ class Optimizer:
 
     def _optimize(self):
         if self.max_batch_size <= 1:
-            for t in bar_range(self.num_tenants, desc='optimizer'):
+            for t in bar_range(self.num_tenants, desc='optimizer:%s:' % self.algorithm):
                 tenant_maps = self.tenants_maps[t]
                 group_count = tenant_maps['group_count']
                 groups_map = tenant_maps['groups_map']
@@ -52,7 +52,7 @@ class Optimizer:
             running_batch_size = 0
             running_batch_list = []
 
-            for t in bar_range(self.num_tenants, desc='optimizer'):
+            for t in bar_range(self.num_tenants, desc='optimizer:%s:' % self.algorithm):
                 tenant_maps = self.tenants_maps[t]
                 group_count = tenant_maps['group_count']
                 groups_map = tenant_maps['groups_map']

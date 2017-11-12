@@ -1,4 +1,5 @@
 import pandas as pd
+from functools import reduce
 from simulation.utils import bar_range, popcount
 
 
@@ -43,7 +44,7 @@ class Data:
     def group_size_per_group_per_tenant(self):
         _group_size_per_group_per_tenant = []
 
-        for t in range(self.num_tenants):
+        for t in bar_range(self.num_tenants, "data:group_size_per_group_per_tenant:"):
             tenant_maps = self.tenants_maps[t]
             group_count = tenant_maps['group_count']
             groups_map = tenant_maps['groups_map']
@@ -61,7 +62,7 @@ class Data:
     def leaf_count_per_group_per_tenant(self):
         _leaf_count_per_group_per_tenant = []
 
-        for t in range(self.num_tenants):
+        for t in bar_range(self.num_tenants, "data:leaf_count_per_group_per_tenant:"):
             tenant_maps = self.tenants_maps[t]
             group_count = tenant_maps['group_count']
             groups_map = tenant_maps['groups_map']
@@ -85,6 +86,30 @@ class Data:
     #         percentage_categories.to_csv(self.log_dir + "/percentage_of_groups_covered_with_varying_bitmaps.csv")
     #     return percentage_categories
 
+    def groups_covered_with_bitmaps_only(self):
+        _groups_covered_with_bitmaps_only = 0
+
+        for t in bar_range(self.num_tenants, desc='data:groups_covered_with_bitmaps_only:'):
+            tenant_maps = self.tenants_maps[t]
+            group_count = tenant_maps['group_count']
+            groups_map = tenant_maps['groups_map']
+
+            for g in range(group_count):
+                group_map = groups_map[g]
+                leafs_map = group_map['leafs_map']
+
+                has_rule = reduce(lambda x, y: x | y, ['has_rule' in leafs_map[l] for l in leafs_map])
+                if not has_rule:
+                    _groups_covered_with_bitmaps_only += 1
+
+        _groups_covered_with_bitmaps_only = pd.Series(_groups_covered_with_bitmaps_only)
+
+        if self.log_dir is not None:
+            _groups_covered_with_bitmaps_only.to_csv(
+                self.log_dir + "/groups_covered_with_bitmaps_only.csv")
+
+        return _groups_covered_with_bitmaps_only
+
     def rule_count_per_leaf(self):
         _rule_count_per_leaf = pd.Series(self.optimizer['leafs_to_rules_count'])
 
@@ -96,7 +121,7 @@ class Data:
     def traffic_overhead_per_group_per_tenant(self):
         _traffic_overhead_per_group_per_tenant = []
 
-        for t in bar_range(self.num_tenants, desc='progress'):
+        for t in bar_range(self.num_tenants, desc='data:traffic_overhead_per_group_per_tenant:'):
             tenant_maps = self.tenants_maps[t]
             group_count = tenant_maps['group_count']
             groups_map = tenant_maps['groups_map']
@@ -132,7 +157,7 @@ class Data:
             _actual_traffic_per_leaf[l] = [0] * self.num_hosts_per_leaf
             _unwanted_traffic_per_leaf[l] = [0] * self.num_hosts_per_leaf
 
-        for t in bar_range(self.num_tenants, desc='progress'):
+        for t in bar_range(self.num_tenants, desc='data:traffic_stats:'):
             tenant_maps = self.tenants_maps[t]
             group_count = tenant_maps['group_count']
             groups_map = tenant_maps['groups_map']
@@ -216,7 +241,7 @@ class Data:
     def traffic_overhead_per_link(self, total_traffic_per_link, actual_traffic_per_link):
         link_count = len(total_traffic_per_link)
         _traffic_overhead_per_link = [0] * link_count
-        for i in bar_range(link_count, desc='progress'):
+        for i in bar_range(link_count, desc='data:traffic_overhead_per_link:'):
             if total_traffic_per_link[i] != 0:
                 _traffic_overhead_per_link[i] = ((total_traffic_per_link[i] - actual_traffic_per_link[i]) /
                                                  actual_traffic_per_link[i])
@@ -233,6 +258,7 @@ class Data:
         self.group_size_per_group_per_tenant()
         self.leaf_count_per_group_per_tenant()
         # self.percentage_of_groups_covered_with_varying_bitmaps(self.num_bitmaps)
+        self.groups_covered_with_bitmaps_only()
         self.rule_count_per_leaf()
         self.traffic_overhead_per_group_per_tenant()
         at_dict, ut_dict = self.traffic_stats()
