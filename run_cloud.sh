@@ -18,7 +18,7 @@ COLOCATE_NUM_HOSTS_PER_LEAF=48
 MULTI_THREADED="True"
 NUM_JOBS=5
 SEED=0
-DUMP_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/output-100K-uniform/cloud.pkl"
+DUMP_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/output-100K-random/cloud.pkl"
 
 PYTHON=pypy3  # options: pypy3 or python or python3
 
@@ -28,48 +28,48 @@ for seed in 0
 do
     for group_size_dist in "uniform" "wve"
     do
-#        for placement_dist in "colocate-random-random"
-#        do
-#            for num_colocate_hosts in 24 48
-#            do
-#                ${PYTHON} run_cloud.py  ${NUM_LEAFS} \
-#                                        ${NUM_HOSTS_PER_LEAF} \
-#                                        ${MAX_VMS_PER_HOST} \
-#                                        ${NUM_TENANTS} \
-#                                        ${MIN_VMS_PER_TENANT} \
-#                                        ${MAX_VMS_PER_TENANT} \
-#                                        ${VM_DIST} \
-#                                        ${NUM_GROUPS} \
-#                                        ${MIN_GROUP_SIZE} \
-#                                        ${group_size_dist} \
-#                                        ${placement_dist} \
-#                                        ${num_colocate_hosts} \
-#                                        ${MULTI_THREADED} \
-#                                        ${NUM_JOBS} \
-#                                        ${seed} \
-#                                        ${DUMP_FILE_PREFIX} &
-#            done
-#        done
-        for placement_dist in "uniform"
+        for placement_dist in "colocate-random-random"
         do
-            ${PYTHON} run_cloud.py  ${NUM_LEAFS} \
-                                    ${NUM_HOSTS_PER_LEAF} \
-                                    ${MAX_VMS_PER_HOST} \
-                                    ${NUM_TENANTS} \
-                                    ${MIN_VMS_PER_TENANT} \
-                                    ${MAX_VMS_PER_TENANT} \
-                                    ${VM_DIST} \
-                                    ${NUM_GROUPS} \
-                                    ${MIN_GROUP_SIZE} \
-                                    ${group_size_dist} \
-                                    ${placement_dist} \
-                                    0 \
-                                    ${MULTI_THREADED} \
-                                    ${NUM_JOBS} \
-                                    ${seed} \
-                                    ${DUMP_FILE_PREFIX} &
+            for num_colocate_hosts in 12
+            do
+                ${PYTHON} run_cloud.py  ${NUM_LEAFS} \
+                                        ${NUM_HOSTS_PER_LEAF} \
+                                        ${MAX_VMS_PER_HOST} \
+                                        ${NUM_TENANTS} \
+                                        ${MIN_VMS_PER_TENANT} \
+                                        ${MAX_VMS_PER_TENANT} \
+                                        ${VM_DIST} \
+                                        ${NUM_GROUPS} \
+                                        ${MIN_GROUP_SIZE} \
+                                        ${group_size_dist} \
+                                        ${placement_dist} \
+                                        ${num_colocate_hosts} \
+                                        ${MULTI_THREADED} \
+                                        ${NUM_JOBS} \
+                                        ${seed} \
+                                        ${DUMP_FILE_PREFIX} &
+            done
         done
-        wait
+#        for placement_dist in "uniform"
+#        do
+#            ${PYTHON} run_cloud.py  ${NUM_LEAFS} \
+#                                    ${NUM_HOSTS_PER_LEAF} \
+#                                    ${MAX_VMS_PER_HOST} \
+#                                    ${NUM_TENANTS} \
+#                                    ${MIN_VMS_PER_TENANT} \
+#                                    ${MAX_VMS_PER_TENANT} \
+#                                    ${VM_DIST} \
+#                                    ${NUM_GROUPS} \
+#                                    ${MIN_GROUP_SIZE} \
+#                                    ${group_size_dist} \
+#                                    ${placement_dist} \
+#                                    0 \
+#                                    ${MULTI_THREADED} \
+#                                    ${NUM_JOBS} \
+#                                    ${seed} \
+#                                    ${DUMP_FILE_PREFIX} &
+#        done
+#        wait
     done
 done
 wait

@@ -24,7 +24,7 @@ elif True:
     NUM_BITMAPS = 30
     NUM_LEAFS_PER_BITMAP = 2
     REDUNDANCY_PER_BITMAP = 0
-    NUM_RULES_PER_LEAF = 1000
+    NUM_RULES_PER_LEAF = 100
     DATA_FILE = 'output/cloud.pkl.'
     DUMP_FILE_PREFIX = 'output/optimizer.pkl'
 
