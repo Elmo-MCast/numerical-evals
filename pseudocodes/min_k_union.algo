@@ -1,0 +1,19 @@
+def min_k_union (
+    leafs,
+    k )
+
+    bitmap = 0
+
+    bitmap_leafs = []
+
+    for _ in range(k):
+
+        leaf = min(leafs, key=lambda l: popcount(leafs[l]['bitmap'] | bitmap))
+
+        leafs.remove(leaf)
+
+        bitmap |= leafs[leaf]['bitmap']
+
+        bitmap_leafs.append(leaf)
+
+    return bitmap, bitmap_leafs
