@@ -224,7 +224,7 @@ class Data:
                 _total_traffic_per_leaf[l] = [0] * self.num_hosts_per_leaf
                 for i in range(self.num_hosts_per_leaf):
                     _total_traffic_per_leaf[l][i] = actual_traffic_per_leaf[l][i] + \
-                                                         unwanted_traffic_per_leaf[l][i]
+                                                    unwanted_traffic_per_leaf[l][i]
             else:
                 _total_traffic_per_leaf[l] = actual_traffic_per_leaf[l]
 
@@ -251,6 +251,122 @@ class Data:
             _traffic_overhead_per_link.to_csv(self.log_dir + "/traffic_overhead_per_link.csv")
         return _traffic_overhead_per_link
 
+    def leaf_spine_traffic_per_group_per_tenant_for_multicast(self):
+        _leaf_spine_traffic_per_group_per_tenant_for_multicast = []
+
+        for t in bar_range(self.num_tenants, desc='data:leaf_spine_traffic_per_group_per_tenant_for_multicast:'):
+            tenant_maps = self.tenants_maps[t]
+            group_count = tenant_maps['group_count']
+            groups_map = tenant_maps['groups_map']
+
+            for g in range(group_count):
+                group_map = groups_map[g]
+                leafs_map = group_map['leafs_map']
+                _traffic = 0
+
+                for l in leafs_map:
+                    leaf_map = leafs_map[l]
+                    _traffic += popcount(leaf_map['bitmap'])
+
+                _leaf_spine_traffic_per_group_per_tenant_for_multicast += [2 + len(leafs_map) + _traffic]
+
+        _leaf_spine_traffic_per_group_per_tenant_for_multicast = \
+            pd.Series(_leaf_spine_traffic_per_group_per_tenant_for_multicast)
+
+        if self.log_dir is not None:
+            _leaf_spine_traffic_per_group_per_tenant_for_multicast.to_csv(
+                self.log_dir + "/leaf_spine_traffic_per_group_per_tenant_for_multicast.csv")
+
+        return _leaf_spine_traffic_per_group_per_tenant_for_multicast
+
+    def leaf_spine_traffic_per_group_per_tenant_for_unicast(self):
+        _leaf_spine_traffic_per_group_per_tenant_for_unicast = []
+
+        for t in bar_range(self.num_tenants, desc='data:leaf_spine_traffic_per_group_per_tenant_for_unicast:'):
+            tenant_maps = self.tenants_maps[t]
+            group_count = tenant_maps['group_count']
+            groups_map = tenant_maps['groups_map']
+
+            for g in range(group_count):
+                group_map = groups_map[g]
+                leafs_map = group_map['leafs_map']
+                _traffic = 0
+
+                for l in leafs_map:
+                    leaf_map = leafs_map[l]
+                    _traffic += popcount(leaf_map['bitmap'])
+
+                _leaf_spine_traffic_per_group_per_tenant_for_unicast += [4 * _traffic]
+
+        _leaf_spine_traffic_per_group_per_tenant_for_unicast = \
+            pd.Series(_leaf_spine_traffic_per_group_per_tenant_for_unicast)
+
+        if self.log_dir is not None:
+            _leaf_spine_traffic_per_group_per_tenant_for_unicast.to_csv(
+                self.log_dir + "/leaf_spine_traffic_per_group_per_tenant_for_unicast.csv")
+
+        return _leaf_spine_traffic_per_group_per_tenant_for_unicast
+
+    def leaf_spine_traffic_per_group_per_tenant_for_overlay(self):
+        _leaf_spine_traffic_per_group_per_tenant_for_overlay = []
+
+        for t in bar_range(self.num_tenants, desc='data:leaf_spine_traffic_per_group_per_tenant_for_overlay:'):
+            tenant_maps = self.tenants_maps[t]
+            group_count = tenant_maps['group_count']
+            groups_map = tenant_maps['groups_map']
+
+            for g in range(group_count):
+                group_map = groups_map[g]
+                leafs_map = group_map['leafs_map']
+                _traffic = 0
+
+                for l in leafs_map:
+                    leaf_map = leafs_map[l]
+                    leaf_host_count = popcount(leaf_map['bitmap'])
+                    _traffic += 2 * (leaf_host_count - 1)
+
+                _leaf_spine_traffic_per_group_per_tenant_for_overlay += [(4 * len(leafs_map)) + _traffic]
+
+        _leaf_spine_traffic_per_group_per_tenant_for_overlay = \
+            pd.Series(_leaf_spine_traffic_per_group_per_tenant_for_overlay)
+
+        if self.log_dir is not None:
+            _leaf_spine_traffic_per_group_per_tenant_for_overlay.to_csv(
+                self.log_dir + "/leaf_spine_traffic_per_group_per_tenant_for_overlay.csv")
+
+        return _leaf_spine_traffic_per_group_per_tenant_for_overlay
+
+    def leaf_spine_traffic_per_group_per_tenant_for_baseerat(self):
+        _leaf_spine_traffic_per_group_per_tenant_for_baseerat = []
+
+        for t in bar_range(self.num_tenants, desc='data:leaf_spine_traffic_per_group_per_tenant_for_baseerat:'):
+            tenant_maps = self.tenants_maps[t]
+            group_count = tenant_maps['group_count']
+            groups_map = tenant_maps['groups_map']
+
+            for g in range(group_count):
+                group_map = groups_map[g]
+                leafs_map = group_map['leafs_map']
+                _traffic = 0
+
+                for l in leafs_map:
+                    leaf_map = leafs_map[l]
+                    _traffic += popcount(leaf_map['bitmap'])
+
+                    if '~bitmap' in leaf_map:
+                        _traffic += popcount(leaf_map['~bitmap'])
+
+                _leaf_spine_traffic_per_group_per_tenant_for_baseerat += [2 + len(leafs_map) + _traffic]
+
+        _leaf_spine_traffic_per_group_per_tenant_for_baseerat = \
+            pd.Series(_leaf_spine_traffic_per_group_per_tenant_for_baseerat)
+
+        if self.log_dir is not None:
+            _leaf_spine_traffic_per_group_per_tenant_for_baseerat.to_csv(
+                self.log_dir + "/leaf_spine_traffic_per_group_per_tenant_for_baseerat.csv")
+
+        return _leaf_spine_traffic_per_group_per_tenant_for_baseerat
+
     def log(self):
         self.algorithm_elapse_time()
         self.vm_count_per_tenant()
@@ -267,3 +383,7 @@ class Data:
         ut_list = self.unwanted_traffic_per_link(ut_dict)
         tt_list = self.total_traffic_per_link(at_dict, ut_dict)
         self.traffic_overhead_per_link(tt_list, at_list)
+        self.leaf_spine_traffic_per_group_per_tenant_for_multicast()
+        self.leaf_spine_traffic_per_group_per_tenant_for_unicast()
+        self.leaf_spine_traffic_per_group_per_tenant_for_overlay()
+        self.leaf_spine_traffic_per_group_per_tenant_for_baseerat()
