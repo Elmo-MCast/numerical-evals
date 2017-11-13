@@ -8,8 +8,8 @@ NUM_BITMAPS=10
 NUM_LEAFS_PER_BITMAP=3
 REDUNDANCY_PER_BITMAP=2
 NUM_RULES_PER_LEAF=1000
-DATA_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/output-100K-random/cloud.pkl.*"
-LOG_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/logs-100K-random/logs"
+DATA_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/output-100K-uniform/cloud.pkl.*"
+LOG_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/logs-100K-uniform/logs"
 
 PYTHON=pypy3  # options: pypy3 or python or python3
 
