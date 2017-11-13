@@ -16,4 +16,4 @@ def min_k_union (
 
         bitmap_leafs.append(leaf)
 
-    return bitmap, bitmap_leafs
+    return bitmap, bitmap_leafs, leafs

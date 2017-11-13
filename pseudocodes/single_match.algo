@@ -10,7 +10,7 @@ def single_match (
         return
 
     ordered_leafs = sorted leafs in descending order of number of flow table entries (i.e., leaf having larger
-                    flow entries come first)
+                    flow entries comes first)
 
     num_leafs_with_no_space = all leafs with no flow table space available
 
