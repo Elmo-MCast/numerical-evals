@@ -63,7 +63,7 @@ class Cloud:
             data_group_count = data_tenant_map['group_count']
             data_tenant_map['groups_map'] = [{'size': None,
                                               'leaf_count': None,
-                                              'leafs_bitmap': None} for _ in range(data_group_count)]
+                                              'leafs_map': None} for _ in range(data_group_count)]
             data_groups_map = data_tenant_map['groups_map']
             for g in range(data_group_count):
                 group_map = groups_map[g]
