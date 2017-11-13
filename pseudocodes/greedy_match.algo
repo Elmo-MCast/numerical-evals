@@ -15,7 +15,7 @@ def greedy_match (
 
         for j in range(max_leafs_per_bitmap, 0, -1):
 
-            bitmap, bitmap_leafs = min_k_union(leafs, j)
+            bitmap, bitmap_leafs, _ = min_k_union(leafs, j)
 
             redundancy = sum([popcount(bitmap ^ leaf['bitmap']) for leaf in bitmap_leafs])
 
