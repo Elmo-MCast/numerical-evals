@@ -105,6 +105,9 @@ class Data:
 
                     if 'default_bitmap' not in group_map:
                         _groups_covered_with_bitmaps_only_without_default_bitmap += 1
+                    else:
+                        if group_map['default_bitmap'] == 0:
+                            _groups_covered_with_bitmaps_only_without_default_bitmap += 1
 
         df_groups_covered_with_bitmaps_only = pd.DataFrame()
         df_groups_covered_with_bitmaps_only['bitmaps'] = pd.Series(_groups_covered_with_bitmaps_only)

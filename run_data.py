@@ -29,7 +29,7 @@ elif True:
     SEED = 0
 
     OPTIMIZER_PARAMS = []
-    NUM_BITMAPS = 30
+    NUM_BITMAPS = 10
 else:
     raise (Exception('invalid parameters'))
 
