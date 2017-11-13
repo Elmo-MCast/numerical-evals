@@ -30,7 +30,7 @@ do
     do
         for placement_dist in "colocate-random-random"
         do
-            for num_colocate_hosts in 12
+            for num_colocate_hosts in 12 24 48
             do
                 ${PYTHON} run_cloud.py  ${NUM_LEAFS} \
                                         ${NUM_HOSTS_PER_LEAF} \
