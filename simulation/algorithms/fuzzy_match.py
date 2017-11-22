@@ -30,11 +30,7 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
 
     # Assign leafs to bitmaps
     for i in range(max_bitmaps):
-        running_num_leafs_per_bitmap = num_leafs_per_bitmap
-        if num_excess_leafs > 0:
-            running_num_leafs_per_bitmap += 1
-
-        for k in range(running_num_leafs_per_bitmap, 0, -1):
+        for j, k in enumerate(range(num_leafs_per_bitmap + (1 if num_excess_leafs > 0 else 0), 0, -1)):
             min_k_bitmap, min_k_leafs = min_k_union(leafs_map, leafs, k)
             redundancy = sum([popcount(min_k_bitmap ^ leafs_map[l]['bitmap']) for l in min_k_leafs])
             if redundancy <= redundancy_per_bitmap:
@@ -43,8 +39,7 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
                     leaf['has_bitmap'] = i
                     leaf['~bitmap'] = min_k_bitmap ^ leaf['bitmap']
 
-                if k == running_num_leafs_per_bitmap and num_excess_leafs > 0:
-                    num_excess_leafs -= 1
+                num_excess_leafs -= (1 if j == 0 and num_excess_leafs > 0 else 0)
                 break
             else:
                 leafs += min_k_leafs

@@ -22,12 +22,12 @@ if len(sys.argv) > 1:
     SEED = int(CLOUD_PARAMS[-1])
 elif True:
     MAX_BATCH_SIZE = 1
-    ALGORITHM = 'random-fuzzy-match'
+    ALGORITHM = 'fuzzy-match'
     NUM_BITMAPS = 10
-    NUM_LEAFS_PER_BITMAP = 6
+    NUM_LEAFS_PER_BITMAP = 3
     REDUNDANCY_PER_BITMAP = 0
     NUM_RULES_PER_LEAF = 100
-    PROBABILITY_DIVIDEND = 1
+    PROBABILITY_DIVIDEND = 2
     PROBABILITY_DIVISOR = 3
     DATA_FILE = 'output/cloud.pkl.'
     DUMP_FILE_PREFIX = 'output/optimizer.pkl'

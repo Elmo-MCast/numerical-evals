@@ -51,7 +51,7 @@ elif True:
     GROUP_SIZE_DIST = "wve"  # options: uniform and wve
     PLACEMENT_DIST = "colocate-random-random"  # options: uniform, colocate-random-linear,
     # colocate-random-random, sorted-colocate-random-linear, and sorted-colocate-random-random
-    COLOCATE_NUM_HOSTS_PER_LEAF = 24
+    COLOCATE_NUM_HOSTS_PER_LEAF = 12
     MULTI_THREADED = True
     NUM_JOBS = 5
     SEED = 0

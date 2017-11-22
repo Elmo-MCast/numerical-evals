@@ -1,11 +1,11 @@
 from simulation.utils import popcount
+from math import ceil
 import random
 
 
 def min_k_union(leafs_map, leafs, k, probability):
     min_k_bitmap = 0
     min_k_leafs = []
-
     for _ in range(k):
         temp_leafs = leafs[:]
         while True:
@@ -23,7 +23,7 @@ def min_k_union(leafs_map, leafs, k, probability):
 
 
 def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to_rules_count_map,
-        max_rules_per_leaf, probability=1 / 3):
+        max_rules_per_leaf, probability=1.0 * 2 / 3):
     leaf_count = data['leaf_count']
     if leaf_count <= max_bitmaps:
         return
@@ -32,29 +32,20 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
     leafs = [l for l in leafs_map]
 
     # Get packing of leafs per bitmap
-    num_leafs_per_bitmap = int(leaf_count / max_bitmaps)
-    num_excess_leafs = leaf_count % max_bitmaps
-    if (num_leafs_per_bitmap + (1 if num_excess_leafs > 0 else 0)) > max_leafs_per_bitmap:
+    num_leafs_per_bitmap = ceil(leaf_count / max_bitmaps)
+    if num_leafs_per_bitmap > max_leafs_per_bitmap:
         num_leafs_per_bitmap = max_leafs_per_bitmap
-        num_excess_leafs = 0
 
     # Assign leafs to bitmaps
     for i in range(max_bitmaps):
-        running_num_leafs_per_bitmap = num_leafs_per_bitmap
-        if num_excess_leafs > 0:
-            running_num_leafs_per_bitmap += 1
-
-        for k in range(running_num_leafs_per_bitmap, 0, -1):
-            min_k_bitmap, min_k_leafs = min_k_union(leafs_map, leafs, k, probability)
+        for k in range(num_leafs_per_bitmap, 0, -1):
+            min_k_bitmap, min_k_leafs = min_k_union(leafs_map, leafs, min(k, len(leafs)), probability)
             redundancy = sum([popcount(min_k_bitmap ^ leafs_map[l]['bitmap']) for l in min_k_leafs])
             if redundancy <= redundancy_per_bitmap:
                 for l in min_k_leafs:
                     leaf = leafs_map[l]
                     leaf['has_bitmap'] = i
                     leaf['~bitmap'] = min_k_bitmap ^ leaf['bitmap']
-
-                if k == running_num_leafs_per_bitmap and num_excess_leafs > 0:
-                    num_excess_leafs -= 1
                 break
             else:
                 leafs += min_k_leafs
