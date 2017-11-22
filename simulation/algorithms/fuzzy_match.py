@@ -1,7 +1,19 @@
 from simulation.utils import popcount
 
 
-def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to_rules_count_map, max_rules_per_leaf):
+def min_k_union(leafs_map, leafs, k):
+    min_k_bitmap = 0
+    min_k_leafs = []
+    for _ in range(k):
+        leaf = min(leafs, key=lambda l: popcount(leafs_map[l]['bitmap'] | min_k_bitmap))
+        leafs.remove(leaf)
+        min_k_bitmap |= leafs_map[leaf]['bitmap']
+        min_k_leafs += [leaf]
+    return min_k_bitmap, min_k_leafs
+
+
+def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to_rules_count_map,
+        max_rules_per_leaf):
     leaf_count = data['leaf_count']
     if leaf_count <= max_bitmaps:
         return
@@ -9,76 +21,37 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
     leafs_map = data['leafs_map']
     leafs = [l for l in leafs_map]
 
-    # Generate combinations of leafs
-    num_unpacked_leafs = leaf_count % max_bitmaps
-    num_leafs_per_bitmap = int(leaf_count / max_bitmaps) + (1 if num_unpacked_leafs > 0 else 0)
-    if num_leafs_per_bitmap > max_leafs_per_bitmap:
+    # Get packing of leafs per bitmap
+    num_leafs_per_bitmap = int(leaf_count / max_bitmaps)
+    num_excess_leafs = leaf_count % max_bitmaps
+    if (num_leafs_per_bitmap + (1 if num_excess_leafs > 0 else 0)) > max_leafs_per_bitmap:
         num_leafs_per_bitmap = max_leafs_per_bitmap
-        num_unpacked_leafs = 0
-    combinations = [None] * num_leafs_per_bitmap
+        num_excess_leafs = 0
 
-    good_leafs = [l for l in leafs]
-    good_combination = [([l], (leafs_map[l]['bitmap'], 0)) for l in good_leafs]
-    combinations[0] = good_combination
-
-    for i in range(1, num_leafs_per_bitmap):
-        combination = []
-        for c, (b, _) in good_combination:
-            for l in good_leafs:
-                if l not in c:
-                    _c = c + [l]
-                    _b = b | leafs_map[l]['bitmap']
-                    _r = sum([popcount(_b ^ leafs_map[_l]['bitmap']) for _l in _c])
-
-                    if _r <= redundancy_per_bitmap:
-                        combination += [(_c, (_b, _r))]
-
-        if combination:
-            good_leafs = list(set([y for x in combination for y in x[0]]))
-            good_combination = combination
-            combinations[i] = sorted(combination, key=lambda item: item[1][1])
-        else:
-            break
-
-    # Assign leafs to bitmaps using the sorted combinations of leafs
-    seen_leafs = set()
-    _num_leafs_per_bitmap = num_leafs_per_bitmap if num_unpacked_leafs == 0 else num_leafs_per_bitmap - 1
+    # Assign leafs to bitmaps
     for i in range(max_bitmaps):
-        __num_leafs_per_bitmap = _num_leafs_per_bitmap
-        if num_unpacked_leafs > 0:
-            __num_leafs_per_bitmap += 1
+        running_num_leafs_per_bitmap = num_leafs_per_bitmap
+        if num_excess_leafs > 0:
+            running_num_leafs_per_bitmap += 1
 
-        while True:
-            combination = combinations[__num_leafs_per_bitmap - 1]
-            if combination:
-                current_item = combination[0]
-                c, b = current_item[0], current_item[1][0]
-                if len(set(c) - seen_leafs) != len(c):
-                    combinations[__num_leafs_per_bitmap - 1] = combination[1:]
-                    continue
-
-                for l in c:
+        for j in range(running_num_leafs_per_bitmap, 0, -1):
+            min_k_bitmap, min_k_leafs = min_k_union(leafs_map, leafs, j)
+            redundancy = sum([popcount(min_k_bitmap ^ leafs_map[l]['bitmap']) for l in min_k_leafs])
+            if redundancy <= redundancy_per_bitmap:
+                for l in min_k_leafs:
                     leaf = leafs_map[l]
                     leaf['has_bitmap'] = i
-                    leaf['~bitmap'] = b ^ leaf['bitmap']
+                    leaf['~bitmap'] = min_k_bitmap ^ leaf['bitmap']
 
-                seen_leafs |= set(c)
-                combinations[__num_leafs_per_bitmap - 1] = combination[1:]
+                if j == running_num_leafs_per_bitmap and num_excess_leafs > 0:
+                    num_excess_leafs -= 1
                 break
             else:
-                __num_leafs_per_bitmap -= 1
-
-        if __num_leafs_per_bitmap <= _num_leafs_per_bitmap:
-            _num_leafs_per_bitmap = __num_leafs_per_bitmap
-            num_unpacked_leafs = 0
-        else:
-            num_unpacked_leafs -= 1
-
-    remaining_leafs = set(leafs) - seen_leafs
+                leafs += min_k_leafs
 
     # Add a rule or assign leafs to default bitmap
     default_bitmap = 0
-    for l in remaining_leafs:
+    for l in leafs:
         leaf = leafs_map[l]
         if leafs_to_rules_count_map[l] < max_rules_per_leaf:  # Add a rule in leaf
             leaf['has_rule'] = True
@@ -86,7 +59,8 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
         else:  # Assign leaf to default bitmap
             default_bitmap |= leaf['bitmap']
 
-    for l in remaining_leafs:
+    # Calculate redundancy for leafs assigned to default bitmap
+    for l in leafs:
         leaf = leafs_map[l]
         if 'has_rule' not in leaf:
             leaf['~bitmap'] = default_bitmap ^ leaf['bitmap']

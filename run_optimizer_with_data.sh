@@ -8,8 +8,8 @@ NUM_BITMAPS=10
 NUM_LEAFS_PER_BITMAP=3
 REDUNDANCY_PER_BITMAP=2
 NUM_RULES_PER_LEAF=1000
-DATA_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/output-100K-uniform/cloud.pkl.*"
-LOG_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/logs-100K-uniform/logs"
+DATA_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/output-1M-random/cloud.pkl.*"
+LOG_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/logs-1M-random/logs"
 
 PYTHON=pypy3  # options: pypy3 or python or python3
 
@@ -29,6 +29,7 @@ do
                                                     ${num_rules_per_leaf} \
                                                     ${file} \
                                                     ${LOG_FILE_PREFIX} &
+            wait
 
             for num_leafs_per_bitmap in 1 2
             do
@@ -40,6 +41,7 @@ do
                                                         ${num_rules_per_leaf} \
                                                         ${file} \
                                                         ${LOG_FILE_PREFIX} &
+                wait
 
                 for redundancy_per_bitmap in 0 2 4
                 do
@@ -56,6 +58,7 @@ do
                                                             ${num_rules_per_leaf} \
                                                             ${file} \
                                                             ${LOG_FILE_PREFIX} &
+                    wait
 
                     ${PYTHON} run_optimizer_with_data.py  ${MAX_BATCH_SIZE} \
                                                 "fuzzy-match" \
@@ -65,6 +68,7 @@ do
                                                 ${num_rules_per_leaf} \
                                                 ${file} \
                                                 ${LOG_FILE_PREFIX} &
+                    wait
 
                     ${PYTHON} run_optimizer_with_data.py  ${MAX_BATCH_SIZE} \
                                                 "random-fuzzy-match" \
@@ -74,8 +78,8 @@ do
                                                 ${num_rules_per_leaf} \
                                                 ${file} \
                                                 ${LOG_FILE_PREFIX} &
+                    wait
                 done
-                wait
             done
         done
     done

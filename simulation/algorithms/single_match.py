@@ -2,14 +2,14 @@ from simulation.utils import popcount
 
 
 def min_k_union(leafs_map, leafs, k):
-    _bitmap = 0
-    _leafs = []
+    min_k_bitmap = 0
+    min_k_leafs = []
     for _ in range(k):
-        leaf = min(leafs, key=lambda l: popcount(leafs_map[l]['bitmap'] | _bitmap))
+        leaf = min(leafs, key=lambda l: popcount(leafs_map[l]['bitmap'] | min_k_bitmap))
         leafs.remove(leaf)
-        _bitmap |= leafs_map[leaf]['bitmap']
-        _leafs += [leaf]
-    return _bitmap, _leafs
+        min_k_bitmap |= leafs_map[leaf]['bitmap']
+        min_k_leafs += [leaf]
+    return min_k_bitmap, min_k_leafs
 
 
 def run(data, max_bitmaps, leafs_to_rules_count_map, max_rules_per_leaf):
