@@ -8,6 +8,8 @@ NUM_BITMAPS=10
 NUM_LEAFS_PER_BITMAP=3
 REDUNDANCY_PER_BITMAP=2
 NUM_RULES_PER_LEAF=1000
+PROBABILITY_DIVIDEND=1
+PROBABILITY_DIVISOR=3
 DATA_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/output-1M-random/cloud.pkl.*"
 LOG_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/logs-1M-random/logs"
 
@@ -27,6 +29,8 @@ do
                                                     1 \
                                                     0 \
                                                     ${num_rules_per_leaf} \
+                                                    ${PROBABILITY_DIVIDEND} \
+                                                    ${PROBABILITY_DIVISOR} \
                                                     ${file} \
                                                     ${LOG_FILE_PREFIX} &
             wait
@@ -39,6 +43,8 @@ do
                                                         ${num_leafs_per_bitmap} \
                                                         0 \
                                                         ${num_rules_per_leaf} \
+                                                        ${PROBABILITY_DIVIDEND} \
+                                                        ${PROBABILITY_DIVISOR} \
                                                         ${file} \
                                                         ${LOG_FILE_PREFIX} &
                 wait
@@ -56,6 +62,8 @@ do
                                                             ${num_leafs_per_bitmap} \
                                                             ${redundancy_per_bitmap} \
                                                             ${num_rules_per_leaf} \
+                                                            ${PROBABILITY_DIVIDEND} \
+                                                            ${PROBABILITY_DIVISOR} \
                                                             ${file} \
                                                             ${LOG_FILE_PREFIX} &
                     wait
@@ -66,6 +74,8 @@ do
                                                 ${num_leafs_per_bitmap} \
                                                 ${redundancy_per_bitmap} \
                                                 ${num_rules_per_leaf} \
+                                                ${PROBABILITY_DIVIDEND} \
+                                                ${PROBABILITY_DIVISOR} \
                                                 ${file} \
                                                 ${LOG_FILE_PREFIX} &
                     wait
@@ -76,6 +86,8 @@ do
                                                 ${num_leafs_per_bitmap} \
                                                 ${redundancy_per_bitmap} \
                                                 ${num_rules_per_leaf} \
+                                                ${PROBABILITY_DIVIDEND} \
+                                                ${PROBABILITY_DIVISOR} \
                                                 ${file} \
                                                 ${LOG_FILE_PREFIX} &
                     wait

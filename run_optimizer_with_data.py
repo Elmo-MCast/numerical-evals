@@ -12,8 +12,10 @@ if len(sys.argv) > 1:
     NUM_LEAFS_PER_BITMAP = int(sys.argv[4])
     REDUNDANCY_PER_BITMAP = int(sys.argv[5])
     NUM_RULES_PER_LEAF = int(sys.argv[6])
-    DATA_FILE = sys.argv[7]
-    LOG_FILE_PREFIX = sys.argv[8]
+    PROBABILITY_DIVIDEND = int(sys.argv[7])
+    PROBABILITY_DIVISOR = int(sys.argv[8])
+    DATA_FILE = sys.argv[9]
+    LOG_FILE_PREFIX = sys.argv[10]
 
     CLOUD_PARAMS = DATA_FILE.split('.')[-1].split('_')
     NUM_LEAFS = int(CLOUD_PARAMS[0])
@@ -27,6 +29,8 @@ elif True:
     NUM_LEAFS_PER_BITMAP = 2
     REDUNDANCY_PER_BITMAP = 4
     NUM_RULES_PER_LEAF = 1000
+    PROBABILITY_DIVIDEND = 1
+    PROBABILITY_DIVISOR = 3
     DATA_FILE = 'output/cloud.pkl.'
     LOG_FILE_PREFIX = 'output/optimizer.pkl'
 
@@ -45,6 +49,8 @@ print("""
      num_leafs_per_bitmap=%s,
      redundancy_per_bitmap=%s,
      num_rules_per_leaf=%s,
+     probability_dividend=%s,
+     probability_divisor=%s,
      data_file=%s, 
      dump_file_prefix=%s,
      num_leafs=%s,
@@ -57,6 +63,8 @@ print("""
        NUM_LEAFS_PER_BITMAP,
        REDUNDANCY_PER_BITMAP,
        NUM_RULES_PER_LEAF,
+       PROBABILITY_DIVIDEND,
+       PROBABILITY_DIVISOR,
        DATA_FILE,
        LOG_FILE_PREFIX,
        NUM_LEAFS,
@@ -78,7 +86,7 @@ data = pickle_load_obj(DATA_FILE)
 optimizer = Optimizer(data, max_batch_size=MAX_BATCH_SIZE, algorithm=ALGORITHM,
                       num_leafs_per_bitmap=NUM_LEAFS_PER_BITMAP, redundancy_per_bitmap=REDUNDANCY_PER_BITMAP,
                       num_rules_per_leaf=NUM_RULES_PER_LEAF, num_leafs=NUM_LEAFS, num_bitmaps=NUM_BITMAPS,
-                      num_tenants=NUM_TENANTS)
+                      num_tenants=NUM_TENANTS, probability=1.0 * PROBABILITY_DIVIDEND / PROBABILITY_DIVISOR)
 
 os.system('mkdir -p %s' % log_dir)
 

@@ -8,6 +8,8 @@ NUM_BITMAPS=10
 NUM_LEAFS_PER_BITMAP=3
 REDUNDANCY_PER_BITMAP=2
 NUM_RULES_PER_LEAF=10000
+PROBABILITY_DIVIDEND=1
+PROBABILITY_DIVISOR=3
 DATA_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/output-1M/cloud.pkl.*"
 DUMP_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/output-1M/optimizer.pkl"
 
@@ -25,6 +27,8 @@ do
                                     0 \
                                     0 \
                                     ${NUM_RULES_PER_LEAF} \
+                                    ${PROBABILITY_DIVIDEND} \
+                                    ${PROBABILITY_DIVISOR} \
                                     ${file} \
                                     ${DUMP_FILE_PREFIX} &
 
@@ -36,6 +40,8 @@ do
 #                                        ${num_leafs_per_bitmap} \
 #                                        0 \
 #                                        ${NUM_RULES_PER_LEAF} \
+#                                        ${PROBABILITY_DIVIDEND} \
+#                                        ${PROBABILITY_DIVISOR} \
 #                                        ${file} \
 #                                        ${DUMP_FILE_PREFIX} &
 
@@ -47,6 +53,8 @@ do
 #                                            ${num_leafs_per_bitmap} \
 #                                            ${redundancy_per_bitmap} \
 #                                            ${NUM_RULES_PER_LEAF} \
+#                                            ${PROBABILITY_DIVIDEND} \
+#                                            ${PROBABILITY_DIVISOR} \
 #                                            ${file} \
 #                                            ${DUMP_FILE_PREFIX} &
 
@@ -56,6 +64,8 @@ do
 #                                            ${num_leafs_per_bitmap} \
 #                                            ${redundancy_per_bitmap} \
 #                                            ${NUM_RULES_PER_LEAF} \
+#                                            ${PROBABILITY_DIVIDEND} \
+#                                            ${PROBABILITY_DIVISOR} \
 #                                            ${file} \
 #                                            ${DUMP_FILE_PREFIX} &
 #
@@ -65,6 +75,8 @@ do
 #                                            ${num_leafs_per_bitmap} \
 #                                            ${redundancy_per_bitmap} \
 #                                            ${NUM_RULES_PER_LEAF} \
+#                                            ${PROBABILITY_DIVIDEND} \
+#                                            ${PROBABILITY_DIVISOR} \
 #                                            ${file} \
 #                                            ${DUMP_FILE_PREFIX} &
 #            done
