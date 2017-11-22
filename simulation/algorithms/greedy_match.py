@@ -35,7 +35,7 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
     # max_leafs_per_bitmap constraint. For example, using our previous example, the no. of leafs per bitmap is 3.
     num_leafs_per_bitmap = int(leaf_count / max_bitmaps) + (1 if num_excess_leafs > 0 else 0)
     # @shahbaz: next, this code block checks if the no. of leafs per bitmap (computed in the above line) are greater
-    # than max leafs per bitmap, if so, it caps the no. of leafs per bitmap to the max value and set excess leafs to 0.
+    # than max leafs per bitmap, if so, it caps the no. of leafs per bitmap to the max value and sets excess leafs to 0.
     if num_leafs_per_bitmap > max_leafs_per_bitmap:
         num_leafs_per_bitmap = max_leafs_per_bitmap
         num_excess_leafs = 0
@@ -52,7 +52,7 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
     # @shahbaz: num_leafs_per_bitmap, at this point, tells us the number of leafs that can be evenly assigned to each
     # bitmap (excluding the excess leafs). The running_num_leafs_per_bitmap is initialized with num_leafs_per_bitmap.
     # We then check if we have some excess leafs left, if so, we increment running_num_leafs_per_bitmap to try to
-    # come up with a grouping covering an leaf. (78) checks if the grouping is found or not. (Note: this will only
+    # come up with a grouping covering an excess leaf. (78) checks if the grouping is found or not. (Note: this will only
     # be checked for first iteration of k). If a grouping is found, we decrement the excess leafs by 1.
     # @shahbaz: this is also to ensure that we never input a 'k' to the min-k-union algorithm which is greater
     # than the number of input leafs at that point. This will result in error/exception.
