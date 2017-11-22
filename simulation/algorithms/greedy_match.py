@@ -54,8 +54,8 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
     # We then check if we have some excess leafs left, if so, we increment running_num_leafs_per_bitmap to try to
     # come up with a grouping, covering that leaf. (78) checks if the grouping is found or not. (Note: this will only
     # be checked for first iteration of k). If a grouping is found, we decrement the excess leafs by 1.
-    # @shahbaz: this is to ensure that we never input a 'k' to the min-k-union algorithm which is greater
-    # than the number of input leafs at that point. This will results in error/exception.
+    # @shahbaz: this is also to ensure that we never input a 'k' to the min-k-union algorithm which is greater
+    # than the number of input leafs at that point. This will result in error/exception.
     for i in range(max_bitmaps):
         running_num_leafs_per_bitmap = num_leafs_per_bitmap
         if num_excess_leafs > 0:
