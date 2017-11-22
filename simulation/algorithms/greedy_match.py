@@ -72,8 +72,8 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
                     leaf['~bitmap'] = min_k_bitmap ^ leaf['bitmap']
                     # @shahbaz: this block is only storing information that I use later for analysis (i.e., which
                     # bitmap a leaf is assigned to (71), and which redundant ports were set for that leaf (72). It's
-                    # not removing the leaf, just keeping a bitmap with redundant bits set, for that leaf. 'bitmap'
-                    # contains the actual bits for the leaf, and '~bitmap' contains the redundant/unwanted bits.
+                    # not removing the leaf['bitmap'], just keeping a bitmap with redundant bits set, for that leaf. leaf['bitmap']
+                    # contains the actual bits for the leaf, and leaf['~bitmap'] contains the redundant/unwanted bits.
 
                 if k == running_num_leafs_per_bitmap and num_excess_leafs > 0:
                     num_excess_leafs -= 1
