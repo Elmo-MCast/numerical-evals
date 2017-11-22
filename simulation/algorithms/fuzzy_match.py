@@ -1,4 +1,5 @@
 from simulation.utils import popcount
+from math import floor
 
 
 def min_k_union(leafs_map, leafs, k):
@@ -22,15 +23,15 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
     leafs = [l for l in leafs_map]
 
     # Get packing of leafs per bitmap
-    num_leafs_per_bitmap = int(leaf_count / max_bitmaps)
+    min_leafs_per_bitmap = floor(leaf_count / max_bitmaps)
     num_excess_leafs = leaf_count % max_bitmaps
-    if (num_leafs_per_bitmap + (1 if num_excess_leafs > 0 else 0)) > max_leafs_per_bitmap:
-        num_leafs_per_bitmap = max_leafs_per_bitmap
+    if (min_leafs_per_bitmap + (1 if num_excess_leafs > 0 else 0)) > max_leafs_per_bitmap:
+        min_leafs_per_bitmap = max_leafs_per_bitmap
         num_excess_leafs = 0
 
     # Assign leafs to bitmaps
     for i in range(max_bitmaps):
-        for j, k in enumerate(range(num_leafs_per_bitmap + (1 if num_excess_leafs > 0 else 0), 0, -1)):
+        for j, k in enumerate(range(min_leafs_per_bitmap + (1 if num_excess_leafs > 0 else 0), 0, -1)):
             min_k_bitmap, min_k_leafs = min_k_union(leafs_map, leafs, k)
             redundancy = sum([popcount(min_k_bitmap ^ leafs_map[l]['bitmap']) for l in min_k_leafs])
             if redundancy <= redundancy_per_bitmap:
