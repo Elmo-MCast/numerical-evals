@@ -22,14 +22,14 @@ if len(sys.argv) > 1:
     NUM_HOSTS_PER_LEAF = int(CLOUD_PARAMS[1])
     NUM_TENANTS = int(CLOUD_PARAMS[3])
     SEED = int(CLOUD_PARAMS[-1])
-elif True:
+elif False:
     MAX_BATCH_SIZE = 1
     ALGORITHM = 'greedy-match'
     NUM_BITMAPS = 30
     NUM_LEAFS_PER_BITMAP = 2
     REDUNDANCY_PER_BITMAP = 4
     NUM_RULES_PER_LEAF = 1000
-    PROBABILITY_DIVIDEND = 1
+    PROBABILITY_DIVIDEND = 2
     PROBABILITY_DIVISOR = 3
     DATA_FILE = 'output/cloud.pkl.'
     LOG_FILE_PREFIX = 'output/optimizer.pkl'
