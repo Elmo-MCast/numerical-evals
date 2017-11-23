@@ -1,6 +1,6 @@
 import random
 import copy
-from simulation.algorithms import single_match, exact_match, fuzzy_match, random_fuzzy_match, greedy_match
+from simulation.algorithms import single_match, random_single_match, exact_match, fuzzy_match, random_fuzzy_match
 
 random.seed(0)
 
@@ -37,12 +37,11 @@ def test1_run():
     single_data = copy.deepcopy(data)
     single_match.run(single_data[0], single_data[1], single_data[4], single_data[5])
 
-    exact_data = copy.deepcopy(data)
-    exact_match.run(exact_data[0], exact_data[1], exact_data[2], exact_data[4], exact_data[5], is_strict=False)
+    random_single_data = copy.deepcopy(data)
+    random_single_match.run(random_single_data[0], random_single_data[1], random_single_data[4], random_single_data[5])
 
-    greedy_data = copy.deepcopy(data)
-    greedy_match.run(greedy_data[0], greedy_data[1], greedy_data[2], greedy_data[3], greedy_data[4],
-                     greedy_data[5])
+    exact_data = copy.deepcopy(data)
+    exact_match.run(exact_data[0], exact_data[1], exact_data[2], exact_data[4], exact_data[5])
 
     fuzzy_data = copy.deepcopy(data)
     fuzzy_match.run(fuzzy_data[0], fuzzy_data[1], fuzzy_data[2], fuzzy_data[3], fuzzy_data[4],

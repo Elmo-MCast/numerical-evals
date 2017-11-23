@@ -20,7 +20,7 @@ def run(data, max_bitmaps, leafs_to_rules_count_map, max_rules_per_leaf, probabi
         for i in range(max_bitmaps):
             l, _ = ordered_leafs_list[i]
             leaf = leafs_map[l]
-            leaf['has_bitmap'] = True
+            leaf['has_bitmap'] = i
 
         for i in range(max_bitmaps, leaf_count):
             l, _ = ordered_leafs_list[i]
@@ -35,9 +35,9 @@ def run(data, max_bitmaps, leafs_to_rules_count_map, max_rules_per_leaf, probabi
         default_bitmap, default_leafs = min_k_union(leafs_map, ordered_leafs_with_no_space,
                                                     num_leafs_with_no_space - max_bitmaps, probability)
 
-        for l in ordered_leafs_with_no_space:
+        for i, l in enumerate(ordered_leafs_with_no_space):
             leaf = leafs_map[l]
-            leaf['has_bitmap'] = True
+            leaf['has_bitmap'] = i
 
         for l in default_leafs:
             leaf = leafs_map[l]
