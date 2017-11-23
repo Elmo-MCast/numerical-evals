@@ -1,40 +1,22 @@
-from simulation.utils import popcount
 from math import ceil
-import random
+from simulation.utils import popcount
+from simulation.algorithms.common import min_k_union_random as min_k_union
 
 
-def min_k_union(leafs_map, leafs, k, probability):
-    min_k_bitmap = 0
-    min_k_leafs = []
-    for _ in range(k):
-        temp_leafs = leafs[:]
-        while True:
-            if temp_leafs:
-                leaf = min(temp_leafs, key=lambda l: popcount(leafs_map[l]['bitmap'] | min_k_bitmap))
-                if random.random() < probability:
-                    break
-                temp_leafs.remove(leaf)
-            else:
-                break
-        leafs.remove(leaf)
-        min_k_bitmap |= leafs_map[leaf]['bitmap']
-        min_k_leafs += [leaf]
-    return min_k_bitmap, min_k_leafs
-
-
-def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to_rules_count_map,
-        max_rules_per_leaf, probability=1.0 * 2 / 3):
+def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to_rules_count_map, max_rules_per_leaf,
+        probability=1.0 * 2 / 3):
     leaf_count = data['leaf_count']
     if leaf_count <= max_bitmaps:
         return
 
     leafs_map = data['leafs_map']
     unassigned_leafs = [l for l in leafs_map]
-    unassigned_bitmaps = max_bitmaps
+    num_unassigned_bitmaps = max_bitmaps
 
     # Assign leafs to bitmaps
     for i in range(max_bitmaps):
-        for k in range(min(max_leafs_per_bitmap, int(ceil(1.0 * len(unassigned_leafs) / unassigned_bitmaps))), 0, -1):
+        num_leafs_per_bitmap = int(ceil(1.0 * len(unassigned_leafs) / num_unassigned_bitmaps))
+        for k in range(min(max_leafs_per_bitmap, num_leafs_per_bitmap), 0, -1):
             min_k_bitmap, min_k_leafs = min_k_union(leafs_map, unassigned_leafs, k, probability)
             redundancy = sum([popcount(min_k_bitmap ^ leafs_map[l]['bitmap']) for l in min_k_leafs])
             if redundancy <= redundancy_per_bitmap:
@@ -45,7 +27,7 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
                 break
             else:
                 unassigned_leafs += min_k_leafs
-        unassigned_bitmaps -= 1
+        num_unassigned_bitmaps -= 1
 
     # Add a rule or assign leafs to default bitmap
     default_bitmap = 0

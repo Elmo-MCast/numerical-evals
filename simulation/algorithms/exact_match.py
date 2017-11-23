@@ -1,4 +1,4 @@
-def run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_rules_per_leaf, is_strict=False):
+def run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_rules_per_leaf):
     leaf_count = data['leaf_count']
     if leaf_count <= max_bitmaps:
         return
@@ -18,40 +18,29 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_r
     ordered_bitmap_list = sorted(bitmap_to_leafs_map.items(), key=lambda item: len(item[1]), reverse=True)
 
     # Assigning leafs to bitmaps, rules, and default bitmap
-    bitmap_count = 0
-    leafs_per_bitmap_count = 0
-    leafs_budget_count = (max_bitmaps * max_leafs_per_bitmap) - max_bitmaps if not is_strict else 0
+    num_leafs_covered_with_bitmaps = max_bitmaps * max_leafs_per_bitmap
+    num_bitmaps = 0
     default_bitmap = 0
     for _, leafs in ordered_bitmap_list:
-        for l in leafs:
-            leaf = leafs_map[l]
-            if bitmap_count < max_bitmaps:  # Assign leaf to a bitmap
-                leaf['has_bitmap'] = bitmap_count
-                leafs_per_bitmap_count += 1
+        while leafs:
+            num_leafs_per_bitmap = min(num_leafs_covered_with_bitmaps, len(leafs))
 
-                if not is_strict:
-                    # Select next bitmap, when no. of leafs assigned is equal to (1 + leafs_budget_count)
-                    if leafs_per_bitmap_count == (1 + leafs_budget_count):
-                        leafs_budget_count = 0
-                        bitmap_count += 1
-                        leafs_per_bitmap_count = 0
-                else:
-                    if leafs_per_bitmap_count == max_leafs_per_bitmap:
-                        bitmap_count += 1
-                        leafs_per_bitmap_count = 0
+            if num_leafs_per_bitmap > 0 and num_bitmaps < max_bitmaps:
+                for l in leafs[:num_leafs_per_bitmap]:
+                    leaf = leafs_map[l]
+                    leaf['has_bitmap'] = num_bitmaps
+                leafs = leafs[num_leafs_per_bitmap:]
+                num_leafs_covered_with_bitmaps -= num_leafs_per_bitmap
+                num_bitmaps += 1
             else:
-                if leafs_to_rules_count_map[l] < max_rules_per_leaf:  # Add a rule in leaf
-                    leaf['has_rule'] = True
-                    leafs_to_rules_count_map[l] += 1
-                else:  # Assign leaf to default bitmap
-                    default_bitmap |= leaf['bitmap']
-
-        # Select next bitmap, if the current bitmap contains any leaf
-        if bitmap_count < max_bitmaps and leafs_per_bitmap_count > 0:
-            if not is_strict:
-                leafs_budget_count -= (leafs_per_bitmap_count - 1)
-            bitmap_count += 1
-            leafs_per_bitmap_count = 0
+                for l in leafs:
+                    leaf = leafs_map[l]
+                    if leafs_to_rules_count_map[l] < max_rules_per_leaf:
+                        leaf['has_rule'] = True
+                        leafs_to_rules_count_map[l] += 1
+                    else:
+                        default_bitmap |= leaf['bitmap']
+                leafs = []
 
     # Calculate redundancy for leafs assigned to default bitmap
     for l in leafs_map:

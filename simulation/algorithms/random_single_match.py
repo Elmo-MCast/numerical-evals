@@ -1,7 +1,7 @@
-from simulation.algorithms.common import min_k_union
+from simulation.algorithms.common import min_k_union_random as min_k_union
 
 
-def run(data, max_bitmaps, leafs_to_rules_count_map, max_rules_per_leaf):
+def run(data, max_bitmaps, leafs_to_rules_count_map, max_rules_per_leaf, probability=1.0 * 2 / 3):
     leaf_count = data['leaf_count']
     if leaf_count <= max_bitmaps:
         return
@@ -33,7 +33,7 @@ def run(data, max_bitmaps, leafs_to_rules_count_map, max_rules_per_leaf):
     else:
         ordered_leafs_with_no_space = [l for l, _ in ordered_leafs_list[:num_leafs_with_no_space]]
         default_bitmap, default_leafs = min_k_union(leafs_map, ordered_leafs_with_no_space,
-                                                    num_leafs_with_no_space - max_bitmaps)
+                                                    num_leafs_with_no_space - max_bitmaps, probability)
 
         for l in ordered_leafs_with_no_space:
             leaf = leafs_map[l]
