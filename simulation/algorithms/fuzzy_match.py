@@ -1,4 +1,5 @@
 from simulation.utils import popcount
+from math import ceil
 
 
 def min_k_union(leafs_map, leafs, k):
@@ -19,34 +20,27 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
         return
 
     leafs_map = data['leafs_map']
-    leafs = [l for l in leafs_map]
-
-    # Get packing of leafs per bitmap
-    num_leafs_per_bitmap = int(leaf_count / max_bitmaps)
-    num_excess_leafs = leaf_count % max_bitmaps
-    if (num_leafs_per_bitmap + (1 if num_excess_leafs > 0 else 0)) > max_leafs_per_bitmap:
-        num_leafs_per_bitmap = max_leafs_per_bitmap
-        num_excess_leafs = 0
+    unassigned_leafs = [l for l in leafs_map]
+    unassigned_bitmaps = max_bitmaps
 
     # Assign leafs to bitmaps
     for i in range(max_bitmaps):
-        for j, k in enumerate(range(num_leafs_per_bitmap + (1 if num_excess_leafs > 0 else 0), 0, -1)):
-            min_k_bitmap, min_k_leafs = min_k_union(leafs_map, leafs, k)
+        for k in range(min(max_leafs_per_bitmap, int(ceil(1.0 * len(unassigned_leafs) / unassigned_bitmaps))), 0, -1):
+            min_k_bitmap, min_k_leafs = min_k_union(leafs_map, unassigned_leafs, k)
             redundancy = sum([popcount(min_k_bitmap ^ leafs_map[l]['bitmap']) for l in min_k_leafs])
             if redundancy <= redundancy_per_bitmap:
                 for l in min_k_leafs:
                     leaf = leafs_map[l]
                     leaf['has_bitmap'] = i
                     leaf['~bitmap'] = min_k_bitmap ^ leaf['bitmap']
-
-                num_excess_leafs -= (1 if j == 0 and num_excess_leafs > 0 else 0)
                 break
             else:
-                leafs += min_k_leafs
+                unassigned_leafs += min_k_leafs
+        unassigned_bitmaps -= 1
 
     # Add a rule or assign leafs to default bitmap
     default_bitmap = 0
-    for l in leafs:
+    for l in unassigned_leafs:
         leaf = leafs_map[l]
         if leafs_to_rules_count_map[l] < max_rules_per_leaf:  # Add a rule in leaf
             leaf['has_rule'] = True
@@ -55,7 +49,7 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
             default_bitmap |= leaf['bitmap']
 
     # Calculate redundancy for leafs assigned to default bitmap
-    for l in leafs:
+    for l in unassigned_leafs:
         leaf = leafs_map[l]
         if 'has_rule' not in leaf:
             leaf['~bitmap'] = default_bitmap ^ leaf['bitmap']
