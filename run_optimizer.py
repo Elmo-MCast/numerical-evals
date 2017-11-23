@@ -20,13 +20,13 @@ if len(sys.argv) > 1:
     NUM_LEAFS = int(CLOUD_PARAMS[0])
     NUM_TENANTS = int(CLOUD_PARAMS[3])
     SEED = int(CLOUD_PARAMS[-1])
-elif True:
+elif False:
     MAX_BATCH_SIZE = 1
-    ALGORITHM = 'strict-exact-match'
-    NUM_BITMAPS = 10
+    ALGORITHM = 'fuzzy-match'
+    NUM_BITMAPS = 14
     NUM_LEAFS_PER_BITMAP = 3
     REDUNDANCY_PER_BITMAP = 0
-    NUM_RULES_PER_LEAF = 0
+    NUM_RULES_PER_LEAF = 100
     PROBABILITY_DIVIDEND = 2
     PROBABILITY_DIVISOR = 3
     DATA_FILE = 'output/cloud.pkl.'
