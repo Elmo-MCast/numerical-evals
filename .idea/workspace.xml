@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3f0c75d9-ed49-4a19-bc97-bf85c19dcdfe" name="Default" comment="">
+    <list default="true" id="3f0c75d9-ed49-4a19-bc97-bf85c19dcdfe" name="Default" comment="minor">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/run_cloud.sh" afterPath="$PROJECT_DIR$/run_cloud.sh" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/run_optimizer_with_data.sh" afterPath="$PROJECT_DIR$/run_optimizer_with_data.sh" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -210,6 +208,17 @@
             <path>
               <item name="numerical-evals" type="b2602c69:ProjectViewProjectNode" />
               <item name="numerical-evals" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="numerical-evals" type="b2602c69:ProjectViewProjectNode" />
+              <item name="numerical-evals" type="462c0819:PsiDirectoryNode" />
+              <item name="notebooks" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="numerical-evals" type="b2602c69:ProjectViewProjectNode" />
+              <item name="numerical-evals" type="462c0819:PsiDirectoryNode" />
+              <item name="notebooks" type="462c0819:PsiDirectoryNode" />
+              <item name="11-24-2017" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="numerical-evals" type="b2602c69:ProjectViewProjectNode" />
@@ -503,13 +512,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1506196846152</updated>
-    </task>
-    <task id="LOCAL-00026" summary="minor">
-      <created>1510141447196</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1510141447196</updated>
     </task>
     <task id="LOCAL-00027" summary="minor">
       <created>1510170994698</created>
@@ -847,7 +849,14 @@
       <option name="project" value="LOCAL" />
       <updated>1511741597896</updated>
     </task>
-    <option name="localTasksCounter" value="75" />
+    <task id="LOCAL-00075" summary="minor">
+      <created>1511782900625</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1511782900625</updated>
+    </task>
+    <option name="localTasksCounter" value="76" />
     <servers />
   </component>
   <component name="ToolWindowManager">
