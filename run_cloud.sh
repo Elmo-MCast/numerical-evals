@@ -18,13 +18,13 @@ COLOCATE_NUM_HOSTS_PER_LEAF=48
 MULTI_THREADED="True"
 NUM_JOBS=5
 SEED=0
-DUMP_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/11-23-2017/output-100K-random/cloud.pkl"
+DUMP_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/11-24-2017/output-100K-random/cloud.pkl"
 
 PYTHON=pypy3  # options: pypy3 or python or python3
 
 # running parameters
 
-for seed in 0 1 2
+for seed in 0 1 2 3 4
 do
     for group_size_dist in "uniform" "wve"
     do

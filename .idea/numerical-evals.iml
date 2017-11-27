@@ -6,7 +6,7 @@
       <excludeFolder url="file://$MODULE_DIR$/logs" />
       <excludeFolder url="file://$MODULE_DIR$/output" />
     </content>
-    <orderEntry type="jdk" jdkName="PyPy 5.9.0-beta0 [Python 3.5.3] virtualenv at ~/mshahbaz/virtualenvs/pypy3" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="PyPy 5.9.0-beta0 [Python 3.5.3] (/usr/local/bin/pypy3)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TestRunnerService">
