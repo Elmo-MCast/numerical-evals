@@ -10,8 +10,8 @@ REDUNDANCY_PER_BITMAP=2
 NUM_RULES_PER_LEAF=1000
 PROBABILITY_DIVIDEND=2
 PROBABILITY_DIVISOR=3
-DATA_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/11-24-2017/output-100K-uniform/cloud.pkl.*"
-LOG_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/11-24-2017/logs-100K-uniform/logs"
+DATA_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/11-29-2017/output-1M-random/cloud.pkl.*"
+LOG_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/11-29-2017/logs-1M-random/logs"
 
 PYTHON=pypy3  # options: pypy3 or python or python3
 
@@ -19,7 +19,7 @@ PYTHON=pypy3  # options: pypy3 or python or python3
 
 for file in ${DATA_FILE_PREFIX}
 do
-    for num_rules_per_leaf in 1000 10000
+    for num_rules_per_leaf in 10000 64000
     do
         for num_bitmaps in 10 20 30
         do
@@ -62,24 +62,24 @@ do
                                                         ${LOG_FILE_PREFIX} &
 #                wait
 
-                for redundancy_per_bitmap in 0 6 12 24 48 96
+                for redundancy_per_bitmap in 0 6 12 24 48
                 do
 #                    if [ ${num_leafs_per_bitmap} -eq 1 ] && [ ${redundancy_per_bitmap} -gt 0 ]
 #                    then
 #                        continue
 #                    fi
 
-                    ${PYTHON} run_optimizer_with_data.py    ${MAX_BATCH_SIZE} \
-                                                            "fuzzy-match" \
-                                                            ${num_bitmaps} \
-                                                            ${num_leafs_per_bitmap} \
-                                                            ${redundancy_per_bitmap} \
-                                                            ${num_rules_per_leaf} \
-                                                            ${PROBABILITY_DIVIDEND} \
-                                                            ${PROBABILITY_DIVISOR} \
-                                                            ${file} \
-                                                            ${LOG_FILE_PREFIX} &
-#                    wait
+#                    ${PYTHON} run_optimizer_with_data.py    ${MAX_BATCH_SIZE} \
+#                                                            "fuzzy-match" \
+#                                                            ${num_bitmaps} \
+#                                                            ${num_leafs_per_bitmap} \
+#                                                            ${redundancy_per_bitmap} \
+#                                                            ${num_rules_per_leaf} \
+#                                                            ${PROBABILITY_DIVIDEND} \
+#                                                            ${PROBABILITY_DIVISOR} \
+#                                                            ${file} \
+#                                                            ${LOG_FILE_PREFIX} &
+##                    wait
 
                     ${PYTHON} run_optimizer_with_data.py    ${MAX_BATCH_SIZE} \
                                                             "random-fuzzy-match" \

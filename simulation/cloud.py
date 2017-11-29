@@ -40,42 +40,23 @@ class Cloud:
                   multi_threaded=multi_threaded, num_jobs=num_jobs)
 
     def prune(self):
+        del self.data['network']
+
         num_tenants = self.num_tenants
         tenants = self.data['tenants']
         tenants_maps = tenants['maps']
-
-        data = dict()
-        data['tenants'] = dict()
-        data_tenants = data['tenants']
-        data_tenants['vm_count'] = tenants['vm_count']
-        data_tenants['group_count'] = tenants['group_count']
-        data_tenants['maps'] = [{'vm_count': None,
-                                 'group_count': None,
-                                 'groups_map': None} for _ in range(num_tenants)]
-        data_tenants_maps = data_tenants['maps']
         for t in bar_range(num_tenants, desc='pruning'):
             tenant_maps = tenants_maps[t]
+            del tenant_maps['vms_map']
+
+            group_count = tenant_maps['group_count']
             groups_map = tenant_maps['groups_map']
-
-            data_tenant_map = data_tenants_maps[t]
-            data_tenant_map['vm_count'] = tenant_maps['vm_count']
-            data_tenant_map['group_count'] = tenant_maps['group_count']
-            data_group_count = data_tenant_map['group_count']
-            data_tenant_map['groups_map'] = [{'size': None,
-                                              'leaf_count': None,
-                                              'leafs_map': None} for _ in range(data_group_count)]
-            data_groups_map = data_tenant_map['groups_map']
-            for g in range(data_group_count):
+            for g in range(group_count):
                 group_map = groups_map[g]
+                del group_map['vms']
+                del group_map['leafs']
+
                 leafs_map = group_map['leafs_map']
-
-                data_group_map = data_groups_map[g]
-                data_group_map['size'] = group_map['size']
-                data_group_map['leaf_count'] = group_map['leaf_count']
-                data_group_map['leafs_map'] = dict()
-                data_leafs_map = data_group_map['leafs_map']
                 for l in leafs_map:
-                    data_leafs_map[l] = dict()
-                    data_leafs_map[l]['bitmap'] = leafs_map[l]['bitmap']
-
-        return data
+                    leaf_map = leafs_map[l]
+                    del leaf_map['hosts']
