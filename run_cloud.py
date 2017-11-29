@@ -21,7 +21,7 @@ if len(sys.argv) > 1:
     NUM_JOBS = int(sys.argv[14])
     SEED = int(sys.argv[15])
     DUMP_FILE_PREFIX = sys.argv[16]
-elif True:
+elif False:
     NUM_LEAFS = 576
     NUM_HOSTS_PER_LEAF = 48
     MAX_VMS_PER_HOST = 20
