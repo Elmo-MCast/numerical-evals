@@ -24,7 +24,7 @@ PYTHON=pypy3  # options: pypy3 or python or python3
 
 # running parameters
 
-for seed in 0 1 2
+for seed in 3
 do
     for group_size_dist in "uniform" "wve"
     do
