@@ -4,11 +4,10 @@ from simulation.algorithms.common import min_k_union
 
 
 def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to_rules_count_map, max_rules_per_leaf):
-    leaf_count = data['leaf_count']
-    if leaf_count <= max_bitmaps:
+    leafs_map = data['leafs_map']
+    if len(leafs_map) <= max_bitmaps:
         return
 
-    leafs_map = data['leafs_map']
     unassigned_leafs = [l for l in leafs_map]
     num_unassigned_bitmaps = max_bitmaps
 

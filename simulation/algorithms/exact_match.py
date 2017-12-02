@@ -1,9 +1,7 @@
 def run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_rules_per_leaf):
-    leaf_count = data['leaf_count']
-    if leaf_count <= max_bitmaps:
-        return
-
     leafs_map = data['leafs_map']
+    if len(leafs_map) <= max_bitmaps:
+        return
 
     # Generating bitmaps-to-leaf mapping
     bitmap_to_leafs_map = dict()

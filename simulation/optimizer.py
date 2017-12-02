@@ -63,7 +63,7 @@ class Optimizer:
                     running_batch_size += 1
 
                     if running_batch_size == batch_size:
-                        running_batch_list = sorted(running_batch_list, key=lambda item: item['leaf_count'])
+                        running_batch_list = sorted(running_batch_list, key=lambda item: len(item['leafs_map']))
 
                         for _g in running_batch_list:
                             algorithms.run(
@@ -81,7 +81,7 @@ class Optimizer:
                         running_batch_list = []
 
                 if (t + 1) == self.num_tenants:
-                    running_batch_list = sorted(running_batch_list, key=lambda item: item['leaf_count'])
+                    running_batch_list = sorted(running_batch_list, key=lambda item: len(item['leafs_map']))
 
                     for _g in running_batch_list:
                         algorithms.run(

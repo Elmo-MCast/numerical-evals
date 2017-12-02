@@ -2,11 +2,9 @@ from simulation.algorithms.common import min_k_union
 
 
 def run(data, max_bitmaps, leafs_to_rules_count_map, max_rules_per_leaf):
-    leaf_count = data['leaf_count']
-    if leaf_count <= max_bitmaps:
-        return
-
     leafs_map = data['leafs_map']
+    if len(leafs_map) <= max_bitmaps:
+        return
 
     # Sort leafs based on their flow table size (descending order)
     ordered_leafs_list = sorted(leafs_map.items(), key=lambda item: leafs_to_rules_count_map[item[0]], reverse=True)
@@ -22,7 +20,7 @@ def run(data, max_bitmaps, leafs_to_rules_count_map, max_rules_per_leaf):
             leaf = leafs_map[l]
             leaf['has_bitmap'] = i
 
-        for i in range(max_bitmaps, leaf_count):
+        for i in range(max_bitmaps, len(leafs_map)):
             l, _ = ordered_leafs_list[i]
             leaf = leafs_map[l]
             leaf['has_rule'] = True
@@ -45,7 +43,7 @@ def run(data, max_bitmaps, leafs_to_rules_count_map, max_rules_per_leaf):
 
         data['default_bitmap'] = default_bitmap
 
-        for i in range(num_leafs_with_no_space, leaf_count):
+        for i in range(num_leafs_with_no_space, len(leafs_map)):
             l, _ = ordered_leafs_list[i]
             leaf = leafs_map[l]
             leaf['has_rule'] = True

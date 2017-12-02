@@ -25,19 +25,19 @@ if len(sys.argv) > 1:
 elif False:
     MAX_BATCH_SIZE = 1
     ALGORITHM = 'fuzzy-match'
-    NUM_BITMAPS = 30
-    NUM_LEAFS_PER_BITMAP = 2
-    REDUNDANCY_PER_BITMAP = 4
-    NUM_RULES_PER_LEAF = 1000
+    NUM_BITMAPS = 14
+    NUM_LEAFS_PER_BITMAP = 3
+    REDUNDANCY_PER_BITMAP = 0
+    NUM_RULES_PER_LEAF = 100
     PROBABILITY_DIVIDEND = 2
     PROBABILITY_DIVISOR = 3
     DATA_FILE = 'output/cloud.pkl.'
-    LOG_FILE_PREFIX = 'output/optimizer.pkl'
+    LOG_FILE_PREFIX = 'output/logs'
 
     CLOUD_PARAMS = []
     NUM_LEAFS = 576
     NUM_HOSTS_PER_LEAF = 48
-    NUM_TENANTS = 3000
+    NUM_TENANTS = 30
     SEED = 0
 else:
     raise (Exception('invalid parameters'))

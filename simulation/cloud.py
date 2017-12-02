@@ -54,9 +54,3 @@ class Cloud:
             for g in range(group_count):
                 group_map = groups_map[g]
                 del group_map['vms']
-                del group_map['leafs']
-
-                leafs_map = group_map['leafs_map']
-                for l in leafs_map:
-                    leaf_map = leafs_map[l]
-                    del leaf_map['hosts']

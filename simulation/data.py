@@ -68,7 +68,7 @@ class Data:
             groups_map = tenant_maps['groups_map']
 
             for g in range(group_count):
-                _leaf_count_per_group_per_tenant += [groups_map[g]['leaf_count']]
+                _leaf_count_per_group_per_tenant += [len(groups_map[g]['leafs_map'])]
 
         _leaf_count_per_group_per_tenant = pd.Series(_leaf_count_per_group_per_tenant)
 

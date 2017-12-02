@@ -1,5 +1,4 @@
 import numpy as np
-import pandas as pd
 import progressbar
 from cffi import FFI
 import json
