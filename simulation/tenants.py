@@ -50,7 +50,7 @@ class Tenants:
         if not self.multi_threaded:
             self._get_tenant_groups_to_vms_map()
         else:
-            self._run_tenant_groups_leafs_to_hosts_and_bitmap_map()
+            self._run_tenant_groups_to_vms_map()
 
     def _get_tenant_to_vm_count_map(self):
         if self.vm_dist == 'expon':
@@ -147,7 +147,7 @@ class Tenants:
                 group_map['vms'] = random.sample(range(vm_count), group_map['size'])
         return tenants_maps
 
-    def _run_tenant_groups_leafs_to_hosts_and_bitmap_map(self):
+    def _run_tenant_groups_to_vms_map(self):
         if (self.num_tenants % self.num_jobs) != 0:
             raise (Exception('input not divisible by num_jobs'))
 
