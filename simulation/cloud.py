@@ -39,18 +39,4 @@ class Cloud:
                   dist=placement_dist, colocate_num_hosts_per_leaf=colocate_num_hosts_per_leaf,
                   multi_threaded=multi_threaded, num_jobs=num_jobs)
 
-    def prune(self):
         del self.data['network']
-
-        num_tenants = self.num_tenants
-        tenants = self.data['tenants']
-        tenants_maps = tenants['maps']
-        for t in bar_range(num_tenants, desc='pruning'):
-            tenant_maps = tenants_maps[t]
-            del tenant_maps['vms_map']
-
-            group_count = tenant_maps['group_count']
-            groups_map = tenant_maps['groups_map']
-            for g in range(group_count):
-                group_map = groups_map[g]
-                del group_map['vms']

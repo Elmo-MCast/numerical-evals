@@ -235,6 +235,8 @@ class Placement:
                         leaf_map['bitmap'] |= 1 << (h % self.num_hosts_per_leaf)
 
                     del leaf_map['hosts']
+                del group_map['vms']
+            del tenant_maps['vms_map']
 
     @staticmethod
     def _get_tenant_groups_leafs_to_hosts_and_bitmap_map_mproc(tenants_maps, num_tenants, num_hosts_per_leaf):
@@ -263,6 +265,9 @@ class Placement:
                         leaf_map['bitmap'] |= 1 << (h % num_hosts_per_leaf)
 
                     del leaf_map['hosts']
+                del group_map['vms']
+            del tenant_maps['vms_map']
+
         return tenants_maps
 
     def _run_tenant_groups_leafs_to_hosts_and_bitmap_map(self):

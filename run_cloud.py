@@ -117,5 +117,4 @@ cloud = Cloud(num_leafs=NUM_LEAFS,
               multi_threaded=MULTI_THREADED,
               num_jobs=NUM_JOBS)
 
-cloud.prune()
 pickle_dump_obj(cloud.data, dump_file)
