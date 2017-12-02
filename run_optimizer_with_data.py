@@ -3,7 +3,7 @@ import sys
 import random
 from simulation.optimizer import Optimizer
 from simulation.data import Data
-from simulation.utils import pickle_dump_obj, pickle_load_obj
+from simulation.utils import pickle_dump_obj, pickle_load_obj, marshal_load_obj
 
 if len(sys.argv) > 1:
     MAX_BATCH_SIZE = int(sys.argv[1])
@@ -31,7 +31,7 @@ elif False:
     NUM_RULES_PER_LEAF = 100
     PROBABILITY_DIVIDEND = 2
     PROBABILITY_DIVISOR = 3
-    DATA_FILE = 'output/cloud.pkl.'
+    DATA_FILE = 'output/cloud.'
     LOG_FILE_PREFIX = 'output/logs'
 
     CLOUD_PARAMS = []
@@ -81,7 +81,8 @@ if os.path.isfile(log_dir):
     print('%s, already exists.' % log_dir)
     exit(0)
 
-data = pickle_load_obj(DATA_FILE)
+# data = pickle_load_obj(DATA_FILE)
+data = marshal_load_obj(DATA_FILE)
 
 optimizer = Optimizer(data, max_batch_size=MAX_BATCH_SIZE, algorithm=ALGORITHM,
                       num_leafs_per_bitmap=NUM_LEAFS_PER_BITMAP, redundancy_per_bitmap=REDUNDANCY_PER_BITMAP,

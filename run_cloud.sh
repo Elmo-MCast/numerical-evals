@@ -15,12 +15,12 @@ GROUP_SIZE_DIST="uniform"  # options: uniform and wve
 PLACEMENT_DIST="colocate-random-linear"  # options: uniform, colocate-random-linear,
 # colocate-random-random, sorted-colocate-random-linear, and sorted-colocate-random-random
 COLOCATE_NUM_HOSTS_PER_LEAF=48
-MULTI_THREADED="False"
+MULTI_THREADED="True"
 NUM_JOBS=5
 SEED=0
-DUMP_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/11-29-2017/output-1M-uniform/cloud.pkl"
+DUMP_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/11-29-2017/output-1M-uniform/cloud"
 
-PYTHON=python3  # options: pypy3 or python or python3
+PYTHON=pypy3  # options: pypy3 or python or python3
 
 # running parameters
 

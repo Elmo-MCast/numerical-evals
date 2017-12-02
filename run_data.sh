@@ -2,7 +2,7 @@
 
 # default parameters
 
-DATA_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/output/optimizer.pkl.*"
+DATA_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/output/optimizer.*"
 LOG_DIR="/mnt/sdb1/baseerat/numerical-evals/logs"
 
 PYTHON=python3  # options: pypy3 or python or python3

@@ -10,8 +10,8 @@ REDUNDANCY_PER_BITMAP=2
 NUM_RULES_PER_LEAF=10000
 PROBABILITY_DIVIDEND=2
 PROBABILITY_DIVISOR=3
-DATA_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/output-1M/cloud.pkl.*"
-DUMP_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/output-1M/optimizer.pkl"
+DATA_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/output-1M/cloud.*"
+DUMP_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/output-1M/optimizer"
 
 PYTHON=pypy3  # options: pypy3 or python or python3
 

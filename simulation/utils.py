@@ -1,8 +1,8 @@
-import numpy as np
 import progressbar
 from cffi import FFI
 import json
 import pickle
+import marshal
 
 ffi = FFI()
 
@@ -39,7 +39,7 @@ def popcount(x):
 
 def pickle_dump_obj(o, f):
     _f = open(f, 'wb')
-    pickle.dump(o, _f)
+    pickle.dump(o, _f, protocol=pickle.HIGHEST_PROTOCOL)
     _f.close()
 
 
@@ -63,5 +63,15 @@ def json_load_obj(f):
     return o
 
 
-def plot_ecdf(plt, x):
-    plt.plot(np.sort(x), np.linspace(0, 1, len(x), endpoint=False))
+def marshal_dump_obj(o, f):
+    _f = open(f, 'wb')
+    marshal.dump(o, _f, 4)
+    _f.close()
+
+
+def marshal_load_obj(f):
+    _f = open(f, 'rb')
+    o = marshal.load(_f)
+    _f.close()
+    return o
+

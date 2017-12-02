@@ -10,7 +10,7 @@ REDUNDANCY_PER_BITMAP=2
 NUM_RULES_PER_LEAF=1000
 PROBABILITY_DIVIDEND=2
 PROBABILITY_DIVISOR=3
-DATA_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/11-29-2017/output-1M-random/cloud.pkl.*"
+DATA_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/11-29-2017/output-1M-random/cloud.*"
 LOG_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/11-29-2017/logs-1M-random/logs"
 
 PYTHON=pypy3  # options: pypy3 or python or python3

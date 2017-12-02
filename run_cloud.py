@@ -2,7 +2,7 @@ import os
 import sys
 import random
 from simulation.cloud import Cloud
-from simulation.utils import bar_range, pickle_dump_obj
+from simulation.utils import bar_range, pickle_dump_obj, marshal_dump_obj
 
 if len(sys.argv) > 1:
     NUM_LEAFS = int(sys.argv[1])
@@ -37,7 +37,7 @@ elif False:
     MULTI_THREADED = True
     NUM_JOBS = 5
     SEED = 2
-    DUMP_FILE_PREFIX = 'output/cloud.pkl'
+    DUMP_FILE_PREFIX = 'output/cloud'
 elif False:
     NUM_LEAFS = 576
     NUM_HOSTS_PER_LEAF = 48
@@ -55,7 +55,7 @@ elif False:
     MULTI_THREADED = True
     NUM_JOBS = 5
     SEED = 0
-    DUMP_FILE_PREFIX = 'output/cloud.pkl'
+    DUMP_FILE_PREFIX = 'output/cloud'
 else:
     raise (Exception('invalid parameters'))
 
@@ -117,4 +117,5 @@ cloud = Cloud(num_leafs=NUM_LEAFS,
               multi_threaded=MULTI_THREADED,
               num_jobs=NUM_JOBS)
 
-pickle_dump_obj(cloud.data, dump_file)
+# pickle_dump_obj(cloud.data, dump_file)
+marshal_dump_obj(cloud.data, dump_file)

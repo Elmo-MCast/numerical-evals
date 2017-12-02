@@ -19,7 +19,7 @@ if len(sys.argv) > 1:
     NUM_BITMAPS = int(OPTIMIZER_PARAMS[2])
 
 elif True:
-    DATA_FILE = 'output/optimizer.pkl..'
+    DATA_FILE = 'output/optimizer..'
     LOG_DIR = 'logs/logs'
 
     CLOUD_PARAMS = []

@@ -29,8 +29,8 @@ elif False:
     NUM_RULES_PER_LEAF = 100
     PROBABILITY_DIVIDEND = 2
     PROBABILITY_DIVISOR = 3
-    DATA_FILE = 'output/cloud.pkl.'
-    DUMP_FILE_PREFIX = 'output/optimizer.pkl'
+    DATA_FILE = 'output/cloud.'
+    DUMP_FILE_PREFIX = 'output/optimizer'
 
     CLOUD_PARAMS = []
     NUM_LEAFS = 576
