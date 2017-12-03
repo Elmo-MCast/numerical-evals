@@ -35,7 +35,7 @@ do
                                                         ${PROBABILITY_DIVISOR} \
                                                         ${file} \
                                                         ${LOG_FILE_PREFIX} &
-#                wait
+                wait
 
                 for redundancy_per_bitmap in 0 6
                 do
@@ -49,9 +49,9 @@ do
                                                             ${PROBABILITY_DIVISOR} \
                                                             ${file} \
                                                             ${LOG_FILE_PREFIX} &
-#                    wait
+                    wait
                 done
-                wait
+#                wait
 
                 for redundancy_per_bitmap in 12 24 48
                 do
@@ -65,9 +65,9 @@ do
                                                             ${PROBABILITY_DIVISOR} \
                                                             ${file} \
                                                             ${LOG_FILE_PREFIX} &
-#                    wait
+                    wait
                 done
-                wait
+#                wait
             done
         done
     done

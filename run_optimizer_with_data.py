@@ -81,6 +81,8 @@ if os.path.isfile(log_dir):
     print('%s, already exists.' % log_dir)
     exit(0)
 
+os.system('mkdir -p %s' % log_dir)
+
 # data = pickle_load_obj(DATA_FILE)
 data = marshal_load_obj(DATA_FILE)
 
@@ -89,9 +91,6 @@ optimizer = Optimizer(data, max_batch_size=MAX_BATCH_SIZE, algorithm=ALGORITHM,
                       num_rules_per_leaf=NUM_RULES_PER_LEAF, num_leafs=NUM_LEAFS, num_bitmaps=NUM_BITMAPS,
                       num_tenants=NUM_TENANTS, probability=1.0 * PROBABILITY_DIVIDEND / PROBABILITY_DIVISOR)
 
-os.system('mkdir -p %s' % log_dir)
-
 data = Data(data, num_tenants=NUM_TENANTS, num_leafs=NUM_LEAFS, num_hosts_per_leaf=NUM_HOSTS_PER_LEAF,
             num_bitmaps=NUM_BITMAPS, log_dir=log_dir)
-
 data.log()
