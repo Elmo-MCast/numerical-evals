@@ -21,6 +21,7 @@ if len(sys.argv) > 1:
     NUM_JOBS = int(sys.argv[14])
     SEED = int(sys.argv[15])
     DUMP_FILE_PREFIX = sys.argv[16]
+    PRUNE = True if sys.argv[17] == 'True' else False
 elif False:
     NUM_LEAFS = 576
     NUM_HOSTS_PER_LEAF = 48
@@ -38,7 +39,8 @@ elif False:
     NUM_JOBS = 5
     SEED = 2
     DUMP_FILE_PREFIX = 'output/cloud'
-elif False:
+    PRUNE = True
+elif True:
     NUM_LEAFS = 576
     NUM_HOSTS_PER_LEAF = 48
     MAX_VMS_PER_HOST = 20
@@ -56,6 +58,7 @@ elif False:
     NUM_JOBS = 5
     SEED = 0
     DUMP_FILE_PREFIX = 'output/cloud'
+    PRUNE = False
 else:
     raise (Exception('invalid parameters'))
 
@@ -75,8 +78,9 @@ print("""
      colocate_hosts_per_leaf=%s,
      multi_threaded=%s,
      num_jobs=%s,
+     seed=%s,
      dump_file_prefix=%s,
-     seed=%s)
+     prune=%s)
 """ % (NUM_LEAFS,
        NUM_HOSTS_PER_LEAF,
        MAX_VMS_PER_HOST,
@@ -91,8 +95,9 @@ print("""
        COLOCATE_NUM_HOSTS_PER_LEAF,
        MULTI_THREADED,
        NUM_JOBS,
+       SEED,
        DUMP_FILE_PREFIX,
-       SEED))
+       PRUNE))
 
 random.seed(SEED)
 
@@ -115,7 +120,8 @@ cloud = Cloud(num_leafs=NUM_LEAFS,
               placement_dist=PLACEMENT_DIST,  # options: uniform, colocate-random-linear, and colocate-random-random
               colocate_num_hosts_per_leaf=COLOCATE_NUM_HOSTS_PER_LEAF,
               multi_threaded=MULTI_THREADED,
-              num_jobs=NUM_JOBS)
+              num_jobs=NUM_JOBS,
+              prune=PRUNE)
 
 # pickle_dump_obj(cloud.data, dump_file)
 marshal_dump_obj(cloud.data, dump_file)

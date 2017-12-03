@@ -17,7 +17,7 @@ class Placement:
                  num_leafs=576, num_hosts_per_leaf=48,
                  num_tenants=3000, max_vms_per_host=20,
                  dist='uniform', colocate_num_hosts_per_leaf=48,
-                 multi_threaded=False, num_jobs=4):
+                 multi_threaded=False, num_jobs=4, prune=True):
         self.data = data
         self.dist = dist
         self.num_leafs = num_leafs
@@ -28,6 +28,7 @@ class Placement:
         self.max_vms_per_host = max_vms_per_host
         self.multi_threaded = multi_threaded
         self.num_jobs = num_jobs
+        self.prune = prune
 
         self.network = self.data['network']
         self.network_maps = self.network['maps']
@@ -235,11 +236,14 @@ class Placement:
                         leaf_map['bitmap'] |= 1 << (h % self.num_hosts_per_leaf)
 
                     del leaf_map['hosts']
-                del group_map['vms']
-            del tenant_maps['vms_map']
+
+                if self.prune:
+                    del group_map['vms']
+            if self.prune:
+                del tenant_maps['vms_map']
 
     @staticmethod
-    def _get_tenant_groups_leafs_to_hosts_and_bitmap_map_mproc(tenants_maps, num_tenants, num_hosts_per_leaf):
+    def _get_tenant_groups_leafs_to_hosts_and_bitmap_map_mproc(tenants_maps, num_tenants, num_hosts_per_leaf, prune):
         for t in bar_range(num_tenants, desc='placement:leafs->bitmap'):
             tenant_maps = tenants_maps[t]
             group_count = tenant_maps['group_count']
@@ -265,8 +269,11 @@ class Placement:
                         leaf_map['bitmap'] |= 1 << (h % num_hosts_per_leaf)
 
                     del leaf_map['hosts']
-                del group_map['vms']
-            del tenant_maps['vms_map']
+
+                if prune:
+                    del group_map['vms']
+            if prune:
+                del tenant_maps['vms_map']
 
         return tenants_maps
 
@@ -278,7 +285,8 @@ class Placement:
         input_groups = [(i, i + input_size) for i in range(0, self.num_tenants, input_size)]
         inputs = [(self.tenants_maps[i:j],
                    input_size,
-                   self.num_hosts_per_leaf) for i, j in input_groups]
+                   self.num_hosts_per_leaf,
+                   self.prune) for i, j in input_groups]
 
         # pool = multiprocessing.Pool()
         # results = pool.map(unwrap_tenant_groups_leafs_to_hosts_and_bitmap_map, [i for i in inputs])

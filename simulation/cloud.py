@@ -19,7 +19,8 @@ class Cloud:
                  placement_dist='uniform',  # options: uniform, colocate-random-linear, and colocate-random-random
                  colocate_num_hosts_per_leaf=48,
                  multi_threaded=True,
-                 num_jobs=10):
+                 num_jobs=10,
+                 prune=True):
         self.data = dict()
         self.num_tenants = num_tenants
 
@@ -37,6 +38,7 @@ class Cloud:
                   num_leafs=num_leafs, num_hosts_per_leaf=num_hosts_per_leaf,
                   num_tenants=num_tenants, max_vms_per_host=max_vms_per_host,
                   dist=placement_dist, colocate_num_hosts_per_leaf=colocate_num_hosts_per_leaf,
-                  multi_threaded=multi_threaded, num_jobs=num_jobs)
+                  multi_threaded=multi_threaded, num_jobs=num_jobs, prune=prune)
 
-        del self.data['network']
+        if prune:
+            del self.data['network']
