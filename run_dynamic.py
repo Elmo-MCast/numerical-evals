@@ -9,12 +9,15 @@ if len(sys.argv) > 1:
     DUMP_FILE_PREFIX = sys.argv[10]
 
     CLOUD_PARAMS = DATA_FILE.split('.')[-1].split('_')
+    NUM_TENANTS = int(CLOUD_PARAMS[3])
     SEED = int(CLOUD_PARAMS[-1])
 elif True:
+    NUM_EVENTS = 10000
     DATA_FILE = 'output/optimizer..'
     DUMP_FILE_PREFIX = 'output/dynamic'
 
     CLOUD_PARAMS = []
+    NUM_TENANTS = 30
     SEED = 0
 else:
     raise (Exception('invalid parameters'))
@@ -41,7 +44,7 @@ if os.path.isfile(dump_file):
 # data = pickle_load_obj(DATA_FILE)
 data = marshal_load_obj(DATA_FILE)
 
-dynamic = Dynamic(data)
+dynamic = Dynamic(data, num_tenants=NUM_TENANTS, num_events=NUM_EVENTS)
 
 # pickle_dump_obj(optimizer.data, dump_file)
 # marshal_dump_obj(dynamic.data, dump_file)
