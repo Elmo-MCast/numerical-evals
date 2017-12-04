@@ -5,19 +5,19 @@ import simulation.algorithms.fuzzy_match as fuzzy_match
 import simulation.algorithms.random_fuzzy_match as random_fuzzy_match
 
 
-def run(algorithm, data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to_rules_count,
+def run(algorithm, group, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to_rules_count,
         max_rules_per_leaf, probability):
     if algorithm == 'single-match':
-        single_match.run(data, max_bitmaps, leafs_to_rules_count, max_rules_per_leaf)
+        single_match.run(group, max_bitmaps, leafs_to_rules_count, max_rules_per_leaf)
     elif algorithm == 'random-single-match':
-        random_single_match.run(data, max_bitmaps, leafs_to_rules_count, max_rules_per_leaf, probability)
+        random_single_match.run(group, max_bitmaps, leafs_to_rules_count, max_rules_per_leaf, probability)
     elif algorithm == 'exact-match':
-        exact_match.run(data, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count, max_rules_per_leaf)
+        exact_match.run(group, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count, max_rules_per_leaf)
     elif algorithm == 'fuzzy-match':
-        fuzzy_match.run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to_rules_count,
+        fuzzy_match.run(group, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to_rules_count,
                         max_rules_per_leaf)
     elif algorithm == 'random-fuzzy-match':
-        random_fuzzy_match.run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to_rules_count,
+        random_fuzzy_match.run(group, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to_rules_count,
                                max_rules_per_leaf, probability)
     else:
         raise (Exception("invalid algorithm"))

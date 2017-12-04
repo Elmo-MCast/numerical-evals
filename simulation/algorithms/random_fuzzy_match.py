@@ -3,9 +3,9 @@ from simulation.utils import popcount
 from simulation.algorithms.common import min_k_union_random as min_k_union
 
 
-def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to_rules_count_map, max_rules_per_leaf,
+def run(group, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to_rules_count_map, max_rules_per_leaf,
         probability=1.0 * 2 / 3):
-    leafs_map = data['leafs_map']
+    leafs_map = group['leafs_map']
     if len(leafs_map) <= max_bitmaps:
         return
 
@@ -44,4 +44,4 @@ def run(data, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to
         if 'has_rule' not in leaf:
             leaf['~bitmap'] = default_bitmap ^ leaf['bitmap']
 
-    data['default_bitmap'] = default_bitmap
+    group['default_bitmap'] = default_bitmap

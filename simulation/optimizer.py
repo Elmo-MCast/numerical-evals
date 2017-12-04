@@ -28,11 +28,11 @@ class Optimizer:
         self.data['optimizer'] = {'algorithm_elapse_time': self.algorithm_elapse_time,
                                   'leafs_to_rules_count': self.leafs_to_rules_count}
 
-        self._optimize()
+        self._run()
 
-    def _optimize(self):
+    def _run(self):
         if self.max_batch_size <= 1:
-            for t in bar_range(self.num_tenants, desc='optimizer:%s:' % self.algorithm):
+            for t in bar_range(self.num_tenants, desc='optimizer:%s' % self.algorithm):
                 tenant_maps = self.tenants_maps[t]
                 group_count = tenant_maps['group_count']
                 groups_map = tenant_maps['groups_map']
@@ -40,7 +40,7 @@ class Optimizer:
                     start = timer()
                     algorithms.run(
                         algorithm=self.algorithm,
-                        data=groups_map[g],
+                        group=groups_map[g],
                         max_bitmaps=self.num_bitmaps,
                         max_leafs_per_bitmap=self.num_leafs_per_bitmap,
                         redundancy_per_bitmap=self.redundancy_per_bitmap,
@@ -54,7 +54,7 @@ class Optimizer:
             running_batch_size = 0
             running_batch_list = []
 
-            for t in bar_range(self.num_tenants, desc='optimizer:%s:' % self.algorithm):
+            for t in bar_range(self.num_tenants, desc='optimizer:%s' % self.algorithm):
                 tenant_maps = self.tenants_maps[t]
                 group_count = tenant_maps['group_count']
                 groups_map = tenant_maps['groups_map']
@@ -68,7 +68,7 @@ class Optimizer:
                         for _g in running_batch_list:
                             algorithms.run(
                                 algorithm=self.algorithm,
-                                data=_g,
+                                group=_g,
                                 max_bitmaps=self.num_bitmaps,
                                 max_leafs_per_bitmap=self.num_leafs_per_bitmap,
                                 redundancy_per_bitmap=self.redundancy_per_bitmap,
@@ -86,7 +86,7 @@ class Optimizer:
                     for _g in running_batch_list:
                         algorithms.run(
                             algorithm=self.algorithm,
-                            data=_g,
+                            group=_g,
                             max_bitmaps=self.num_bitmaps,
                             max_leafs_per_bitmap=self.num_leafs_per_bitmap,
                             redundancy_per_bitmap=self.redundancy_per_bitmap,
