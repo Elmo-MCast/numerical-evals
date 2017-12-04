@@ -15,7 +15,7 @@ if len(sys.argv) > 1:
     NUM_TENANTS = int(CLOUD_PARAMS[3])
     NUM_HOSTS_PER_LEAF = int(CLOUD_PARAMS[1])
     MIN_GROUP_SIZE = int(CLOUD_PARAMS[8])
-    SEED = int(CLOUD_PARAMS[-1])
+    SEED = int(CLOUD_PARAMS[14])
 
     OPTIMIZER_PARAMS = _TEMP[-1].split('_')
     ALGORITHM = OPTIMIZER_PARAMS[1]

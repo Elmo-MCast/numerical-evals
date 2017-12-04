@@ -19,8 +19,8 @@ if len(sys.argv) > 1:
     CLOUD_PARAMS = DATA_FILE.split('.')[-1].split('_')
     NUM_LEAFS = int(CLOUD_PARAMS[0])
     NUM_TENANTS = int(CLOUD_PARAMS[3])
-    SEED = int(CLOUD_PARAMS[-1])
-elif True:
+    SEED = int(CLOUD_PARAMS[14])
+elif False:
     MAX_BATCH_SIZE = 1
     ALGORITHM = 'exact-match'
     NUM_BITMAPS = 10

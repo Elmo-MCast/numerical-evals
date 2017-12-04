@@ -21,7 +21,7 @@ if len(sys.argv) > 1:
     NUM_LEAFS = int(CLOUD_PARAMS[0])
     NUM_HOSTS_PER_LEAF = int(CLOUD_PARAMS[1])
     NUM_TENANTS = int(CLOUD_PARAMS[3])
-    SEED = int(CLOUD_PARAMS[-1])
+    SEED = int(CLOUD_PARAMS[14])
 elif False:
     MAX_BATCH_SIZE = 1
     ALGORITHM = 'fuzzy-match'

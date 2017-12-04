@@ -2,9 +2,9 @@
 
 # default parameters
 
-NUM_EVENTS=10000
-DATA_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/12-2-2017/output-1M-random/optimizer.*"
-LOG_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/12-2-2017/output-1M-random/logs"
+NUM_EVENTS=1000000
+DATA_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/12-4-2017/output-100K-random/optimizer.*"
+LOG_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/12-4-2017/logs-100K-random/dynamic-logs"
 
 PYTHON=pypy3  # options: pypy3 or python or python3
 

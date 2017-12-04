@@ -10,8 +10,8 @@ REDUNDANCY_PER_BITMAP=2
 NUM_RULES_PER_LEAF=1000
 PROBABILITY_DIVIDEND=2
 PROBABILITY_DIVISOR=3
-DATA_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/12-2-2017/output-1M-random/cloud.*"
-DUMP_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/12-2-2017/output-1M-random/optimizer"
+DATA_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/12-4-2017/output-100K-random/cloud.*"
+DUMP_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/12-4-2017/output-100K-random/optimizer"
 
 PYTHON=pypy3  # options: pypy3 or python or python3
 
@@ -19,11 +19,11 @@ PYTHON=pypy3  # options: pypy3 or python or python3
 
 for file in ${DATA_FILE_PREFIX}
 do
-    for num_rules_per_leaf in 10000
+    for num_rules_per_leaf in 64000
     do
         for num_bitmaps in 30
         do
-            for num_leafs_per_bitmap in 4
+            for num_leafs_per_bitmap in 3
             do
                 ${PYTHON} run_optimizer.py  ${MAX_BATCH_SIZE} \
                                             "exact-match" \
@@ -36,7 +36,7 @@ do
                                             ${file} \
                                             ${DUMP_FILE_PREFIX} &
 
-                for redundancy_per_bitmap in 0 6
+                for redundancy_per_bitmap in 12
                 do
                     ${PYTHON} run_optimizer.py  ${MAX_BATCH_SIZE} \
                                                 "random-fuzzy-match" \
