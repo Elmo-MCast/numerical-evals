@@ -18,7 +18,7 @@ class Optimizer:
         self.num_leafs = num_leafs
         self.num_tenants = num_tenants
         self.algorithm_elapse_time = []
-        self.leafs_to_rules_count = [0] * self.num_leafs
+        self.leafs_to_rules_count_map = [0] * self.num_leafs
         self.num_bitmaps = num_bitmaps
         self.probability = probability
 
@@ -26,7 +26,7 @@ class Optimizer:
         self.tenants_maps = self.tenants['maps']
 
         self.data['optimizer'] = {'algorithm_elapse_time': self.algorithm_elapse_time,
-                                  'leafs_to_rules_count': self.leafs_to_rules_count}
+                                  'leafs_to_rules_count': self.leafs_to_rules_count_map}
 
         self._run()
 
@@ -44,7 +44,7 @@ class Optimizer:
                         max_bitmaps=self.num_bitmaps,
                         max_leafs_per_bitmap=self.num_leafs_per_bitmap,
                         redundancy_per_bitmap=self.redundancy_per_bitmap,
-                        leafs_to_rules_count=self.leafs_to_rules_count,
+                        leafs_to_rules_count_map=self.leafs_to_rules_count_map,
                         max_rules_per_leaf=self.num_rules_per_leaf,
                         probability=self.probability)
                     end = timer()
@@ -72,7 +72,7 @@ class Optimizer:
                                 max_bitmaps=self.num_bitmaps,
                                 max_leafs_per_bitmap=self.num_leafs_per_bitmap,
                                 redundancy_per_bitmap=self.redundancy_per_bitmap,
-                                leafs_to_rules_count=self.leafs_to_rules_count,
+                                leafs_to_rules_count_map=self.leafs_to_rules_count_map,
                                 max_rules_per_leaf=self.num_rules_per_leaf,
                                 probability=self.probability)
 
@@ -90,6 +90,6 @@ class Optimizer:
                             max_bitmaps=self.num_bitmaps,
                             max_leafs_per_bitmap=self.num_leafs_per_bitmap,
                             redundancy_per_bitmap=self.redundancy_per_bitmap,
-                            leafs_to_rules_count=self.leafs_to_rules_count,
+                            leafs_to_rules_count_map=self.leafs_to_rules_count_map,
                             max_rules_per_leaf=self.num_rules_per_leaf,
                             probability=self.probability)

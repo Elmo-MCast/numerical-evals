@@ -18,6 +18,15 @@ elif True:
 
     CLOUD_PARAMS = []
     NUM_TENANTS = 30
+    ALGORITHM = 'exact-match'
+    NUM_BITMAPS = 10
+    NUM_LEAFS_PER_BITMAP = 3
+    REDUNDANCY_PER_BITMAP = 0
+    NUM_RULES_PER_LEAF = 100
+    PROBABILITY_DIVIDEND = 2
+    PROBABILITY_DIVISOR = 3
+    MIN_GROUP_SIZE = 5
+    NUM_HOSTS_PER_LEAF = 48
     SEED = 0
 else:
     raise (Exception('invalid parameters'))
@@ -44,7 +53,10 @@ if os.path.isfile(dump_file):
 # data = pickle_load_obj(DATA_FILE)
 data = marshal_load_obj(DATA_FILE)
 
-dynamic = Dynamic(data, num_tenants=NUM_TENANTS, num_events=NUM_EVENTS)
+dynamic = Dynamic(data, num_tenants=NUM_TENANTS, num_events=NUM_EVENTS, algorithm=ALGORITHM, num_bitmaps=NUM_BITMAPS,
+                  num_leafs_per_bitmap=NUM_LEAFS_PER_BITMAP, redundancy_per_bitmap=REDUNDANCY_PER_BITMAP,
+                  num_rules_per_leaf=NUM_RULES_PER_LEAF, probability=1.0 * PROBABILITY_DIVIDEND / PROBABILITY_DIVISOR,
+                  min_group_size=MIN_GROUP_SIZE, num_hosts_per_leaf=NUM_HOSTS_PER_LEAF, debug=False)
 
 # pickle_dump_obj(optimizer.data, dump_file)
 # marshal_dump_obj(dynamic.data, dump_file)
