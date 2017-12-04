@@ -18,8 +18,8 @@ COLOCATE_NUM_HOSTS_PER_LEAF=48
 MULTI_THREADED="True"
 NUM_JOBS=5
 SEED=0
-DUMP_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/11-29-2017/output-1M-uniform/cloud"
 PRUNE="True"
+DUMP_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/11-29-2017/output-1M-uniform/cloud"
 
 PYTHON=pypy3  # options: pypy3 or python or python3
 
@@ -48,8 +48,8 @@ do
 #                                        ${MULTI_THREADED} \
 #                                        ${NUM_JOBS} \
 #                                        ${seed} \
-#                                        ${DUMP_FILE_PREFIX} \
-#                                        ${PRUNE} &
+#                                        ${PRUNE} \
+#                                        ${DUMP_FILE_PREFIX} &
 #            wait
 #            done
 #        done
@@ -70,8 +70,8 @@ do
                                     ${MULTI_THREADED} \
                                     ${NUM_JOBS} \
                                     ${seed} \
-                                    ${DUMP_FILE_PREFIX} \
-                                    ${PRUNE} &
+                                    ${PRUNE} \
+                                    ${DUMP_FILE_PREFIX} &
         done
         wait
     done

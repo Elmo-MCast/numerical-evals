@@ -5,7 +5,7 @@ from simulation.optimizer import Optimizer
 from simulation.utils import pickle_dump_obj, pickle_load_obj, marshal_load_obj, marshal_dump_obj
 
 if len(sys.argv) > 1:
-    MAX_BATCH_SIZE=int(sys.argv[1])
+    MAX_BATCH_SIZE = int(sys.argv[1])
     ALGORITHM = sys.argv[2]
     NUM_BITMAPS = int(sys.argv[3])
     NUM_LEAFS_PER_BITMAP = int(sys.argv[4])

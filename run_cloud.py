@@ -20,8 +20,8 @@ if len(sys.argv) > 1:
     MULTI_THREADED = True if sys.argv[13] == 'True' else False
     NUM_JOBS = int(sys.argv[14])
     SEED = int(sys.argv[15])
-    DUMP_FILE_PREFIX = sys.argv[16]
-    PRUNE = True if sys.argv[17] == 'True' else False
+    PRUNE = True if sys.argv[16] == 'True' else False
+    DUMP_FILE_PREFIX = sys.argv[17]
 elif False:
     NUM_LEAFS = 576
     NUM_HOSTS_PER_LEAF = 48
@@ -38,8 +38,8 @@ elif False:
     MULTI_THREADED = True
     NUM_JOBS = 5
     SEED = 2
-    DUMP_FILE_PREFIX = 'output/cloud'
     PRUNE = True
+    DUMP_FILE_PREFIX = 'output/cloud'
 elif True:
     NUM_LEAFS = 576
     NUM_HOSTS_PER_LEAF = 48
@@ -57,8 +57,8 @@ elif True:
     MULTI_THREADED = True
     NUM_JOBS = 5
     SEED = 0
-    DUMP_FILE_PREFIX = 'output/cloud'
     PRUNE = False
+    DUMP_FILE_PREFIX = 'output/cloud'
 else:
     raise (Exception('invalid parameters'))
 

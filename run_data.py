@@ -17,8 +17,7 @@ if len(sys.argv) > 1:
 
     OPTIMIZER_PARAMS = _TEMP[-1].split('_')
     NUM_BITMAPS = int(OPTIMIZER_PARAMS[2])
-
-elif True:
+elif False:
     DATA_FILE = 'output/optimizer..'
     LOG_DIR = 'logs/logs'
 

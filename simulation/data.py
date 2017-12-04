@@ -403,3 +403,44 @@ class Data:
         tt_list = self.total_traffic_per_link(at_dict, ut_dict)
         # self.traffic_overhead_per_link(tt_list, at_list)
         self.leaf_spine_traffic_per_group_per_tenant()
+
+
+class DynamicData:
+    def __init__(self, data, log_dir=None):
+        self.log_dir = log_dir
+
+        self.dynamic = data['dynamic']
+
+    def switch_event_types_to_update_count(self):
+        _switch_event_types_to_update_count = self.dynamic['switch_event_types_to_update_count']
+
+        virtual_join_dataframe = pd.DataFrame()
+        virtual_join_dataframe['updates'] = _switch_event_types_to_update_count['virtual']['J']
+        virtual_join_dataframe['switch'] = 'virtual'
+        virtual_join_dataframe['event'] = 'join'
+
+        virtual_leave_dataframe = pd.DataFrame()
+        virtual_leave_dataframe['updates'] = _switch_event_types_to_update_count['virtual']['L']
+        virtual_leave_dataframe['switch'] = 'virtual'
+        virtual_leave_dataframe['event'] = 'leave'
+
+        leaf_join_dataframe = pd.DataFrame()
+        leaf_join_dataframe['updates'] = _switch_event_types_to_update_count['leaf']['J']
+        leaf_join_dataframe['switch'] = 'leaf'
+        leaf_join_dataframe['event'] = 'join'
+
+        leaf_leave_dataframe = pd.DataFrame()
+        leaf_leave_dataframe['updates'] = _switch_event_types_to_update_count['leaf']['L']
+        leaf_leave_dataframe['switch'] = 'leaf'
+        leaf_leave_dataframe['event'] = 'leave'
+
+        t_dataframe = pd.concat([virtual_join_dataframe, virtual_leave_dataframe,
+                                 leaf_join_dataframe, leaf_leave_dataframe])
+
+        if self.log_dir:
+            t_dataframe.to_csv(self.log_dir + "/switch_event_types_to_update_count.csv")
+
+        return t_dataframe
+
+    def log(self):
+        self.switch_event_types_to_update_count()
