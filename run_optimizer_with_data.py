@@ -77,7 +77,7 @@ random.seed(SEED)
 
 log_dir = LOG_FILE_PREFIX + "." + "_".join(CLOUD_PARAMS) + "." + "_".join(sys.argv[1:-2])
 
-if os.path.isfile(log_dir):
+if os.path.isdir(log_dir):
     print('%s, already exists.' % log_dir)
     exit(0)
 
