@@ -84,6 +84,7 @@ class Event:
                         leaf_map = leafs_map[l]
                         if 'has_rule' in leaf_map:
                             leafs_with_rule += [l]
+                            self.leafs_to_rules_count_map[l] -= 1
                             del leaf_map['has_rule']
                         elif 'has_bitmap' in leaf_map:
                             del leaf_map['has_bitmap']
@@ -137,6 +138,7 @@ class Event:
                         leaf_map = leafs_map[l]
                         if 'has_rule' in leaf_map:
                             leafs_with_rule += [l]
+                            self.leafs_to_rules_count_map[l] -= 1
                             del leaf_map['has_rule']
                         elif 'has_bitmap' in leaf_map:
                             del leaf_map['has_bitmap']
