@@ -12,9 +12,9 @@ PYTHON=pypy3  # options: pypy3 or python or python3
 
 for file in ${DATA_FILE_PREFIX}
 do
-    ${PYTHON} run_dynamic.py  ${NUM_EVENTS} \
-                              ${file} \
-                              ${LOG_FILE_PREFIX} &
+    ${PYTHON} run_dynamic_with_data.py  ${NUM_EVENTS} \
+                                        ${file} \
+                                        ${LOG_FILE_PREFIX} &
     wait
 done
 wait

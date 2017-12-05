@@ -83,8 +83,6 @@ class Dynamic:
             group_count = tenant_maps['group_count']
             groups_map = tenant_maps['groups_map']
             for g in range(group_count):
-                group_map = groups_map[g]
-
                 Event(self.switch_event_types_to_update_count, vms_map, self.algorithm, self.leafs_to_rules_count_map,
                       self.num_bitmaps, self.num_leafs_per_bitmap, self.redundancy_per_bitmap, self.num_rules_per_leaf,
-                      self.probability, group_map, self.min_group_size, vm_count, self.num_hosts_per_leaf)
+                      self.probability, groups_map[g], self.min_group_size, vm_count, self.num_hosts_per_leaf)

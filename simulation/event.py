@@ -108,11 +108,7 @@ class Event:
                             if l in leafs_with_rule:
                                 leaf_switch_event_type_to_update_count_map[-1] += 1
 
-                    if vm_type == 'S':
-                        virtual_switch_event_type_to_update_count_map[-1] += 1
-                    else:
-                        virtual_switch_event_type_to_update_count_map[-1] += 2
-
+                    virtual_switch_event_type_to_update_count_map[-1] += 1
                     virtual_switch_event_type_to_update_count_map[-1] += sum(
                         [1 for vm in vms if vms_types[vm] == 'P' or vms_types[vm] == 'B'])
             else:  # Process leave event
