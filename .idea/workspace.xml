@@ -4,6 +4,7 @@
     <list default="true" id="3f0c75d9-ed49-4a19-bc97-bf85c19dcdfe" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/notebooks/12-4-2017/baseerat-100K-random-dynamic.ipynb" afterPath="$PROJECT_DIR$/notebooks/12-4-2017/baseerat-100K-random-dynamic.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/run_dynamic.py" afterPath="$PROJECT_DIR$/run_dynamic.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -14,26 +15,92 @@
   </component>
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/numerical_evals$run_data.coverage" NAME="run_data Coverage Results" MODIFIED="1510547212911" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/numerical_evals$run_dynamic_with_data.coverage" NAME="run_dynamic_with_data Coverage Results" MODIFIED="1512464837676" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/numerical_evals$run_dynamic.coverage" NAME="run_dynamic Coverage Results" MODIFIED="1512467131944" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/numerical_evals$run_dynamic_with_data.coverage" NAME="run_dynamic_with_data Coverage Results" MODIFIED="1512476988197" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/numerical_evals$run_dynamic.coverage" NAME="run_dynamic Coverage Results" MODIFIED="1512474528821" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/numerical_evals$data.coverage" NAME="data Coverage Results" MODIFIED="1510467800931" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/numerical_evals$dump.coverage" NAME="dump Coverage Results" MODIFIED="1510003617157" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/simulation" />
     <SUITE FILE_PATH="coverage/numerical_evals$algorithm.coverage" NAME="algorithm Coverage Results" MODIFIED="1511429318628" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/numerical_evals$tenants.coverage" NAME="tenants Coverage Results" MODIFIED="1507979170420" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/simulation" />
     <SUITE FILE_PATH="coverage/numerical_evals$temp.coverage" NAME="temp Coverage Results" MODIFIED="1510004524736" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/numerical_evals$run_optimizer_with_data.coverage" NAME="run_optimizer_with_data Coverage Results" MODIFIED="1512427945180" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/numerical_evals$run_optimizer.coverage" NAME="run_optimizer Coverage Results" MODIFIED="1512464315233" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/numerical_evals$run_optimizer.coverage" NAME="run_optimizer Coverage Results" MODIFIED="1512474518249" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/numerical_evals$main.coverage" NAME="main Coverage Results" MODIFIED="1510003725555" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/numerical_evals$generate_cloud.coverage" NAME="generate_cloud Coverage Results" MODIFIED="1510005568392" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/numerical_evals$run_cloud.coverage" NAME="run_cloud Coverage Results" MODIFIED="1512464296204" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/numerical_evals$run_cloud.coverage" NAME="run_cloud Coverage Results" MODIFIED="1512474391099" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="event.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="event.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/simulation/event.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1058">
-              <caret line="109" column="0" lean-forward="false" selection-start-line="109" selection-start-column="0" selection-end-line="109" selection-end-column="0" />
+            <state relative-caret-position="265">
+              <caret line="113" column="0" lean-forward="true" selection-start-line="113" selection-start-column="0" selection-end-line="113" selection-end-column="0" />
+              <folding>
+                <marker date="1512479091808" expanded="true" signature="262:8347" ph="..." />
+                <marker date="1512479091808" expanded="true" signature="1473:8347" ph="..." />
+                <marker date="1512479091808" expanded="true" signature="1678:8347" ph="..." />
+                <marker date="1512479091808" expanded="true" signature="5542:8347" ph="..." />
+                <marker date="1512479091808" expanded="true" signature="6026:8347" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="run_cloud.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/run_cloud.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="231">
+              <caret line="42" column="10" lean-forward="false" selection-start-line="42" selection-start-column="10" selection-end-line="42" selection-end-column="10" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="run_dynamic.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/run_dynamic.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="418">
+              <caret line="26" column="10" lean-forward="false" selection-start-line="26" selection-start-column="10" selection-end-line="26" selection-end-column="10" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="run_dynamic_with_data.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/run_dynamic_with_data.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1070">
+              <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="run_dynamic_with_data.sh" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/run_dynamic_with_data.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="190">
+              <caret line="10" column="20" lean-forward="false" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="20" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="data.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/simulation/data.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="928">
+              <caret line="456" column="0" lean-forward="false" selection-start-line="456" selection-start-column="0" selection-end-line="456" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="run_optimizer.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/run_optimizer.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="270">
+              <caret line="22" column="10" lean-forward="false" selection-start-line="22" selection-start-column="10" selection-end-line="22" selection-end-column="10" />
               <folding />
             </state>
           </provider>
@@ -149,12 +216,12 @@
         <option value="$PROJECT_DIR$/run_dynamic_with_data.sh" />
         <option value="$PROJECT_DIR$/simulation/dynamic.py" />
         <option value="$PROJECT_DIR$/run_optimizer_with_data.py" />
-        <option value="$PROJECT_DIR$/simulation/data.py" />
         <option value="$PROJECT_DIR$/run_cloud.py" />
         <option value="$PROJECT_DIR$/run_optimizer.py" />
+        <option value="$PROJECT_DIR$/run_dynamic.py" />
+        <option value="$PROJECT_DIR$/simulation/data.py" />
         <option value="$PROJECT_DIR$/run_dynamic_with_data.py" />
         <option value="$PROJECT_DIR$/simulation/event.py" />
-        <option value="$PROJECT_DIR$/run_dynamic.py" />
       </list>
     </option>
   </component>
@@ -245,7 +312,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.run_dynamic">
+  <component name="RunManager" selected="Python.run_dynamic_with_data">
     <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
       <node-interpreter>project</node-interpreter>
       <node-options />
@@ -443,7 +510,7 @@
       <module name="numerical-evals" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/run_dynamic_with_data.py" />
-      <option name="PARAMETERS" value="" />
+      <option name="PARAMETERS" value="&quot;1000000&quot; &quot;/mnt/sdb1/baseerat/numerical-evals/12-4-2017/output-100K-random/optimizer.576_48_20_3000_10_5000_expon_100000_5_wve_colocate-random-random_12_True_5_0_False.1_exact-match_30_3_0_64000_2_3&quot; &quot;/mnt/sdb1/baseerat/numerical-evals/12-4-2017/logs-100K-random/temp&quot;" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
     </configuration>
@@ -492,8 +559,8 @@
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.run_dynamic" />
-        <item index="1" class="java.lang.String" itemvalue="Python.run_dynamic_with_data" />
+        <item index="0" class="java.lang.String" itemvalue="Python.run_dynamic_with_data" />
+        <item index="1" class="java.lang.String" itemvalue="Python.run_dynamic" />
         <item index="2" class="java.lang.String" itemvalue="Python.run_optimizer" />
         <item index="3" class="java.lang.String" itemvalue="Python.run_cloud" />
         <item index="4" class="java.lang.String" itemvalue="Python.run_optimizer_with_data" />
@@ -510,13 +577,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1506196846152</updated>
-    </task>
-    <task id="LOCAL-00048" summary="minor">
-      <created>1510480287090</created>
-      <option name="number" value="00048" />
-      <option name="presentableId" value="LOCAL-00048" />
-      <option name="project" value="LOCAL" />
-      <updated>1510480287090</updated>
     </task>
     <task id="LOCAL-00049" summary="minor">
       <created>1510480348924</created>
@@ -854,7 +914,14 @@
       <option name="project" value="LOCAL" />
       <updated>1512465853975</updated>
     </task>
-    <option name="localTasksCounter" value="97" />
+    <task id="LOCAL-00097" summary="minor">
+      <created>1512474195729</created>
+      <option name="number" value="00097" />
+      <option name="presentableId" value="LOCAL-00097" />
+      <option name="project" value="LOCAL" />
+      <updated>1512474195729</updated>
+    </task>
+    <option name="localTasksCounter" value="98" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -940,16 +1007,11 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="664" />
+      <option name="time" value="668" />
     </breakpoint-manager>
-    <watches-manager>
-      <configuration name="PythonConfigurationType">
-        <watch expression="self.leafs_to_rules_count_map[l]" language="Python" />
-      </configuration>
-    </watches-manager>
+    <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/simulation/algorithms/strict_exact_match.py" />
     <entry file="file://$PROJECT_DIR$/tests/algorithm.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
@@ -1186,11 +1248,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/simulation/data.py">
+    <entry file="file://$PROJECT_DIR$/simulation/dynamic.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="508">
-          <caret line="457" column="99" lean-forward="true" selection-start-line="457" selection-start-column="99" selection-end-line="457" selection-end-column="99" />
-          <folding />
+        <state relative-caret-position="773">
+          <caret line="90" column="0" lean-forward="false" selection-start-line="90" selection-start-column="0" selection-end-line="90" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1202,21 +1266,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/run_dynamic_with_data.py">
+    <entry file="file://$PROJECT_DIR$/run_cloud.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="27" column="10" lean-forward="false" selection-start-line="27" selection-start-column="10" selection-end-line="27" selection-end-column="10" />
+        <state relative-caret-position="231">
+          <caret line="42" column="10" lean-forward="false" selection-start-line="42" selection-start-column="10" selection-end-line="42" selection-end-column="10" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/simulation/dynamic.py">
+    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="773">
-          <caret line="90" column="0" lean-forward="false" selection-start-line="90" selection-start-column="0" selection-end-line="90" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1224,14 +1286,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="190">
           <caret line="10" column="20" lean-forward="false" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/run_cloud.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="440">
-          <caret line="47" column="27" lean-forward="true" selection-start-line="47" selection-start-column="27" selection-end-line="47" selection-end-column="27" />
           <folding />
         </state>
       </provider>
@@ -1246,8 +1300,30 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/simulation/event.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1058">
-          <caret line="109" column="0" lean-forward="false" selection-start-line="109" selection-start-column="0" selection-end-line="109" selection-end-column="0" />
+        <state relative-caret-position="265">
+          <caret line="113" column="0" lean-forward="true" selection-start-line="113" selection-start-column="0" selection-end-line="113" selection-end-column="0" />
+          <folding>
+            <marker date="1512479091808" expanded="true" signature="262:8347" ph="..." />
+            <marker date="1512479091808" expanded="true" signature="1473:8347" ph="..." />
+            <marker date="1512479091808" expanded="true" signature="1678:8347" ph="..." />
+            <marker date="1512479091808" expanded="true" signature="5542:8347" ph="..." />
+            <marker date="1512479091808" expanded="true" signature="6026:8347" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run_dynamic_with_data.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1070">
+          <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simulation/data.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="928">
+          <caret line="456" column="0" lean-forward="false" selection-start-line="456" selection-start-column="0" selection-end-line="456" selection-end-column="0" />
           <folding />
         </state>
       </provider>
