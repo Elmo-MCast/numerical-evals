@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="3f0c75d9-ed49-4a19-bc97-bf85c19dcdfe" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/notebooks/12-4-2017/baseerat-100K-random-dynamic.ipynb" afterPath="$PROJECT_DIR$/notebooks/12-4-2017/baseerat-100K-random-dynamic.ipynb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/run_dynamic.py" afterPath="$PROJECT_DIR$/run_dynamic.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -578,13 +576,6 @@
       <option name="presentableId" value="Default" />
       <updated>1506196846152</updated>
     </task>
-    <task id="LOCAL-00049" summary="minor">
-      <created>1510480348924</created>
-      <option name="number" value="00049" />
-      <option name="presentableId" value="LOCAL-00049" />
-      <option name="project" value="LOCAL" />
-      <updated>1510480348924</updated>
-    </task>
     <task id="LOCAL-00050" summary="minor">
       <created>1510480425602</created>
       <option name="number" value="00050" />
@@ -921,7 +912,14 @@
       <option name="project" value="LOCAL" />
       <updated>1512474195729</updated>
     </task>
-    <option name="localTasksCounter" value="98" />
+    <task id="LOCAL-00098" summary="minor">
+      <created>1512479113020</created>
+      <option name="number" value="00098" />
+      <option name="presentableId" value="LOCAL-00098" />
+      <option name="project" value="LOCAL" />
+      <updated>1512479113020</updated>
+    </task>
+    <option name="localTasksCounter" value="99" />
     <servers />
   </component>
   <component name="ToolWindowManager">
