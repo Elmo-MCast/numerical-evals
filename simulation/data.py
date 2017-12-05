@@ -442,5 +442,23 @@ class DynamicData:
 
         return t_dataframe
 
+    def switch_event_types_to_update_count_normalized(self, switch_event_types_to_update_count):
+        _switch_event_types_to_group_size = self.dynamic['switch_event_types_to_group_size']
+        _switch_event_types_to_group_size_join_series = pd.Series(_switch_event_types_to_group_size['J'])
+        _switch_event_types_to_group_size_leave_series = pd.Series(_switch_event_types_to_group_size['L'])
+
+        t_dataframe = switch_event_types_to_update_count
+        t_dataframe['updates'] = 1.0 * t_dataframe['updates'] / pd.concat(
+            [_switch_event_types_to_group_size_join_series,
+             _switch_event_types_to_group_size_leave_series,
+             _switch_event_types_to_group_size_join_series,
+             _switch_event_types_to_group_size_leave_series])
+
+        if self.log_dir:
+            t_dataframe.to_csv(self.log_dir + "/switch_event_types_to_update_count_normalized.csv")
+
+        return t_dataframe
+
     def log(self):
-        self.switch_event_types_to_update_count()
+        t_dataframe = self.switch_event_types_to_update_count()
+        self.switch_event_types_to_update_count_normalized(t_dataframe)

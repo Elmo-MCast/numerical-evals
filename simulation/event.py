@@ -11,11 +11,12 @@ from simulation.algorithms import algorithms
 #                ]
 
 class Event:
-    def __init__(self, switch_event_types_to_update_count_map, vms_map, algorithm, leafs_to_rules_count_map,
-                 num_bitmaps, num_leafs_per_bitmap, redundancy_per_bitmap, num_rules_per_leaf,
+    def __init__(self, switch_event_types_to_update_count_map, switch_event_types_to_group_size_map, vms_map, algorithm,
+                 leafs_to_rules_count_map, num_bitmaps, num_leafs_per_bitmap, redundancy_per_bitmap, num_rules_per_leaf,
                  probability, group, min_group_size, vm_count, num_hosts_per_leaf):
         self.virtual_switch_event_types_to_update_count_map = switch_event_types_to_update_count_map['virtual']
         self.leaf_switch_event_types_to_update_count_map = switch_event_types_to_update_count_map['leaf']
+        self.switch_event_types_to_group_size_map = switch_event_types_to_group_size_map
         self.vms_map = vms_map
         self.algorithm = algorithm
         self.leafs_to_rules_count_map = leafs_to_rules_count_map
@@ -53,6 +54,7 @@ class Event:
                 self.virtual_switch_event_types_to_update_count_map[event_type]
             leaf_switch_event_type_to_update_count_map = \
                 self.leaf_switch_event_types_to_update_count_map[event_type]
+            switch_event_type_to_group_size_map = self.switch_event_types_to_group_size_map[event_type]
 
             if event_type == 'J':  # Process join event
                 # Select a random VM to add
@@ -62,6 +64,7 @@ class Event:
                 vms_types[vm] = vm_type
                 size += 1
                 self.group['size'] = size
+                switch_event_type_to_group_size_map += [size]
 
                 if vm_type == 'P':
                     virtual_switch_event_type_to_update_count_map[-1] += 1
@@ -117,6 +120,7 @@ class Event:
                 vm_type = vms_types[vm]
                 vms.remove(vm)
                 del vms_types[vm]
+                switch_event_type_to_group_size_map += [size]
                 size -= 1
                 self.group['size'] = size
 

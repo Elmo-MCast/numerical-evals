@@ -40,7 +40,7 @@ elif False:
     SEED = 2
     PRUNE = True
     DUMP_FILE_PREFIX = 'output/cloud'
-elif True:
+elif False:
     NUM_LEAFS = 576
     NUM_HOSTS_PER_LEAF = 48
     MAX_VMS_PER_HOST = 20

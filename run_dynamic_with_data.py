@@ -37,7 +37,7 @@ elif False:
     SEED = 0
 
     OPTIMIZER_PARAMS = []
-    ALGORITHM = 'random-fuzzy-match'
+    ALGORITHM = 'exact-match'
     NUM_BITMAPS = 10
     NUM_LEAFS_PER_BITMAP = 3
     REDUNDANCY_PER_BITMAP = 0
