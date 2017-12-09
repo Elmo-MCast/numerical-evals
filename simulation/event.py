@@ -95,12 +95,12 @@ class Event:
 
                     algorithms.run(
                         algorithm=self.algorithm,
-                        group=self.group,
+                        nodes_map=self.group,
                         max_bitmaps=self.num_bitmaps,
-                        max_leafs_per_bitmap=self.num_leafs_per_bitmap,
+                        max_nodes_per_bitmap=self.num_leafs_per_bitmap,
                         redundancy_per_bitmap=self.redundancy_per_bitmap,
-                        leafs_to_rules_count_map=self.leafs_to_rules_count_map,
-                        max_rules_per_leaf=self.num_rules_per_leaf,
+                        rules_count_map=self.leafs_to_rules_count_map,
+                        max_rules=self.num_rules_per_leaf,
                         probability=self.probability)
 
                     for l in leafs_map:
@@ -151,12 +151,12 @@ class Event:
 
                     algorithms.run(
                         algorithm=self.algorithm,
-                        group=self.group,
+                        nodes_map=self.group,
                         max_bitmaps=self.num_bitmaps,
-                        max_leafs_per_bitmap=self.num_leafs_per_bitmap,
+                        max_nodes_per_bitmap=self.num_leafs_per_bitmap,
                         redundancy_per_bitmap=self.redundancy_per_bitmap,
-                        leafs_to_rules_count_map=self.leafs_to_rules_count_map,
-                        max_rules_per_leaf=self.num_rules_per_leaf,
+                        rules_count_map=self.leafs_to_rules_count_map,
+                        max_rules=self.num_rules_per_leaf,
                         probability=self.probability)
 
                     for l in leafs_map:

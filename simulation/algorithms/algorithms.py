@@ -5,20 +5,20 @@ import simulation.algorithms.fuzzy_match as fuzzy_match
 import simulation.algorithms.random_fuzzy_match as random_fuzzy_match
 
 
-def run(algorithm, group, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to_rules_count_map,
-        max_rules_per_leaf, probability):
+def run(algorithm, nodes_map, max_bitmaps, max_nodes_per_bitmap, redundancy_per_bitmap, rules_count_map,
+        max_rules, probability):
     if algorithm == 'single-match':
-        single_match.run(group, max_bitmaps, leafs_to_rules_count_map, max_rules_per_leaf)
+        return single_match.run(nodes_map, max_bitmaps, rules_count_map, max_rules)
     elif algorithm == 'random-single-match':
-        random_single_match.run(group, max_bitmaps, leafs_to_rules_count_map, max_rules_per_leaf, probability)
+        return random_single_match.run(nodes_map, max_bitmaps, rules_count_map, max_rules, probability)
     elif algorithm == 'exact-match':
-        exact_match.run(group, max_bitmaps, max_leafs_per_bitmap, leafs_to_rules_count_map, max_rules_per_leaf)
+        return exact_match.run(nodes_map, max_bitmaps, max_nodes_per_bitmap, rules_count_map, max_rules)
     elif algorithm == 'fuzzy-match':
-        fuzzy_match.run(group, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to_rules_count_map,
-                        max_rules_per_leaf)
+        return fuzzy_match.run(nodes_map, max_bitmaps, max_nodes_per_bitmap, redundancy_per_bitmap, rules_count_map,
+                               max_rules)
     elif algorithm == 'random-fuzzy-match':
-        random_fuzzy_match.run(group, max_bitmaps, max_leafs_per_bitmap, redundancy_per_bitmap, leafs_to_rules_count_map,
-                               max_rules_per_leaf, probability)
+        return random_fuzzy_match.run(nodes_map, max_bitmaps, max_nodes_per_bitmap, redundancy_per_bitmap,
+                                      rules_count_map,
+                                      max_rules, probability)
     else:
         raise (Exception("invalid algorithm"))
-

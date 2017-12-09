@@ -7,34 +7,34 @@ import random
 # https://stackoverflow.com/questions/12424155/given-n-sets-of-elements-find-minimal-union-of-m-sets
 
 
-def min_k_union(leafs_map, leafs, k):
+def min_k_union(nodes_map, nodes, k):
     min_k_bitmap = 0
-    min_k_leafs = []
+    min_k_nodes = []
     for _ in range(k):
-        leaf = min(leafs, key=lambda l: popcount(leafs_map[l]['bitmap'] | min_k_bitmap))
-        leafs.remove(leaf)
-        min_k_bitmap |= leafs_map[leaf]['bitmap']
-        min_k_leafs += [leaf]
-    return min_k_bitmap, min_k_leafs
+        node = min(nodes, key=lambda l: popcount(nodes_map[l]['bitmap'] | min_k_bitmap))
+        nodes.remove(node)
+        min_k_bitmap |= nodes_map[node]['bitmap']
+        min_k_nodes += [node]
+    return min_k_bitmap, min_k_nodes
 
 
-def min_k_union_random(leafs_map, leafs, k, probability):
+def min_k_union_random(nodes_map, nodes, k, probability):
     min_k_bitmap = 0
-    min_k_leafs = []
+    min_k_nodes = []
     for _ in range(k):
-        temp_leafs = leafs[:]
+        temp_nodes = nodes[:]
         while True:
-            if temp_leafs:
-                leaf = min(temp_leafs, key=lambda l: popcount(leafs_map[l]['bitmap'] | min_k_bitmap))
+            if temp_nodes:
+                node = min(temp_nodes, key=lambda l: popcount(nodes_map[l]['bitmap'] | min_k_bitmap))
                 if random.random() < probability:
                     break
-                temp_leafs.remove(leaf)
+                temp_nodes.remove(node)
             else:
                 break
-        leafs.remove(leaf)
-        min_k_bitmap |= leafs_map[leaf]['bitmap']
-        min_k_leafs += [leaf]
-    return min_k_bitmap, min_k_leafs
+        nodes.remove(node)
+        min_k_bitmap |= nodes_map[node]['bitmap']
+        min_k_nodes += [node]
+    return min_k_bitmap, min_k_nodes
 
 
 # Note: Set-Cover algorithm is adapted from
