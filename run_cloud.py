@@ -34,7 +34,7 @@ elif True:
     GROUP_SIZE_DIST = "uniform"  # options: uniform and wve
     MULTI_THREADED = True
     NUM_JOBS = 5
-    SEED = 2
+    SEED = 0
     DUMP_FILE_PREFIX = 'output/cloud'
 elif False:
     NUM_PODS = 11
@@ -54,39 +54,6 @@ elif False:
     DUMP_FILE_PREFIX = 'output/cloud'
 else:
     raise (Exception('invalid parameters'))
-
-print("""
--> cloud (
-     pods=%s,
-     leafs=%s, 
-     hosts_per_leaf=%s, 
-     vms_per_host=%s,
-     tenants=%s, 
-     min_vms_per_tenant=%s,
-     max_vms_per_tenant=%s,
-     vm_dist=%s,
-     groups=%s,
-     min_group_size=%s,
-     group_size_dist=%s,
-     multi_threaded=%s,
-     jobs=%s,
-     seed=%s,
-     dump_file_prefix=%s)
-""" % (NUM_PODS,
-       NUM_LEAFS_PER_POD,
-       NUM_HOSTS_PER_LEAF,
-       MAX_VMS_PER_HOST,
-       NUM_TENANTS,
-       MIN_VMS_PER_TENANT,
-       MAX_VMS_PER_TENANT,
-       VM_DIST,
-       NUM_GROUPS,
-       MIN_GROUP_SIZE,
-       GROUP_SIZE_DIST,
-       MULTI_THREADED,
-       NUM_JOBS,
-       SEED,
-       DUMP_FILE_PREFIX))
 
 random.seed(SEED)
 

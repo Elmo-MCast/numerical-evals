@@ -52,6 +52,6 @@ class Optimizer:
                     max_rules=self.num_rules,
                     probability=self.probability)
                 if default_bitmap:
-                    group_map['default_bitmap'] = default_bitmap
+                    group_map['%s_default_bitmap' % self.node_type] = default_bitmap
                 end = timer()
                 self.algorithm_elapse_time += [end - start]

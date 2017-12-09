@@ -3,7 +3,7 @@ import sys
 import random
 from simulation.optimizer import Optimizer
 from simulation.data import Data
-from simulation.utils import pickle_dump_obj, pickle_load_obj, marshal_load_obj
+from simulation.utils import marshal_load_obj
 
 if len(sys.argv) > 1:
     MAX_BATCH_SIZE = int(sys.argv[1])
