@@ -12,8 +12,18 @@ def run_data(params):
     local('%s run_data.py %s' % (PYTHON, ' '.join(map(str, params))))
 
 
-def test():
-    DATA_FILE_PREFIX = 'output/optimizer.*'
+def test_pods():
+    DATA_FILE_PREFIX = 'output/optimizer.*_pods'
+    LOG_DIR = 'output/logs'
+
+    files = glob(DATA_FILE_PREFIX)
+    for file in files:
+        run_data([LOG_CLOUD_STATS, file, LOG_DIR])
+
+
+def test_leafs():
+    LOG_CLOUD_STATS = "False"
+    DATA_FILE_PREFIX = 'output/optimizer.*_leafs'
     LOG_DIR = 'output/logs'
 
     files = glob(DATA_FILE_PREFIX)

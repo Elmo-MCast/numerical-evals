@@ -19,8 +19,42 @@ def run_optimizer(params):
     local('%s run_optimizer.py %s' % (PYTHON, ' '.join(map(str, params))))
 
 
-def test():
+def test_pods():
+    ALGORITHM = 'random-fuzzy-match'
+    NUM_BITMAPS = 3
+    NUM_NODES_PER_BITMAP = 2
+    REDUNDANCY_PER_BITMAP = 6
+    NUM_RULES = 10000
+    PROBABILITY_DIVIDEND = 2
+    PROBABILITY_DIVISOR = 3
+    NODE_TYPE = 'pods'
     DATA_FILE_PREFIX = 'output/cloud.*'
+    DUMP_FILE_PREFIX = 'output/optimizer'
+
+    files = glob(DATA_FILE_PREFIX)
+    for file in files:
+        run_optimizer([ALGORITHM,
+                       NUM_BITMAPS,
+                       NUM_NODES_PER_BITMAP,
+                       REDUNDANCY_PER_BITMAP,
+                       NUM_RULES,
+                       PROBABILITY_DIVIDEND,
+                       PROBABILITY_DIVISOR,
+                       NODE_TYPE,
+                       file,
+                       DUMP_FILE_PREFIX])
+
+
+def test_leafs():
+    ALGORITHM = 'random-fuzzy-match'
+    NUM_BITMAPS = 30
+    NUM_NODES_PER_BITMAP = 3
+    REDUNDANCY_PER_BITMAP = 6
+    NUM_RULES = 10000
+    PROBABILITY_DIVIDEND = 2
+    PROBABILITY_DIVISOR = 3
+    NODE_TYPE = 'leafs'
+    DATA_FILE_PREFIX = 'output/optimizer.*'
     DUMP_FILE_PREFIX = 'output/optimizer'
 
     files = glob(DATA_FILE_PREFIX)

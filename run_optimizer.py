@@ -16,7 +16,7 @@ if len(sys.argv) > 1:
     DATA_FILE = sys.argv[9]
     DUMP_FILE_PREFIX = sys.argv[10]
 
-    CLOUD_PARAMS = DATA_FILE.split('.')[-1].split('_')
+    CLOUD_PARAMS = DATA_FILE.split('.')[1].split('_')
     NUM_PODS = int(CLOUD_PARAMS[0])
     NUM_LEAFS_PER_POD = int(CLOUD_PARAMS[1])
     NUM_TENANTS = int(CLOUD_PARAMS[4])
@@ -34,7 +34,7 @@ elif False:
     DUMP_FILE_PREFIX = 'output/optimizer'
 
     CLOUD_PARAMS = []
-    NUM_PODS = 11
+    NUM_PODS = 12
     NUM_LEAFS_PER_POD = 48
     NUM_TENANTS = 3000
     SEED = 0
@@ -51,7 +51,7 @@ elif False:
     DUMP_FILE_PREFIX = 'output/_optimizer'
 
     CLOUD_PARAMS = []
-    NUM_PODS = 11
+    NUM_PODS = 12
     NUM_LEAFS_PER_POD = 48
     NUM_TENANTS = 3000
     SEED = 0
@@ -68,7 +68,7 @@ elif False:
     DUMP_FILE_PREFIX = 'output/optimizer'
 
     CLOUD_PARAMS = []
-    NUM_PODS = 11
+    NUM_PODS = 12
     NUM_LEAFS_PER_POD = 48
     NUM_TENANTS = 30
     SEED = 0

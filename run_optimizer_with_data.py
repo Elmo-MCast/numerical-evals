@@ -18,7 +18,7 @@ if len(sys.argv) > 1:
     DATA_FILE = sys.argv[10]
     LOG_FILE_PREFIX = sys.argv[11]
 
-    CLOUD_PARAMS = DATA_FILE.split('.')[-1].split('_')
+    CLOUD_PARAMS = DATA_FILE.split('.')[1].split('_')
     NUM_PODS = int(CLOUD_PARAMS[0])
     NUM_LEAFS_PER_POD = int(CLOUD_PARAMS[1])
     NUM_HOSTS_PER_LEAF = int(CLOUD_PARAMS[2])
@@ -38,7 +38,7 @@ elif False:
     LOG_FILE_PREFIX = 'output/logs'
 
     CLOUD_PARAMS = []
-    NUM_PODS = 11
+    NUM_PODS = 12
     NUM_LEAFS_PER_POD = 48
     NUM_HOSTS_PER_LEAF = 48
     NUM_TENANTS = 3000
@@ -57,7 +57,7 @@ elif False:
     LOG_FILE_PREFIX = 'output/logs'
 
     CLOUD_PARAMS = []
-    NUM_PODS = 11
+    NUM_PODS = 12
     NUM_LEAFS_PER_POD = 48
     NUM_HOSTS_PER_LEAF = 48
     NUM_TENANTS = 3000
@@ -76,7 +76,7 @@ elif False:
     LOG_FILE_PREFIX = 'output/logs'
 
     CLOUD_PARAMS = []
-    NUM_PODS = 11
+    NUM_PODS = 12
     NUM_LEAFS_PER_POD = 48
     NUM_HOSTS_PER_LEAF = 48
     NUM_TENANTS = 30

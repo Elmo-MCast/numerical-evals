@@ -26,7 +26,7 @@ elif False:
     LOG_DIR = 'output/logs'
 
     CLOUD_PARAMS = []
-    NUM_PODS = 11
+    NUM_PODS = 12
     NUM_LEAFS_PER_POD = 48
     NUM_HOSTS_PER_LEAF = 48
     NUM_TENANTS = 3000
@@ -41,7 +41,7 @@ elif False:
     LOG_DIR = 'output/logs'
 
     CLOUD_PARAMS = []
-    NUM_PODS = 11
+    NUM_PODS = 12
     NUM_LEAFS_PER_POD = 48
     NUM_HOSTS_PER_LEAF = 48
     NUM_TENANTS = 3000
@@ -55,7 +55,7 @@ elif False:
     LOG_DIR = 'output/logs'
 
     CLOUD_PARAMS = []
-    NUM_PODS = 11
+    NUM_PODS = 12
     NUM_LEAFS_PER_POD = 48
     NUM_HOSTS_PER_LEAF = 48
     NUM_TENANTS = 30
