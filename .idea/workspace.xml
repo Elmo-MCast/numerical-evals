@@ -2,20 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3f0c75d9-ed49-4a19-bc97-bf85c19dcdfe" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/notebooks/11-29-2017/baseerat-1M-random.ipynb" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/simulation/network.py" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/numerical-evals.iml" afterPath="$PROJECT_DIR$/.idea/numerical-evals.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/notebooks/11-24-2017/baseerat-100K (R).ipynb" afterPath="$PROJECT_DIR$/notebooks/11-24-2017/baseerat-100K (R).ipynb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/notebooks/11-24-2017/baseerat-100K-uniform (R).ipynb" afterPath="$PROJECT_DIR$/notebooks/11-24-2017/baseerat-100K-uniform (R).ipynb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/notebooks/11-29-2017/baseerat-1M (R).ipynb" afterPath="$PROJECT_DIR$/notebooks/11-29-2017/baseerat-1M (R).ipynb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/notebooks/11-29-2017/baseerat-1M-random (R).ipynb" afterPath="$PROJECT_DIR$/notebooks/11-29-2017/baseerat-1M-random (R).ipynb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/notebooks/12-4-2017/baseerat-100K-random-dynamic.ipynb" afterPath="$PROJECT_DIR$/notebooks/12-4-2017/baseerat-100K-random-dynamic.ipynb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/run_cloud.py" afterPath="$PROJECT_DIR$/run_cloud.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/simulation/cloud.py" afterPath="$PROJECT_DIR$/simulation/cloud.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/simulation/placement.py" afterPath="$PROJECT_DIR$/simulation/placement.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/simulation/tenants.py" afterPath="$PROJECT_DIR$/simulation/tenants.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -64,8 +51,8 @@
       <file leaf-file-name="placement.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/simulation/placement.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="744">
-              <caret line="167" column="41" lean-forward="true" selection-start-line="167" selection-start-column="41" selection-end-line="167" selection-end-column="41" />
+            <state relative-caret-position="1466">
+              <caret line="146" column="41" lean-forward="true" selection-start-line="146" selection-start-column="41" selection-end-line="146" selection-end-column="41" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -555,13 +542,6 @@
       <option name="presentableId" value="Default" />
       <updated>1506196846152</updated>
     </task>
-    <task id="LOCAL-00050" summary="minor">
-      <created>1510480425602</created>
-      <option name="number" value="00050" />
-      <option name="presentableId" value="LOCAL-00050" />
-      <option name="project" value="LOCAL" />
-      <updated>1510480425603</updated>
-    </task>
     <task id="LOCAL-00051" summary="minor">
       <created>1510480706039</created>
       <option name="number" value="00051" />
@@ -898,7 +878,14 @@
       <option name="project" value="LOCAL" />
       <updated>1512479113020</updated>
     </task>
-    <option name="localTasksCounter" value="99" />
+    <task id="LOCAL-00099" summary="minor">
+      <created>1512819776760</created>
+      <option name="number" value="00099" />
+      <option name="presentableId" value="LOCAL-00099" />
+      <option name="project" value="LOCAL" />
+      <updated>1512819776761</updated>
+    </task>
+    <option name="localTasksCounter" value="100" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1262,8 +1249,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/simulation/placement.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="744">
-          <caret line="167" column="41" lean-forward="true" selection-start-line="167" selection-start-column="41" selection-end-line="167" selection-end-column="41" />
+        <state relative-caret-position="1466">
+          <caret line="146" column="41" lean-forward="true" selection-start-line="146" selection-start-column="41" selection-end-line="146" selection-end-column="41" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>
