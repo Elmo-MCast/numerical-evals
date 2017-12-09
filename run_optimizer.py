@@ -21,7 +21,7 @@ if len(sys.argv) > 1:
     NUM_LEAFS_PER_POD = int(CLOUD_PARAMS[1])
     NUM_TENANTS = int(CLOUD_PARAMS[4])
     SEED = int(CLOUD_PARAMS[13])
-elif True:
+elif False:
     ALGORITHM = 'random-fuzzy-match'
     NUM_BITMAPS = 2
     NUM_NODES_PER_BITMAP = 2
@@ -32,6 +32,23 @@ elif True:
     NODE_TYPE = 'pods'
     DATA_FILE = 'output/cloud.'
     DUMP_FILE_PREFIX = 'output/optimizer'
+
+    CLOUD_PARAMS = []
+    NUM_PODS = 11
+    NUM_LEAFS_PER_POD = 48
+    NUM_TENANTS = 3000
+    SEED = 0
+elif True:
+    ALGORITHM = 'random-fuzzy-match'
+    NUM_BITMAPS = 20
+    NUM_NODES_PER_BITMAP = 3
+    REDUNDANCY_PER_BITMAP = 0
+    NUM_RULES = 5000
+    PROBABILITY_DIVIDEND = 2
+    PROBABILITY_DIVISOR = 3
+    NODE_TYPE = 'leafs'
+    DATA_FILE = 'output/optimizer..'
+    DUMP_FILE_PREFIX = 'output/_optimizer'
 
     CLOUD_PARAMS = []
     NUM_PODS = 11

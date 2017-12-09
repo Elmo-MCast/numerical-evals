@@ -19,7 +19,34 @@ if len(sys.argv) > 1:
     OPTIMIZER_PARAMS = _TEMP[-1].split('_')
     NUM_BITMAPS = int(OPTIMIZER_PARAMS[1])
     NODE_TYPE = OPTIMIZER_PARAMS[7]
+elif False:
+    DATA_FILE = 'output/optimizer..'
+    LOG_DIR = 'output/logs'
+
+    CLOUD_PARAMS = []
+    NUM_PODS = 11
+    NUM_LEAFS_PER_POD = 48
+    NUM_HOSTS_PER_LEAF = 48
+    NUM_TENANTS = 3000
+    SEED = 0
+
+    OPTIMIZER_PARAMS = []
+    NUM_BITMAPS = 2
+    NODE_TYPE = 'pods'
 elif True:
+    DATA_FILE = 'output/_optimizer..'
+    LOG_DIR = 'output/logs'
+
+    CLOUD_PARAMS = []
+    NUM_PODS = 11
+    NUM_LEAFS_PER_POD = 48
+    NUM_HOSTS_PER_LEAF = 48
+    NUM_TENANTS = 3000
+    SEED = 0
+
+    OPTIMIZER_PARAMS = []
+    NODE_TYPE = 'leafs'
+elif False:
     DATA_FILE = 'output/optimizer..'
     LOG_DIR = 'output/logs'
 
@@ -31,7 +58,6 @@ elif True:
     SEED = 0
 
     OPTIMIZER_PARAMS = []
-    NUM_BITMAPS = 3
     NODE_TYPE = 'leafs'
 else:
     raise (Exception('invalid parameters'))
@@ -49,6 +75,6 @@ os.system('mkdir -p %s' % log_dir)
 data = marshal_load_obj(DATA_FILE)
 
 data = Data(data, num_tenants=NUM_TENANTS, num_pods=NUM_PODS, num_leafs_per_pod=NUM_LEAFS_PER_POD,
-            num_hosts_per_leaf=NUM_HOSTS_PER_LEAF, num_bitmaps=NUM_BITMAPS, log_dir=log_dir, node_type=NODE_TYPE)
+            num_hosts_per_leaf=NUM_HOSTS_PER_LEAF, log_dir=log_dir, node_type=NODE_TYPE)
 
 data.log_stats(log_cloud=False)
