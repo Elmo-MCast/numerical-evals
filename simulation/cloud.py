@@ -4,7 +4,7 @@ from simulation.tenants import Tenants
 
 class Cloud:
     def __init__(self,
-                 num_pods=11,
+                 num_pods=12,
                  num_leafs_per_pod=48,
                  num_hosts_per_leaf=48,
                  max_vms_per_host=20,

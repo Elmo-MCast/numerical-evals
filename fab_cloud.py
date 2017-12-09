@@ -1,6 +1,6 @@
 from fabric.api import *
 
-NUM_PODS = 11
+NUM_PODS = 12
 NUM_LEAFS_PER_POD = 48
 NUM_HOSTS_PER_LEAF = 48
 MAX_VMS_PER_HOST = 20
@@ -8,7 +8,7 @@ NUM_TENANTS = 3000
 MIN_VMS_PER_TENANT = 10
 MAX_VMS_PER_TENANT = 5000
 VM_DIST = 'expon'  # options: expon
-NUM_GROUPS = 100000
+NUM_GROUPS = 1000000
 MIN_GROUP_SIZE = 5
 GROUP_SIZE_DIST = 'uniform'  # options: uniform and wve
 MULTI_THREADED = True
@@ -44,10 +44,8 @@ def test():
 
 
 def run():
-    DUMP_FILE_PREFIX = 'output/cloud'
-
-    for seed in [0]:
-        for group_size_dist in ['wve']:
+    for seed in [0, 1, 2]:
+        for group_size_dist in ['uniform', 'wve']:
             run_cloud([NUM_PODS,
                        NUM_LEAFS_PER_POD,
                        NUM_HOSTS_PER_LEAF,

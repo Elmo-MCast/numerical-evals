@@ -1,7 +1,7 @@
 from fabric.api import *
 from glob import glob
 
-ALGORITHM = 'exact-match'
+ALGORITHM = 'random-fuzzy-match'
 NUM_BITMAPS = 3
 NUM_NODES_PER_BITMAP = 2
 REDUNDANCY_PER_BITMAP = 6
@@ -37,15 +37,13 @@ def test():
                        DUMP_FILE_PREFIX])
 
 
-def run_leafs():
-    DATA_FILE_PREFIX = 'output/cloud.*'
-    DUMP_FILE_PREFIX = 'output/optimizer'
-    NOTE_TYPE = 'leafs'
+def run_pods():
+    NOTE_TYPE = 'pods'
 
     files = glob(DATA_FILE_PREFIX)
     for file in files:
-        for num_rules in [64000]:
-            for num_bitmaps in [30]:
+        for num_rules in [10000, 64000]:
+            for num_bitmaps in [1, 2, 3]:
                 for num_nodes_per_bitmap in [3]:
                     run_optimizer(['exact-match',
                                    num_bitmaps,
@@ -58,7 +56,7 @@ def run_leafs():
                                    file,
                                    DUMP_FILE_PREFIX])
 
-                    for redundancy_per_bitmap in [12]:
+                    for redundancy_per_bitmap in [0, 6, 12, 24, 48]:
                         run_optimizer(['random-fuzzy-match',
                                        num_bitmaps,
                                        num_nodes_per_bitmap,
@@ -71,16 +69,14 @@ def run_leafs():
                                        DUMP_FILE_PREFIX])
 
 
-def run_pods():
-    DATA_FILE_PREFIX = 'output/cloud.*'
-    DUMP_FILE_PREFIX = 'output/optimizer'
-    NOTE_TYPE = 'pods'
+def run_leafs():
+    NOTE_TYPE = 'leafs'
 
     files = glob(DATA_FILE_PREFIX)
     for file in files:
         for num_rules in [10000, 64000]:
-            for num_bitmaps in [2, 4, 6]:
-                for num_nodes_per_bitmap in [1, 2, 3]:
+            for num_bitmaps in [10, 20, 30]:
+                for num_nodes_per_bitmap in [3]:
                     run_optimizer(['exact-match',
                                    num_bitmaps,
                                    num_nodes_per_bitmap,
@@ -92,7 +88,7 @@ def run_pods():
                                    file,
                                    DUMP_FILE_PREFIX])
 
-                    for redundancy_per_bitmap in [2, 4, 6]:
+                    for redundancy_per_bitmap in [0, 6, 12, 24, 48]:
                         run_optimizer(['random-fuzzy-match',
                                        num_bitmaps,
                                        num_nodes_per_bitmap,

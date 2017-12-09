@@ -6,72 +6,83 @@ from simulation.data import Data
 from simulation.utils import marshal_load_obj
 
 if len(sys.argv) > 1:
-    MAX_BATCH_SIZE = int(sys.argv[1])
-    ALGORITHM = sys.argv[2]
-    NUM_BITMAPS = int(sys.argv[3])
-    NUM_LEAFS_PER_BITMAP = int(sys.argv[4])
-    REDUNDANCY_PER_BITMAP = int(sys.argv[5])
-    NUM_RULES_PER_LEAF = int(sys.argv[6])
-    PROBABILITY_DIVIDEND = int(sys.argv[7])
-    PROBABILITY_DIVISOR = int(sys.argv[8])
-    DATA_FILE = sys.argv[9]
-    LOG_FILE_PREFIX = sys.argv[10]
+    ALGORITHM = sys.argv[1]
+    NUM_BITMAPS = int(sys.argv[2])
+    NUM_NODES_PER_BITMAP = int(sys.argv[3])
+    REDUNDANCY_PER_BITMAP = int(sys.argv[4])
+    NUM_RULES = int(sys.argv[5])
+    PROBABILITY_DIVIDEND = int(sys.argv[6])
+    PROBABILITY_DIVISOR = int(sys.argv[7])
+    NODE_TYPE = sys.argv[8]
+    LOG_CLOUD_STATS = True if sys.argv[9] == 'True' else False
+    DATA_FILE = sys.argv[10]
+    LOG_FILE_PREFIX = sys.argv[11]
 
     CLOUD_PARAMS = DATA_FILE.split('.')[-1].split('_')
-    NUM_LEAFS = int(CLOUD_PARAMS[0])
-    NUM_HOSTS_PER_LEAF = int(CLOUD_PARAMS[1])
-    NUM_TENANTS = int(CLOUD_PARAMS[3])
-    SEED = int(CLOUD_PARAMS[14])
+    NUM_PODS = int(CLOUD_PARAMS[0])
+    NUM_LEAFS_PER_POD = int(CLOUD_PARAMS[1])
+    NUM_HOSTS_PER_LEAF = int(CLOUD_PARAMS[2])
+    NUM_TENANTS = int(CLOUD_PARAMS[4])
+    SEED = int(CLOUD_PARAMS[13])
 elif False:
-    MAX_BATCH_SIZE = 1
-    ALGORITHM = 'fuzzy-match'
-    NUM_BITMAPS = 14
-    NUM_LEAFS_PER_BITMAP = 3
+    ALGORITHM = 'random-fuzzy-match'
+    NUM_BITMAPS = 2
+    NUM_NODES_PER_BITMAP = 2
     REDUNDANCY_PER_BITMAP = 0
-    NUM_RULES_PER_LEAF = 100
+    NUM_RULES = 100
     PROBABILITY_DIVIDEND = 2
     PROBABILITY_DIVISOR = 3
+    NODE_TYPE = 'pods'
+    LOG_CLOUD_STATS = True
     DATA_FILE = 'output/cloud.'
     LOG_FILE_PREFIX = 'output/logs'
 
     CLOUD_PARAMS = []
-    NUM_LEAFS = 576
+    NUM_PODS = 11
+    NUM_LEAFS_PER_POD = 48
+    NUM_HOSTS_PER_LEAF = 48
+    NUM_TENANTS = 3000
+    SEED = 0
+elif False:
+    ALGORITHM = 'random-fuzzy-match'
+    NUM_BITMAPS = 20
+    NUM_NODES_PER_BITMAP = 3
+    REDUNDANCY_PER_BITMAP = 0
+    NUM_RULES = 5000
+    PROBABILITY_DIVIDEND = 2
+    PROBABILITY_DIVISOR = 3
+    NODE_TYPE = 'leafs'
+    LOG_CLOUD_STATS = True
+    DATA_FILE = 'output/optimizer..'
+    LOG_FILE_PREFIX = 'output/logs'
+
+    CLOUD_PARAMS = []
+    NUM_PODS = 11
+    NUM_LEAFS_PER_POD = 48
+    NUM_HOSTS_PER_LEAF = 48
+    NUM_TENANTS = 3000
+    SEED = 0
+elif False:
+    ALGORITHM = 'exact-match'
+    NUM_BITMAPS = 2
+    NUM_NODES_PER_BITMAP = 3
+    REDUNDANCY_PER_BITMAP = 0
+    NUM_RULES = 100
+    PROBABILITY_DIVIDEND = 2
+    PROBABILITY_DIVISOR = 3
+    NODE_TYPE = 'leafs'
+    LOG_CLOUD_STATS = True
+    DATA_FILE = 'output/cloud.'
+    LOG_FILE_PREFIX = 'output/logs'
+
+    CLOUD_PARAMS = []
+    NUM_PODS = 11
+    NUM_LEAFS_PER_POD = 48
     NUM_HOSTS_PER_LEAF = 48
     NUM_TENANTS = 30
     SEED = 0
 else:
     raise (Exception('invalid parameters'))
-
-print("""
--> optimizer (
-     max_batch_size=%s, 
-     algorithm=%s, 
-     num_leafs_per_bitmap=%s,
-     redundancy_per_bitmap=%s,
-     num_rules_per_leaf=%s,
-     probability_dividend=%s,
-     probability_divisor=%s,
-     data_file=%s, 
-     dump_file_prefix=%s,
-     num_leafs=%s,
-     num_bitmaps=%s,
-     num_tenants=%s,
-     seed=%s,
-     cloud_params=[%s])
-""" % (MAX_BATCH_SIZE,
-       ALGORITHM,
-       NUM_LEAFS_PER_BITMAP,
-       REDUNDANCY_PER_BITMAP,
-       NUM_RULES_PER_LEAF,
-       PROBABILITY_DIVIDEND,
-       PROBABILITY_DIVISOR,
-       DATA_FILE,
-       LOG_FILE_PREFIX,
-       NUM_LEAFS,
-       NUM_BITMAPS,
-       NUM_TENANTS,
-       SEED,
-       ','.join(CLOUD_PARAMS)))
 
 random.seed(SEED)
 
@@ -83,14 +94,15 @@ if os.path.isdir(log_dir):
 
 os.system('mkdir -p %s' % log_dir)
 
-# data = pickle_load_obj(DATA_FILE)
 data = marshal_load_obj(DATA_FILE)
 
-optimizer = Optimizer(data, max_batch_size=MAX_BATCH_SIZE, algorithm=ALGORITHM,
-                      num_nodes_per_bitmap=NUM_LEAFS_PER_BITMAP, redundancy_per_bitmap=REDUNDANCY_PER_BITMAP,
-                      num_rules_per_leaf=NUM_RULES_PER_LEAF, num_leafs=NUM_LEAFS, num_bitmaps=NUM_BITMAPS,
-                      num_tenants=NUM_TENANTS, probability=1.0 * PROBABILITY_DIVIDEND / PROBABILITY_DIVISOR)
+optimizer = Optimizer(data, algorithm=ALGORITHM, num_bitmaps=NUM_BITMAPS, num_nodes_per_bitmap=NUM_NODES_PER_BITMAP,
+                      redundancy_per_bitmap=REDUNDANCY_PER_BITMAP, num_rules=NUM_RULES,
+                      num_nodes=(NUM_PODS * NUM_LEAFS_PER_POD) if NODE_TYPE == 'leafs' else NUM_PODS,
+                      num_tenants=NUM_TENANTS,
+                      probability=1.0 * PROBABILITY_DIVIDEND / PROBABILITY_DIVISOR, node_type=NODE_TYPE)
 
-data = Data(data, num_tenants=NUM_TENANTS, num_leafs=NUM_LEAFS, num_hosts_per_leaf=NUM_HOSTS_PER_LEAF,
-            num_bitmaps=NUM_BITMAPS, log_dir=log_dir)
-data.log()
+data = Data(data, num_tenants=NUM_TENANTS, num_pods=NUM_PODS, num_leafs_per_pod=NUM_LEAFS_PER_POD,
+            num_hosts_per_leaf=NUM_HOSTS_PER_LEAF, log_dir=log_dir, node_type=NODE_TYPE)
+
+data.log_stats(log_cloud_stats=LOG_CLOUD_STATS)

@@ -38,7 +38,7 @@ elif False:
     NUM_LEAFS_PER_POD = 48
     NUM_TENANTS = 3000
     SEED = 0
-elif True:
+elif False:
     ALGORITHM = 'random-fuzzy-match'
     NUM_BITMAPS = 20
     NUM_NODES_PER_BITMAP = 3
@@ -83,7 +83,6 @@ if os.path.isfile(dump_file):
     print('%s, already exists.' % dump_file)
     exit(0)
 
-# data = pickle_load_obj(DATA_FILE)
 data = marshal_load_obj(DATA_FILE)
 
 optimizer = Optimizer(data, algorithm=ALGORITHM, num_bitmaps=NUM_BITMAPS, num_nodes_per_bitmap=NUM_NODES_PER_BITMAP,
@@ -92,5 +91,4 @@ optimizer = Optimizer(data, algorithm=ALGORITHM, num_bitmaps=NUM_BITMAPS, num_no
                       num_tenants=NUM_TENANTS,
                       probability=1.0 * PROBABILITY_DIVIDEND / PROBABILITY_DIVISOR, node_type=NODE_TYPE)
 
-# pickle_dump_obj(optimizer.data, dump_file)
 marshal_dump_obj(optimizer.data, dump_file)

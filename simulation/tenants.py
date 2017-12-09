@@ -57,7 +57,7 @@ class Tenants:
                 if sample < 0.02:
                     vm_count = random.randint(self.min_vms, self.max_vms)
                 else:
-                    vm_count = int((random.expovariate(4.65) / 10) * (self.max_vms - self.min_vms)) \
+                    vm_count = int((random.expovariate(4.05) / 10) * (self.max_vms - self.min_vms)) \
                                % (self.max_vms - self.min_vms) + self.min_vms
 
                 self.tenants_maps[t]['vm_count'] = vm_count

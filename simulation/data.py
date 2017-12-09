@@ -4,7 +4,7 @@ from simulation.utils import bar_range, popcount
 
 
 class Data:
-    def __init__(self, data, num_tenants=3000, num_pods=11, num_leafs_per_pod=48, num_hosts_per_leaf=48,
+    def __init__(self, data, num_tenants=3000, num_pods=12, num_leafs_per_pod=48, num_hosts_per_leaf=48,
                  log_dir=None, node_type='leafs'):
         self.num_tenants = num_tenants
         self.num_pods = num_pods
@@ -316,8 +316,8 @@ class Data:
         self.traffic_overhead_per_group_per_tenant()
         self.dc_traffic_per_group_per_tenant()
 
-    def log_stats(self, log_cloud=True):
-        if log_cloud:
+    def log_stats(self, log_cloud_stats=True):
+        if log_cloud_stats:
             self._log_cloud_stats()
         self._log_optimizer_stats()
 

@@ -5,8 +5,9 @@ from simulation.data import Data
 from simulation.utils import marshal_load_obj
 
 if len(sys.argv) > 1:
-    DATA_FILE = sys.argv[1]
-    LOG_DIR = sys.argv[2]
+    LOG_CLOUD_STATS = True if sys.argv[1] == 'True' else False
+    DATA_FILE = sys.argv[2]
+    LOG_DIR = sys.argv[3]
 
     _TEMP = DATA_FILE.split('.')
     CLOUD_PARAMS = _TEMP[-2].split('_')
@@ -20,6 +21,7 @@ if len(sys.argv) > 1:
     NUM_BITMAPS = int(OPTIMIZER_PARAMS[1])
     NODE_TYPE = OPTIMIZER_PARAMS[7]
 elif False:
+    LOG_CLOUD_STATS = True
     DATA_FILE = 'output/optimizer..'
     LOG_DIR = 'output/logs'
 
@@ -33,7 +35,8 @@ elif False:
     OPTIMIZER_PARAMS = []
     NUM_BITMAPS = 2
     NODE_TYPE = 'pods'
-elif True:
+elif False:
+    LOG_CLOUD_STATS = True
     DATA_FILE = 'output/_optimizer..'
     LOG_DIR = 'output/logs'
 
@@ -47,6 +50,7 @@ elif True:
     OPTIMIZER_PARAMS = []
     NODE_TYPE = 'leafs'
 elif False:
+    LOG_CLOUD_STATS = True
     DATA_FILE = 'output/optimizer..'
     LOG_DIR = 'output/logs'
 
@@ -77,4 +81,4 @@ data = marshal_load_obj(DATA_FILE)
 data = Data(data, num_tenants=NUM_TENANTS, num_pods=NUM_PODS, num_leafs_per_pod=NUM_LEAFS_PER_POD,
             num_hosts_per_leaf=NUM_HOSTS_PER_LEAF, log_dir=log_dir, node_type=NODE_TYPE)
 
-data.log_stats(log_cloud=False)
+data.log_stats(log_cloud_stats=LOG_CLOUD_STATS)

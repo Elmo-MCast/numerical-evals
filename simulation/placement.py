@@ -9,7 +9,7 @@ def unwrap_tenant_groups_pods_and_leafs_to_bitmap_map(args, **kwargs):
 
 
 class Placement:
-    def __init__(self, data, num_pods=11, num_leafs_per_pod=48, num_hosts_per_leaf=48, num_tenants=3000,
+    def __init__(self, data, num_pods=12, num_leafs_per_pod=48, num_hosts_per_leaf=48, num_tenants=3000,
                  max_vms_per_host=20, multi_threaded=False, num_jobs=4):
         self.data = data
         self.num_pods = num_pods
