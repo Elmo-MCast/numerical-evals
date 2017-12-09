@@ -68,7 +68,7 @@ else:
 
 random.seed(SEED)
 
-log_dir = LOG_DIR + "/" + "_".join(CLOUD_PARAMS) + "." + "_".join(OPTIMIZER_PARAMS)
+log_dir = LOG_DIR + "." + "_".join(CLOUD_PARAMS) + "." + "_".join(OPTIMIZER_PARAMS)
 
 # if os.path.isdir(log_dir):
 #     print('%s, already exists.' % log_dir)
