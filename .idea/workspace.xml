@@ -2,7 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3f0c75d9-ed49-4a19-bc97-bf85c19dcdfe" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/notebooks/11-29-2017/baseerat-1M-random.ipynb" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/simulation/network.py" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/numerical-evals.iml" afterPath="$PROJECT_DIR$/.idea/numerical-evals.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/notebooks/11-24-2017/baseerat-100K (R).ipynb" afterPath="$PROJECT_DIR$/notebooks/11-24-2017/baseerat-100K (R).ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/notebooks/11-24-2017/baseerat-100K-uniform (R).ipynb" afterPath="$PROJECT_DIR$/notebooks/11-24-2017/baseerat-100K-uniform (R).ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/notebooks/11-29-2017/baseerat-1M (R).ipynb" afterPath="$PROJECT_DIR$/notebooks/11-29-2017/baseerat-1M (R).ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/notebooks/11-29-2017/baseerat-1M-random (R).ipynb" afterPath="$PROJECT_DIR$/notebooks/11-29-2017/baseerat-1M-random (R).ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/notebooks/12-4-2017/baseerat-100K-random-dynamic.ipynb" afterPath="$PROJECT_DIR$/notebooks/12-4-2017/baseerat-100K-random-dynamic.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/run_cloud.py" afterPath="$PROJECT_DIR$/run_cloud.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/simulation/cloud.py" afterPath="$PROJECT_DIR$/simulation/cloud.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/simulation/placement.py" afterPath="$PROJECT_DIR$/simulation/placement.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/simulation/tenants.py" afterPath="$PROJECT_DIR$/simulation/tenants.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -24,22 +37,16 @@
     <SUITE FILE_PATH="coverage/numerical_evals$run_optimizer.coverage" NAME="run_optimizer Coverage Results" MODIFIED="1512474518249" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/numerical_evals$main.coverage" NAME="main Coverage Results" MODIFIED="1510003725555" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/numerical_evals$generate_cloud.coverage" NAME="generate_cloud Coverage Results" MODIFIED="1510005568392" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/numerical_evals$run_cloud.coverage" NAME="run_cloud Coverage Results" MODIFIED="1512474391099" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/numerical_evals$run_cloud.coverage" NAME="run_cloud Coverage Results" MODIFIED="1512819676202" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="event.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/simulation/event.py">
+      <file leaf-file-name="tenants.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/simulation/tenants.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="265">
-              <caret line="113" column="0" lean-forward="true" selection-start-line="113" selection-start-column="0" selection-end-line="113" selection-end-column="0" />
-              <folding>
-                <marker date="1512479091808" expanded="true" signature="262:8347" ph="..." />
-                <marker date="1512479091808" expanded="true" signature="1473:8347" ph="..." />
-                <marker date="1512479091808" expanded="true" signature="1678:8347" ph="..." />
-                <marker date="1512479091808" expanded="true" signature="5542:8347" ph="..." />
-                <marker date="1512479091808" expanded="true" signature="6026:8347" ph="..." />
-              </folding>
+            <state relative-caret-position="341">
+              <caret line="70" column="60" lean-forward="false" selection-start-line="70" selection-start-column="60" selection-end-line="70" selection-end-column="60" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -47,59 +54,33 @@
       <file leaf-file-name="run_cloud.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/run_cloud.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="231">
-              <caret line="42" column="10" lean-forward="false" selection-start-line="42" selection-start-column="10" selection-end-line="42" selection-end-column="10" />
+            <state relative-caret-position="358">
+              <caret line="36" column="26" lean-forward="false" selection-start-line="36" selection-start-column="26" selection-end-line="36" selection-end-column="26" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="run_dynamic.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/run_dynamic.py">
+      <file leaf-file-name="placement.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/simulation/placement.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="418">
-              <caret line="26" column="10" lean-forward="false" selection-start-line="26" selection-start-column="10" selection-end-line="26" selection-end-column="10" />
-              <folding />
+            <state relative-caret-position="744">
+              <caret line="167" column="41" lean-forward="true" selection-start-line="167" selection-start-column="41" selection-end-line="167" selection-end-column="41" />
+              <folding>
+                <element signature="e#0#13#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="run_dynamic_with_data.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/run_dynamic_with_data.py">
+      <file leaf-file-name="cloud.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/simulation/cloud.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1070">
-              <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="run_dynamic_with_data.sh" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/run_dynamic_with_data.sh">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="190">
-              <caret line="10" column="20" lean-forward="false" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="20" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="data.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/simulation/data.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="928">
-              <caret line="456" column="0" lean-forward="false" selection-start-line="456" selection-start-column="0" selection-end-line="456" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="run_optimizer.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/run_optimizer.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="22" column="10" lean-forward="false" selection-start-line="22" selection-start-column="10" selection-end-line="22" selection-end-column="10" />
-              <folding />
+            <state relative-caret-position="345">
+              <caret line="23" column="114" lean-forward="false" selection-start-line="23" selection-start-column="114" selection-end-line="23" selection-end-column="114" />
+              <folding>
+                <element signature="e#0#42#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -116,10 +97,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>leaf_spine_traffic_per_group_per_tenant_for_unicast</find>
-      <find>leaf_spine_traffic_per_group_per_tenant_for_overlay</find>
-      <find>is_strict</find>
-      <find>NUM_RULES_PER_LEAF</find>
       <find>leafs</find>
       <find>leaf_to_rule_map</find>
       <find>bitmaps_to_leafs_map</find>
@@ -128,8 +105,6 @@
       <find>default_bitmap</find>
       <find>leafs_bitmap</find>
       <find>leafs_map</find>
-      <find>leaf_to_hosts</find>
-      <find>host_to_leaf</find>
       <find>'network'</find>
       <find>'leafs'</find>
       <find>'leaf_count'</find>
@@ -146,6 +121,12 @@
       <find>.choice</find>
       <find>vm_types</find>
       <find>vms_types</find>
+      <find>leaf_to_hosts</find>
+      <find>host_to_leaf</find>
+      <find>vms_map</find>
+      <find>groups_map</find>
+      <find>max_vms_per_host</find>
+      <find>vm_map</find>
     </findStrings>
     <replaceStrings>
       <replace>sorted_tenants_map[t]</replace>
@@ -155,6 +136,9 @@
       <replace>greedy_data</replace>
       <replace>bitmap_to_leafs_map</replace>
       <replace>leaf_to_rule_map</replace>
+      <replace>groups</replace>
+      <replace>vm_to_host_map</replace>
+      <replace>host</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -175,7 +159,6 @@
         <option value="$PROJECT_DIR$/run_all_optimizers.py" />
         <option value="$PROJECT_DIR$/run_data_parallel.sh" />
         <option value="$PROJECT_DIR$/run_data.sh" />
-        <option value="$PROJECT_DIR$/simulation/network.py" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch.txt" />
         <option value="$PROJECT_DIR$/others/single-match.algo" />
         <option value="$PROJECT_DIR$/others/exact-match.algo" />
@@ -188,16 +171,12 @@
         <option value="$PROJECT_DIR$/pseudocodes/greedy_match.algo" />
         <option value="$PROJECT_DIR$/simulation/algorithms/greedy_match.py" />
         <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/simulation/algorithms/common.py" />
         <option value="$PROJECT_DIR$/simulation/algorithms/strict_exact_match.py" />
         <option value="$PROJECT_DIR$/tests/algorithm.py" />
-        <option value="$PROJECT_DIR$/simulation/tenants.py" />
         <option value="$PROJECT_DIR$/simulation/utils.py" />
         <option value="$PROJECT_DIR$/run_optimizer_with_data.old.sh" />
         <option value="$PROJECT_DIR$/run_optimizer_with_data.sh" />
         <option value="$PROJECT_DIR$/simulation/dynamic/dynamic.py" />
-        <option value="$PROJECT_DIR$/simulation/cloud.py" />
-        <option value="$PROJECT_DIR$/simulation/placement.py" />
         <option value="$PROJECT_DIR$/simulation/run_dynamic.py" />
         <option value="$PROJECT_DIR$/simulation/algorithms/exact_match.py" />
         <option value="$PROJECT_DIR$/simulation/algorithms/fuzzy_match.py" />
@@ -209,17 +188,22 @@
         <option value="$PROJECT_DIR$/simulation/optimizer.py" />
         <option value="$PROJECT_DIR$/run_data.py" />
         <option value="$PROJECT_DIR$/run_dynamic.sh" />
-        <option value="$PROJECT_DIR$/run_cloud.sh" />
         <option value="$PROJECT_DIR$/run_optimizer.sh" />
         <option value="$PROJECT_DIR$/run_dynamic_with_data.sh" />
         <option value="$PROJECT_DIR$/simulation/dynamic.py" />
         <option value="$PROJECT_DIR$/run_optimizer_with_data.py" />
-        <option value="$PROJECT_DIR$/run_cloud.py" />
         <option value="$PROJECT_DIR$/run_optimizer.py" />
         <option value="$PROJECT_DIR$/run_dynamic.py" />
         <option value="$PROJECT_DIR$/simulation/data.py" />
         <option value="$PROJECT_DIR$/run_dynamic_with_data.py" />
+        <option value="$PROJECT_DIR$/simulation/algorithms/common.py" />
+        <option value="$PROJECT_DIR$/run_cloud.sh" />
         <option value="$PROJECT_DIR$/simulation/event.py" />
+        <option value="$PROJECT_DIR$/simulation/network.py" />
+        <option value="$PROJECT_DIR$/simulation/tenants.py" />
+        <option value="$PROJECT_DIR$/simulation/cloud.py" />
+        <option value="$PROJECT_DIR$/run_cloud.py" />
+        <option value="$PROJECT_DIR$/simulation/placement.py" />
       </list>
     </option>
   </component>
@@ -262,11 +246,6 @@
             <path>
               <item name="numerical-evals" type="b2602c69:ProjectViewProjectNode" />
               <item name="numerical-evals" type="462c0819:PsiDirectoryNode" />
-              <item name="output" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="numerical-evals" type="b2602c69:ProjectViewProjectNode" />
-              <item name="numerical-evals" type="462c0819:PsiDirectoryNode" />
               <item name="simulation" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -278,7 +257,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="/usr/local/bin/pypy3" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/simulation/algorithms/fuzzy_match.py" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$2/Languages" value="TEXT" />
   </component>
@@ -310,7 +289,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.run_dynamic_with_data">
+  <component name="RunManager" selected="Python.run_cloud">
     <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
       <node-interpreter>project</node-interpreter>
       <node-options />
@@ -557,10 +536,10 @@
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.run_dynamic_with_data" />
-        <item index="1" class="java.lang.String" itemvalue="Python.run_dynamic" />
-        <item index="2" class="java.lang.String" itemvalue="Python.run_optimizer" />
-        <item index="3" class="java.lang.String" itemvalue="Python.run_cloud" />
+        <item index="0" class="java.lang.String" itemvalue="Python.run_cloud" />
+        <item index="1" class="java.lang.String" itemvalue="Python.run_dynamic_with_data" />
+        <item index="2" class="java.lang.String" itemvalue="Python.run_dynamic" />
+        <item index="3" class="java.lang.String" itemvalue="Python.run_optimizer" />
         <item index="4" class="java.lang.String" itemvalue="Python.run_optimizer_with_data" />
       </list>
     </recent_temporary>
@@ -925,27 +904,27 @@
   <component name="ToolWindowManager">
     <frame x="239" y="156" width="2562" height="1364" extended-state="6" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12589356" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3279483" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2316975" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32823813" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39501208" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32421562" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32823813" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32823813" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12668785" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32823813" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.42638776" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="LuaJ" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32823813" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -1005,9 +984,13 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="668" />
+      <option name="time" value="705" />
     </breakpoint-manager>
-    <watches-manager />
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="bin(pod_map['bitmap'])" language="Python" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/tests/algorithm.py">
@@ -1042,7 +1025,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1062,22 +1044,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/simulation/cloud.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="36" column="12" lean-forward="false" selection-start-line="36" selection-start-column="12" selection-end-line="36" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/simulation/network.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="32" column="39" lean-forward="false" selection-start-line="32" selection-start-column="27" selection-end-line="32" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/simulation/algorithms/random_single_match.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
@@ -1090,23 +1056,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
           <caret line="3" column="10" lean-forward="false" selection-start-line="3" selection-start-column="10" selection-end-line="3" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/simulation/algorithms/common.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/simulation/placement.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2874">
-          <caret line="264" column="42" lean-forward="true" selection-start-line="264" selection-start-column="42" selection-end-line="264" selection-end-column="42" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1114,7 +1063,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="979">
           <caret line="74" column="78" lean-forward="false" selection-start-line="74" selection-start-column="78" selection-end-line="74" selection-end-column="78" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1130,7 +1078,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="364">
           <caret line="35" column="72" lean-forward="true" selection-start-line="35" selection-start-column="72" selection-end-line="35" selection-end-column="72" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1138,15 +1085,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
           <caret line="5" column="10" lean-forward="false" selection-start-line="5" selection-start-column="10" selection-end-line="5" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/simulation/tenants.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="73" column="60" lean-forward="true" selection-start-line="71" selection-start-column="8" selection-end-line="73" selection-end-column="60" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1154,7 +1092,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1166,27 +1103,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../virtualenvs/pypy3/site-packages/pandas/core/series.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="241">
-          <caret line="3079" column="0" lean-forward="false" selection-start-line="3079" selection-start-column="0" selection-end-line="3079" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/output/logs.../switch_event_types_to_update_count.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-102150">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/../../virtualenvs/pypy3/site-packages/pandas/core/series.py" />
+    <entry file="file://$PROJECT_DIR$/output/logs.../switch_event_types_to_update_count.csv" />
     <entry file="file://$PROJECT_DIR$/run_dynamic.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
           <caret line="20" column="0" lean-forward="true" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1194,14 +1116,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="525">
           <caret line="35" column="32" lean-forward="false" selection-start-line="35" selection-start-column="32" selection-end-line="35" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/run_cloud.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="780">
-          <caret line="52" column="13" lean-forward="false" selection-start-line="52" selection-start-column="13" selection-end-line="52" selection-end-column="17" />
           <folding />
         </state>
       </provider>
@@ -1226,32 +1140,17 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="283">
           <caret line="20" column="2" lean-forward="false" selection-start-line="20" selection-start-column="2" selection-end-line="20" selection-end-column="2" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../virtualenvs/pypy3/site-packages/pandas/core/ops.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="241">
-          <caret line="1160" column="0" lean-forward="false" selection-start-line="1160" selection-start-column="0" selection-end-line="1160" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/output/logs.../switch_event_types_to_update_count_normalized.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-283669">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/../../virtualenvs/pypy3/site-packages/pandas/core/ops.py" />
+    <entry file="file://$PROJECT_DIR$/output/logs.../switch_event_types_to_update_count_normalized.csv" />
     <entry file="file://$PROJECT_DIR$/simulation/dynamic.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="773">
           <caret line="90" column="0" lean-forward="false" selection-start-line="90" selection-start-column="0" selection-end-line="90" selection-end-column="0" />
           <folding>
-            <element signature="e#0#13#0" expanded="true" />
+            <element signature="e#0#13#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1264,25 +1163,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/run_cloud.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="42" column="10" lean-forward="false" selection-start-line="42" selection-start-column="10" selection-end-line="42" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/run_dynamic_with_data.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
+        <state relative-caret-position="150">
           <caret line="10" column="20" lean-forward="false" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="20" />
           <folding />
         </state>
@@ -1290,29 +1180,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/run_dynamic.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
+        <state relative-caret-position="330">
           <caret line="26" column="10" lean-forward="false" selection-start-line="26" selection-start-column="10" selection-end-line="26" selection-end-column="10" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/simulation/event.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="265">
-          <caret line="113" column="0" lean-forward="true" selection-start-line="113" selection-start-column="0" selection-end-line="113" selection-end-column="0" />
-          <folding>
-            <marker date="1512479091808" expanded="true" signature="262:8347" ph="..." />
-            <marker date="1512479091808" expanded="true" signature="1473:8347" ph="..." />
-            <marker date="1512479091808" expanded="true" signature="1678:8347" ph="..." />
-            <marker date="1512479091808" expanded="true" signature="5542:8347" ph="..." />
-            <marker date="1512479091808" expanded="true" signature="6026:8347" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/run_dynamic_with_data.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1070">
+        <state relative-caret-position="30">
           <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
           <folding />
         </state>
@@ -1320,9 +1196,77 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/simulation/data.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="928">
+        <state relative-caret-position="876">
           <caret line="456" column="0" lean-forward="false" selection-start-line="456" selection-start-column="0" selection-end-line="456" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simulation/algorithms/common.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="50" column="30" lean-forward="true" selection-start-line="50" selection-start-column="30" selection-end-line="50" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simulation/event.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1575">
+          <caret line="106" column="47" lean-forward="true" selection-start-line="106" selection-start-column="47" selection-end-line="106" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run_cloud.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="23" lean-forward="true" selection-start-line="9" selection-start-column="23" selection-end-line="9" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simulation/network.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="37" lean-forward="true" selection-start-line="11" selection-start-column="37" selection-end-line="11" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simulation/tenants.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="341">
+          <caret line="70" column="60" lean-forward="false" selection-start-line="70" selection-start-column="60" selection-end-line="70" selection-end-column="60" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simulation/cloud.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="23" column="114" lean-forward="false" selection-start-line="23" selection-start-column="114" selection-end-line="23" selection-end-column="114" />
+          <folding>
+            <element signature="e#0#42#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run_cloud.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="358">
+          <caret line="36" column="26" lean-forward="false" selection-start-line="36" selection-start-column="26" selection-end-line="36" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simulation/placement.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="744">
+          <caret line="167" column="41" lean-forward="true" selection-start-line="167" selection-start-column="41" selection-end-line="167" selection-end-column="41" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -10,14 +10,11 @@ def unwrap_tenant_groups_to_vms_map(args, **kwargs):
 
 
 class Tenants:
-    def __init__(self, data, num_leafs=1056, num_hosts_per_leaf=48,
-                 max_vms_per_host=20, num_tenants=3000, min_vms=10, max_vms=5000, vm_dist='expon',
-                 num_groups=100000, min_group_size=5, group_size_dist='uniform',
-                 debug=False, multi_threaded=False, num_jobs=4):
+    def __init__(self, data, num_tenants=3000, min_vms=10, max_vms=5000, vm_dist='expon',
+                 num_groups=100000, min_group_size=5, group_size_dist='uniform', debug=False,
+                 multi_threaded=False, num_jobs=4):
         self.data = data
         self.num_tenants = num_tenants
-        self.num_hosts = num_leafs * num_hosts_per_leaf
-        self.max_vms_per_host = max_vms_per_host
         self.min_vms = min_vms
         self.max_vms = max_vms
         self.vm_dist = vm_dist
@@ -60,7 +57,7 @@ class Tenants:
                 if sample < 0.02:
                     vm_count = random.randint(self.min_vms, self.max_vms)
                 else:
-                    vm_count = int((random.expovariate(4.05) / 10) * (self.max_vms - self.min_vms)) \
+                    vm_count = int((random.expovariate(4.65) / 10) * (self.max_vms - self.min_vms)) \
                                % (self.max_vms - self.min_vms) + self.min_vms
 
                 self.tenants_maps[t]['vm_count'] = vm_count

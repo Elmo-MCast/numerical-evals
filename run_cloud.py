@@ -22,8 +22,9 @@ if len(sys.argv) > 1:
     SEED = int(sys.argv[15])
     PRUNE = True if sys.argv[16] == 'True' else False
     DUMP_FILE_PREFIX = sys.argv[17]
-elif False:
-    NUM_LEAFS = 576
+elif True:
+    NUM_PODS = 11
+    NUM_LEAFS_PER_POD = 48
     NUM_HOSTS_PER_LEAF = 48
     MAX_VMS_PER_HOST = 20
     NUM_TENANTS = 3000
@@ -32,16 +33,14 @@ elif False:
     VM_DIST = "expon"  # options: expon
     NUM_GROUPS = 100000
     MIN_GROUP_SIZE = 5
-    GROUP_SIZE_DIST = "wve"  # options: uniform and wve
-    PLACEMENT_DIST = "colocate-random-random"  # options: uniform, colocate-random-linear, and colocate-random-random
-    COLOCATE_NUM_HOSTS_PER_LEAF = 48
-    MULTI_THREADED = True
+    GROUP_SIZE_DIST = "uniform"  # options: uniform and wve
+    MULTI_THREADED = False
     NUM_JOBS = 5
     SEED = 2
-    PRUNE = True
     DUMP_FILE_PREFIX = 'output/cloud'
 elif False:
-    NUM_LEAFS = 576
+    NUM_PODS = 11
+    NUM_LEAFS_PER_POD = 48
     NUM_HOSTS_PER_LEAF = 48
     MAX_VMS_PER_HOST = 20
     NUM_TENANTS = 30
@@ -51,19 +50,16 @@ elif False:
     NUM_GROUPS = 1000
     MIN_GROUP_SIZE = 5
     GROUP_SIZE_DIST = "wve"  # options: uniform and wve
-    PLACEMENT_DIST = "colocate-random-random"  # options: uniform, colocate-random-linear,
-    # colocate-random-random, sorted-colocate-random-linear, and sorted-colocate-random-random
-    COLOCATE_NUM_HOSTS_PER_LEAF = 12
     MULTI_THREADED = True
     NUM_JOBS = 5
     SEED = 0
-    PRUNE = False
     DUMP_FILE_PREFIX = 'output/cloud'
 else:
     raise (Exception('invalid parameters'))
 
 print("""
 -> cloud (
+     pods=%s,
      leafs=%s, 
      hosts_per_leaf=%s, 
      vms_per_host=%s,
@@ -74,14 +70,12 @@ print("""
      groups=%s,
      min_group_size=%s,
      group_size_dist=%s,
-     placement_dist=%s,
-     colocate_hosts_per_leaf=%s,
      multi_threaded=%s,
-     num_jobs=%s,
+     jobs=%s,
      seed=%s,
-     dump_file_prefix=%s,
-     prune=%s)
-""" % (NUM_LEAFS,
+     dump_file_prefix=%s)
+""" % (NUM_PODS,
+       NUM_LEAFS_PER_POD,
        NUM_HOSTS_PER_LEAF,
        MAX_VMS_PER_HOST,
        NUM_TENANTS,
@@ -91,13 +85,10 @@ print("""
        NUM_GROUPS,
        MIN_GROUP_SIZE,
        GROUP_SIZE_DIST,
-       PLACEMENT_DIST,
-       COLOCATE_NUM_HOSTS_PER_LEAF,
        MULTI_THREADED,
        NUM_JOBS,
        SEED,
-       DUMP_FILE_PREFIX,
-       PRUNE))
+       DUMP_FILE_PREFIX))
 
 random.seed(SEED)
 
@@ -107,21 +98,19 @@ if os.path.isfile(dump_file):
     print('%s, already exists.' % dump_file)
     exit(0)
 
-cloud = Cloud(num_leafs=NUM_LEAFS,
+cloud = Cloud(num_pods=NUM_PODS,
+              num_leafs_per_pod=NUM_LEAFS_PER_POD,
               num_hosts_per_leaf=NUM_HOSTS_PER_LEAF,
               max_vms_per_host=MAX_VMS_PER_HOST,
               num_tenants=NUM_TENANTS,
               min_vms_per_tenant=MIN_VMS_PER_TENANT,
               max_vms_per_tenant=MAX_VMS_PER_TENANT,
-              vm_dist=VM_DIST,  # options: expon, expon-mean, and geom
+              vm_dist=VM_DIST,
               num_groups=NUM_GROUPS,
               min_group_size=MIN_GROUP_SIZE,
-              group_size_dist=GROUP_SIZE_DIST,  # options: uniform and wve
-              placement_dist=PLACEMENT_DIST,  # options: uniform, colocate-random-linear, and colocate-random-random
-              colocate_num_hosts_per_leaf=COLOCATE_NUM_HOSTS_PER_LEAF,
+              group_size_dist=GROUP_SIZE_DIST,
               multi_threaded=MULTI_THREADED,
-              num_jobs=NUM_JOBS,
-              prune=PRUNE)
+              num_jobs=NUM_JOBS)
 
 # pickle_dump_obj(cloud.data, dump_file)
 marshal_dump_obj(cloud.data, dump_file)
