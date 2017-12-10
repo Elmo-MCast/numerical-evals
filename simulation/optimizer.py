@@ -24,11 +24,16 @@ class Optimizer:
         self.tenants = self.data['tenants']
         self.tenants_maps = self.tenants['maps']
 
-        self.data['optimizer'] = {
-            self.node_type: {
+        if 'optimizer' in self.data:
+            self.data['optimizer'][self.node_type] = {
                 'algorithm_elapse_time': self.algorithm_elapse_time,
                 'rules_count': self.rules_count_map}
-        }
+        else:
+            self.data['optimizer'] = {
+                self.node_type: {
+                    'algorithm_elapse_time': self.algorithm_elapse_time,
+                    'rules_count': self.rules_count_map}
+            }
 
         self._run()
 

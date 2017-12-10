@@ -33,3 +33,12 @@ def test_leafs():
     files = glob(DATA_FILE_PREFIX)
     for file in files:
         run_data([LOG_CLOUD_STATS, file, LOG_DIR])
+
+
+def test():
+    DATA_FILE_PREFIX = 'output/optimizer.*_pods.*_leafs'
+    LOG_DIR = 'output/logs'
+
+    files = glob(DATA_FILE_PREFIX)
+    for file in files:
+        run_data([LOG_CLOUD_STATS, file, LOG_DIR])

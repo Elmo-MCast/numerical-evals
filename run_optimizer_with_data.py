@@ -103,6 +103,6 @@ optimizer = Optimizer(data, algorithm=ALGORITHM, num_bitmaps=NUM_BITMAPS, num_no
                       probability=1.0 * PROBABILITY_DIVIDEND / PROBABILITY_DIVISOR, node_type=NODE_TYPE)
 
 data = Data(data, num_tenants=NUM_TENANTS, num_pods=NUM_PODS, num_leafs_per_pod=NUM_LEAFS_PER_POD,
-            num_hosts_per_leaf=NUM_HOSTS_PER_LEAF, log_dir=log_dir, node_type=NODE_TYPE)
+            num_hosts_per_leaf=NUM_HOSTS_PER_LEAF, log_dir=log_dir, node_type_0=NODE_TYPE)
 
 data.log_stats(log_cloud_stats=LOG_CLOUD_STATS)

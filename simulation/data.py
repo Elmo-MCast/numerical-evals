@@ -5,18 +5,19 @@ from simulation.utils import bar_range, popcount
 
 class Data:
     def __init__(self, data, num_tenants=3000, num_pods=12, num_leafs_per_pod=48, num_hosts_per_leaf=48,
-                 log_dir=None, node_type='leafs'):
+                 log_dir=None, node_type_0='pods', node_type_1='leafs'):
         self.num_tenants = num_tenants
         self.num_pods = num_pods
         self.num_leafs_per_pod = num_leafs_per_pod
         self.num_hosts_per_leaf = num_hosts_per_leaf
         self.log_dir = log_dir
-        self.node_type = node_type
+        self.node_type_0 = node_type_0
+        self.node_type_1 = node_type_1
 
         self.tenants = data['tenants']
         self.tenants_maps = self.tenants['maps']
 
-        self.optimizer = data['optimizer'][self.node_type]
+        self.optimizer = data['optimizer']
 
     def vm_count_per_tenant(self):
         _vm_count_per_tenant = pd.Series([self.tenants_maps[t]['vm_count'] for t in range(self.num_tenants)])
@@ -88,11 +89,11 @@ class Data:
 
         return _pod_count_per_group_per_tenant
 
-    def algorithm_elapse_time(self):
-        _algorithm_elapse_time = pd.Series(self.optimizer['algorithm_elapse_time'])
+    def algorithm_elapse_time(self, node_type):
+        _algorithm_elapse_time = pd.Series(self.optimizer[node_type]['algorithm_elapse_time'])
 
         if self.log_dir is not None:
-            _algorithm_elapse_time.to_csv(self.log_dir + "/%s_algorithm_elapse_time.csv" % self.node_type, index=False)
+            _algorithm_elapse_time.to_csv(self.log_dir + "/%s_algorithm_elapse_time.csv" % node_type, index=False)
 
         return _algorithm_elapse_time
 
@@ -106,7 +107,7 @@ class Data:
     #         percentage_categories.to_csv(self.log_dir + "/percentage_of_groups_covered_with_varying_bitmaps.csv")
     #     return percentage_categories
 
-    def groups_covered_with_bitmaps_only(self):
+    def groups_covered_with_bitmaps_only(self, node_type):
         _groups_covered_with_bitmaps_only = 0
         _groups_covered_with_bitmaps_only_without_default_bitmap = 0
 
@@ -117,16 +118,16 @@ class Data:
 
             for g in range(group_count):
                 group_map = groups_map[g]
-                nodes_map = group_map['leafs_map'] if self.node_type == 'leafs' else group_map['pods_map']
+                nodes_map = group_map['leafs_map'] if node_type == 'leafs' else group_map['pods_map']
 
                 has_rule = reduce(lambda x, y: x | y, ['has_rule' in nodes_map[n] for n in nodes_map])
                 if not has_rule:
                     _groups_covered_with_bitmaps_only += 1
 
-                    if ('%s_default_bitmap' % self.node_type) not in group_map:
+                    if ('%s_default_bitmap' % node_type) not in group_map:
                         _groups_covered_with_bitmaps_only_without_default_bitmap += 1
                     else:
-                        if group_map['%s_default_bitmap' % self.node_type] == 0:
+                        if group_map['%s_default_bitmap' % node_type] == 0:
                             _groups_covered_with_bitmaps_only_without_default_bitmap += 1
 
         df_groups_covered_with_bitmaps_only = pd.DataFrame()
@@ -136,19 +137,19 @@ class Data:
 
         if self.log_dir is not None:
             df_groups_covered_with_bitmaps_only.to_csv(
-                self.log_dir + "/groups_covered_with_bitmaps_only_for_%s.csv" % self.node_type, index=False)
+                self.log_dir + "/groups_covered_with_bitmaps_only_for_%s.csv" % node_type, index=False)
 
         return df_groups_covered_with_bitmaps_only
 
-    def rule_count(self):
-        _rule_count = pd.Series(self.optimizer['rules_count'])
+    def rule_count(self, node_type):
+        _rule_count = pd.Series(self.optimizer[node_type]['rules_count'])
 
         if self.log_dir is not None:
-            _rule_count.to_csv(self.log_dir + "/rule_count_for_%s.csv" % self.node_type, index=False)
+            _rule_count.to_csv(self.log_dir + "/rule_count_for_%s.csv" % node_type, index=False)
 
         return _rule_count
 
-    def traffic_overhead_per_group_per_tenant(self):
+    def traffic_overhead_per_group_per_tenant(self, node_type):
         _traffic_overhead_per_group_per_tenant = []
 
         for t in bar_range(self.num_tenants, desc='data:traffic_overhead_per_group_per_tenant:'):
@@ -158,7 +159,7 @@ class Data:
 
             for g in range(group_count):
                 group_map = groups_map[g]
-                nodes_map = group_map['leafs_map'] if self.node_type == 'leafs' else group_map['pods_map']
+                nodes_map = group_map['leafs_map'] if node_type == 'leafs' else group_map['pods_map']
                 _actual_traffic = 0
                 _redundant_traffic = 0
 
@@ -175,14 +176,14 @@ class Data:
 
         if self.log_dir is not None:
             _traffic_overhead_per_group_per_tenant.to_csv(
-                self.log_dir + "/traffic_overhead_per_group_per_tenant_for_%s.csv" % self.node_type, index=False)
+                self.log_dir + "/traffic_overhead_per_group_per_tenant_for_%s.csv" % node_type, index=False)
 
         return _traffic_overhead_per_group_per_tenant
 
-    def dc_traffic_per_group_per_tenant_for_multicast(self):
-        _dc_traffic_per_group_per_tenant_for_multicast = []
+    def traffic_per_group_per_tenant_for_multicast(self):
+        _traffic_per_group_per_tenant_for_multicast = []
 
-        for t in bar_range(self.num_tenants, desc='data:dc_traffic_per_group_per_tenant_for_multicast:'):
+        for t in bar_range(self.num_tenants, desc='data:traffic_per_group_per_tenant_for_multicast:'):
             tenant_maps = self.tenants_maps[t]
             group_count = tenant_maps['group_count']
             groups_map = tenant_maps['groups_map']
@@ -197,17 +198,17 @@ class Data:
                     leaf_map = leafs_map[l]
                     leafs_traffic += popcount(leaf_map['bitmap'])
 
-                _dc_traffic_per_group_per_tenant_for_multicast += [3 + len(pods_map) + len(leafs_map) + leafs_traffic]
+                _traffic_per_group_per_tenant_for_multicast += [3 + len(pods_map) + len(leafs_map) + leafs_traffic]
 
-        _dc_traffic_per_group_per_tenant_for_multicast = \
-            pd.Series(_dc_traffic_per_group_per_tenant_for_multicast)
+        _traffic_per_group_per_tenant_for_multicast = \
+            pd.Series(_traffic_per_group_per_tenant_for_multicast)
 
-        return _dc_traffic_per_group_per_tenant_for_multicast
+        return _traffic_per_group_per_tenant_for_multicast
 
-    def dc_traffic_per_group_per_tenant_for_unicast(self):
-        _dc_traffic_per_group_per_tenant_for_unicast = []
+    def traffic_per_group_per_tenant_for_unicast(self):
+        _traffic_per_group_per_tenant_for_unicast = []
 
-        for t in bar_range(self.num_tenants, desc='data:dc_traffic_per_group_per_tenant_for_unicast:'):
+        for t in bar_range(self.num_tenants, desc='data:traffic_per_group_per_tenant_for_unicast:'):
             tenant_maps = self.tenants_maps[t]
             group_count = tenant_maps['group_count']
             groups_map = tenant_maps['groups_map']
@@ -222,17 +223,17 @@ class Data:
                     leaf_map = leafs_map[l]
                     leafs_traffic += popcount(leaf_map['bitmap'])
 
-                _dc_traffic_per_group_per_tenant_for_unicast += [6 * leafs_traffic]
+                _traffic_per_group_per_tenant_for_unicast += [6 * leafs_traffic]
 
-        _dc_traffic_per_group_per_tenant_for_unicast = \
-            pd.Series(_dc_traffic_per_group_per_tenant_for_unicast)
+        _traffic_per_group_per_tenant_for_unicast = \
+            pd.Series(_traffic_per_group_per_tenant_for_unicast)
 
-        return _dc_traffic_per_group_per_tenant_for_unicast
+        return _traffic_per_group_per_tenant_for_unicast
 
-    def dc_traffic_per_group_per_tenant_for_overlay(self):
-        _dc_traffic_per_group_per_tenant_for_overlay = []
+    def traffic_per_group_per_tenant_for_overlay(self):
+        traffic_per_group_per_tenant_for_overlay = []
 
-        for t in bar_range(self.num_tenants, desc='data:dc_traffic_per_group_per_tenant_for_overlay:'):
+        for t in bar_range(self.num_tenants, desc='data:traffic_per_group_per_tenant_for_overlay:'):
             tenant_maps = self.tenants_maps[t]
             group_count = tenant_maps['group_count']
             groups_map = tenant_maps['groups_map']
@@ -248,17 +249,17 @@ class Data:
                     leaf_host_count = popcount(leaf_map['bitmap'])
                     leafs_traffic += 2 * (leaf_host_count - 1)
 
-                _dc_traffic_per_group_per_tenant_for_overlay += [(6 * len(leafs_map)) + leafs_traffic]
+                traffic_per_group_per_tenant_for_overlay += [(6 * len(leafs_map)) + leafs_traffic]
 
-        _dc_traffic_per_group_per_tenant_for_overlay = \
-            pd.Series(_dc_traffic_per_group_per_tenant_for_overlay)
+        traffic_per_group_per_tenant_for_overlay = \
+            pd.Series(traffic_per_group_per_tenant_for_overlay)
 
-        return _dc_traffic_per_group_per_tenant_for_overlay
+        return traffic_per_group_per_tenant_for_overlay
 
-    def dc_traffic_per_group_per_tenant_for_baseerat(self):
-        _dc_traffic_per_group_per_tenant_for_baseerat = []
+    def traffic_per_group_per_tenant_for_baseerat(self):
+        _traffic_per_group_per_tenant_for_baseerat = []
 
-        for t in bar_range(self.num_tenants, desc='data:dc_traffic_per_group_per_tenant_for_baseerat:'):
+        for t in bar_range(self.num_tenants, desc='data:traffic_per_group_per_tenant_for_baseerat:'):
             tenant_maps = self.tenants_maps[t]
             group_count = tenant_maps['group_count']
             groups_map = tenant_maps['groups_map']
@@ -285,22 +286,22 @@ class Data:
                     if '~bitmap' in leaf_map:
                         leafs_traffic += popcount(leaf_map['~bitmap'])
 
-                _dc_traffic_per_group_per_tenant_for_baseerat += [3 + len(pods_map) + len(leafs_map) + leafs_traffic +
+                _traffic_per_group_per_tenant_for_baseerat += [3 + len(pods_map) + len(leafs_map) + leafs_traffic +
                                                                   redundant_leafs + redundant_leafs_traffic]
 
-        _dc_traffic_per_group_per_tenant_for_baseerat = \
-            pd.Series(_dc_traffic_per_group_per_tenant_for_baseerat)
+        _traffic_per_group_per_tenant_for_baseerat = \
+            pd.Series(_traffic_per_group_per_tenant_for_baseerat)
 
-        return _dc_traffic_per_group_per_tenant_for_baseerat
+        return _traffic_per_group_per_tenant_for_baseerat
 
-    def dc_traffic_per_group_per_tenant(self):
+    def traffic_per_group_per_tenant(self):
         if self.log_dir:
             t_dataframe = pd.DataFrame()
-            t_dataframe['multicast'] = self.dc_traffic_per_group_per_tenant_for_multicast()
-            t_dataframe['unicast'] = self.dc_traffic_per_group_per_tenant_for_unicast()
-            t_dataframe['overlay'] = self.dc_traffic_per_group_per_tenant_for_overlay()
-            t_dataframe['baseerat'] = self.dc_traffic_per_group_per_tenant_for_baseerat()
-            t_dataframe.to_csv(self.log_dir + "/dc_traffic_per_group_per_tenant.csv", index=False)
+            t_dataframe['multicast'] = self.traffic_per_group_per_tenant_for_multicast()
+            t_dataframe['unicast'] = self.traffic_per_group_per_tenant_for_unicast()
+            t_dataframe['overlay'] = self.traffic_per_group_per_tenant_for_overlay()
+            t_dataframe['baseerat'] = self.traffic_per_group_per_tenant_for_baseerat()
+            t_dataframe.to_csv(self.log_dir + "/traffic_per_group_per_tenant.csv", index=False)
 
     def _log_cloud_stats(self):
         self.vm_count_per_tenant()
@@ -310,11 +311,17 @@ class Data:
         self.pod_count_per_group_per_tenant()
 
     def _log_optimizer_stats(self):
-        self.algorithm_elapse_time()
-        self.groups_covered_with_bitmaps_only()
-        self.rule_count()
-        self.traffic_overhead_per_group_per_tenant()
-        self.dc_traffic_per_group_per_tenant()
+        self.algorithm_elapse_time(self.node_type_0)
+        self.groups_covered_with_bitmaps_only(self.node_type_0)
+        self.rule_count(self.node_type_0)
+        self.traffic_overhead_per_group_per_tenant(self.node_type_0)
+
+        if self.node_type_1:
+            self.algorithm_elapse_time(self.node_type_1)
+            self.groups_covered_with_bitmaps_only(self.node_type_1)
+            self.rule_count(self.node_type_1)
+            self.traffic_overhead_per_group_per_tenant(self.node_type_1)
+            self.traffic_per_group_per_tenant()
 
     def log_stats(self, log_cloud_stats=True):
         if log_cloud_stats:
