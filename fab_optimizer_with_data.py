@@ -20,8 +20,47 @@ def run_optimizer_with_data(params):
     local('%s run_optimizer_with_data.py %s' % (PYTHON, ' '.join(map(str, params))))
 
 
-def test():
+def kill():
+    local('pkill -f run_optimizer_with_data')
+
+
+def test_pods_small():
+    ALGORITHM = 'exact-match'
+    NUM_BITMAPS = 1
+    NUM_NODES_PER_BITMAP = 2
+    REDUNDANCY_PER_BITMAP = 6
+    NUM_RULES = 100
+    PROBABILITY_DIVIDEND = 2
+    PROBABILITY_DIVISOR = 3
+    NODE_TYPE = 'pods'
     DATA_FILE_PREFIX = 'output/cloud.*'
+    LOG_FILE_PREFIX = 'output/logs'
+
+    files = glob(DATA_FILE_PREFIX)
+    for file in files:
+        run_optimizer_with_data([ALGORITHM,
+                                 NUM_BITMAPS,
+                                 NUM_NODES_PER_BITMAP,
+                                 REDUNDANCY_PER_BITMAP,
+                                 NUM_RULES,
+                                 PROBABILITY_DIVIDEND,
+                                 PROBABILITY_DIVISOR,
+                                 NODE_TYPE,
+                                 LOG_CLOUD_STATS,
+                                 file,
+                                 LOG_FILE_PREFIX])
+
+
+def test_leafs_small():
+    ALGORITHM = 'exact-match'
+    NUM_BITMAPS = 10
+    NUM_NODES_PER_BITMAP = 3
+    REDUNDANCY_PER_BITMAP = 48
+    NUM_RULES = 1000
+    PROBABILITY_DIVIDEND = 2
+    PROBABILITY_DIVISOR = 3
+    NODE_TYPE = 'leafs'
+    DATA_FILE_PREFIX = 'output/optimizer.*_pods'
     LOG_FILE_PREFIX = 'output/logs'
 
     files = glob(DATA_FILE_PREFIX)

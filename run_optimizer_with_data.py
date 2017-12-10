@@ -18,12 +18,20 @@ if len(sys.argv) > 1:
     DATA_FILE = sys.argv[10]
     LOG_FILE_PREFIX = sys.argv[11]
 
-    CLOUD_PARAMS = DATA_FILE.split('.')[1].split('_')
+    _TEMP = DATA_FILE.split('.')
+    CLOUD_PARAMS = _TEMP[1].split('_')
     NUM_PODS = int(CLOUD_PARAMS[0])
     NUM_LEAFS_PER_POD = int(CLOUD_PARAMS[1])
     NUM_HOSTS_PER_LEAF = int(CLOUD_PARAMS[2])
     NUM_TENANTS = int(CLOUD_PARAMS[4])
     SEED = int(CLOUD_PARAMS[15])
+
+    if len(_TEMP) > 2:
+        OPTIMIZER_PARAMS = _TEMP[2].split('_')
+        NODE_TYPE_0 = OPTIMIZER_PARAMS[7]
+    else:
+        OPTIMIZER_PARAMS = []
+        NODE_TYPE_0 = None
 elif False:
     ALGORITHM = 'random-fuzzy-match'
     NUM_BITMAPS = 2
@@ -43,6 +51,9 @@ elif False:
     NUM_HOSTS_PER_LEAF = 48
     NUM_TENANTS = 3000
     SEED = 0
+
+    OPTIMIZER_PARAMS = []
+    NODE_TYPE_0 = None
 elif False:
     ALGORITHM = 'random-fuzzy-match'
     NUM_BITMAPS = 20
@@ -62,6 +73,9 @@ elif False:
     NUM_HOSTS_PER_LEAF = 48
     NUM_TENANTS = 3000
     SEED = 0
+
+    OPTIMIZER_PARAMS = []
+    NODE_TYPE_0 = None
 elif False:
     ALGORITHM = 'exact-match'
     NUM_BITMAPS = 2
@@ -81,12 +95,19 @@ elif False:
     NUM_HOSTS_PER_LEAF = 48
     NUM_TENANTS = 30
     SEED = 0
+
+    OPTIMIZER_PARAMS = []
+    NODE_TYPE_0 = None
 else:
     raise (Exception('invalid parameters'))
 
 random.seed(SEED)
 
-log_dir = LOG_FILE_PREFIX + "." + "_".join(CLOUD_PARAMS) + "." + "_".join(sys.argv[1:-2])
+if OPTIMIZER_PARAMS:
+    log_dir = LOG_FILE_PREFIX + "." + "_".join(CLOUD_PARAMS) + "." + "_".join(OPTIMIZER_PARAMS) + \
+                "." + "_".join(sys.argv[1:-2])
+else:
+    log_dir = LOG_FILE_PREFIX + "." + "_".join(CLOUD_PARAMS) + "." + "_".join(sys.argv[1:-2])
 
 if os.path.isdir(log_dir):
     print('%s, already exists.' % log_dir)
@@ -102,7 +123,11 @@ optimizer = Optimizer(data, algorithm=ALGORITHM, num_bitmaps=NUM_BITMAPS, num_no
                       num_tenants=NUM_TENANTS,
                       probability=1.0 * PROBABILITY_DIVIDEND / PROBABILITY_DIVISOR, node_type=NODE_TYPE)
 
-data = Data(data, num_tenants=NUM_TENANTS, num_pods=NUM_PODS, num_leafs_per_pod=NUM_LEAFS_PER_POD,
-            num_hosts_per_leaf=NUM_HOSTS_PER_LEAF, log_dir=log_dir, node_type_0=NODE_TYPE)
+if NODE_TYPE_0:
+    data = Data(data, num_tenants=NUM_TENANTS, num_pods=NUM_PODS, num_leafs_per_pod=NUM_LEAFS_PER_POD,
+                num_hosts_per_leaf=NUM_HOSTS_PER_LEAF, log_dir=log_dir, node_type_0=NODE_TYPE_0, node_type_1=NODE_TYPE)
+else:
+    data = Data(data, num_tenants=NUM_TENANTS, num_pods=NUM_PODS, num_leafs_per_pod=NUM_LEAFS_PER_POD,
+                num_hosts_per_leaf=NUM_HOSTS_PER_LEAF, log_dir=log_dir, node_type_0=NODE_TYPE, node_type_1=None)
 
 data.log_stats(log_cloud_stats=LOG_CLOUD_STATS)

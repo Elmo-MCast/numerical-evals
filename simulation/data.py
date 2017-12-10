@@ -5,7 +5,7 @@ from simulation.utils import bar_range, popcount
 
 class Data:
     def __init__(self, data, num_tenants=3000, num_pods=12, num_leafs_per_pod=48, num_hosts_per_leaf=48,
-                 log_dir=None, node_type_0='pods', node_type_1='leafs'):
+                 log_dir=None, node_type_0='pods', node_type_1=None):
         self.num_tenants = num_tenants
         self.num_pods = num_pods
         self.num_leafs_per_pod = num_leafs_per_pod
