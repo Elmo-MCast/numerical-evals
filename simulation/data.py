@@ -329,60 +329,73 @@ class Data:
         self._log_optimizer_stats()
 
 
-# class DynamicData:
-#     def __init__(self, data, log_dir=None):
-#         self.log_dir = log_dir
-#
-#         self.dynamic = data['dynamic']
-#
-#     def switch_event_types_to_update_count(self):
-#         _switch_event_types_to_update_count = self.dynamic['switch_event_types_to_update_count']
-#
-#         virtual_join_dataframe = pd.DataFrame()
-#         virtual_join_dataframe['updates'] = _switch_event_types_to_update_count['virtual']['J']
-#         virtual_join_dataframe['switch'] = 'virtual'
-#         virtual_join_dataframe['event'] = 'join'
-#
-#         virtual_leave_dataframe = pd.DataFrame()
-#         virtual_leave_dataframe['updates'] = _switch_event_types_to_update_count['virtual']['L']
-#         virtual_leave_dataframe['switch'] = 'virtual'
-#         virtual_leave_dataframe['event'] = 'leave'
-#
-#         leaf_join_dataframe = pd.DataFrame()
-#         leaf_join_dataframe['updates'] = _switch_event_types_to_update_count['leaf']['J']
-#         leaf_join_dataframe['switch'] = 'leaf'
-#         leaf_join_dataframe['event'] = 'join'
-#
-#         leaf_leave_dataframe = pd.DataFrame()
-#         leaf_leave_dataframe['updates'] = _switch_event_types_to_update_count['leaf']['L']
-#         leaf_leave_dataframe['switch'] = 'leaf'
-#         leaf_leave_dataframe['event'] = 'leave'
-#
-#         t_dataframe = pd.concat([virtual_join_dataframe, virtual_leave_dataframe,
-#                                  leaf_join_dataframe, leaf_leave_dataframe])
-#
-#         if self.log_dir:
-#             t_dataframe.to_csv(self.log_dir + "/switch_event_types_to_update_count.csv")
-#
-#         return t_dataframe
-#
-#     def switch_event_types_to_update_count_normalized(self, switch_event_types_to_update_count):
-#         _switch_event_types_to_group_size = self.dynamic['switch_event_types_to_group_size']
-#         _switch_event_types_to_group_size_join_series = pd.Series(_switch_event_types_to_group_size['J'])
-#         _switch_event_types_to_group_size_leave_series = pd.Series(_switch_event_types_to_group_size['L'])
-#
-#         t_dataframe = switch_event_types_to_update_count
-#         t_dataframe['updates'] = 1.0 * t_dataframe['updates'] / pd.concat(
-#             [_switch_event_types_to_group_size_join_series,
-#              _switch_event_types_to_group_size_leave_series,
-#              _switch_event_types_to_group_size_join_series,
-#              _switch_event_types_to_group_size_leave_series])
-#
-#         if self.log_dir:
-#             t_dataframe.to_csv(self.log_dir + "/switch_event_types_to_update_count_normalized.csv")
-#
-#         return t_dataframe
-#
-#     def log(self):
-#         t_dataframe = self.switch_event_types_to_update_count()
-#         self.switch_event_types_to_update_count_normalized(t_dataframe)
+class DynamicData:
+    def __init__(self, data, log_dir=None):
+        self.log_dir = log_dir
+
+        self.dynamic = data['dynamic']
+
+    def switch_update_count(self):
+        _switch_update_count = self.dynamic['switch_update_count']
+
+        virtual_switch_join_dataframe = pd.DataFrame()
+        virtual_switch_join_dataframe['updates'] = _switch_update_count['virtual']['J']
+        virtual_switch_join_dataframe['switch'] = 'virtual'
+        virtual_switch_join_dataframe['event'] = 'join'
+
+        virtual_switch_leave_dataframe = pd.DataFrame()
+        virtual_switch_leave_dataframe['updates'] = _switch_update_count['virtual']['L']
+        virtual_switch_leave_dataframe['switch'] = 'virtual'
+        virtual_switch_leave_dataframe['event'] = 'leave'
+
+        leaf_switch_join_dataframe = pd.DataFrame()
+        leaf_switch_join_dataframe['updates'] = _switch_update_count['leaf']['J']
+        leaf_switch_join_dataframe['switch'] = 'leaf'
+        leaf_switch_join_dataframe['event'] = 'join'
+
+        leaf_switch_leave_dataframe = pd.DataFrame()
+        leaf_switch_leave_dataframe['updates'] = _switch_update_count['leaf']['L']
+        leaf_switch_leave_dataframe['switch'] = 'leaf'
+        leaf_switch_leave_dataframe['event'] = 'leave'
+
+        pod_switch_join_dataframe = pd.DataFrame()
+        pod_switch_join_dataframe['updates'] = _switch_update_count['pod']['J']
+        pod_switch_join_dataframe['switch'] = 'pod'
+        pod_switch_join_dataframe['event'] = 'join'
+
+        pod_switch_leave_dataframe = pd.DataFrame()
+        pod_switch_leave_dataframe['updates'] = _switch_update_count['pod']['L']
+        pod_switch_leave_dataframe['switch'] = 'pod'
+        pod_switch_leave_dataframe['event'] = 'leave'
+
+        t_dataframe = pd.concat([virtual_switch_join_dataframe, virtual_switch_leave_dataframe,
+                                 leaf_switch_join_dataframe, leaf_switch_leave_dataframe,
+                                 pod_switch_join_dataframe, pod_switch_leave_dataframe])
+
+        if self.log_dir:
+            t_dataframe.to_csv(self.log_dir + "/switch_update_count.csv", index=False)
+
+        return t_dataframe
+
+    def switch_update_count_normalized(self, switch_update_count):
+        _switch_group_size = self.dynamic['switch_group_size']
+        _switch_group_size_join_series = pd.Series(_switch_group_size['J'])
+        _switch_group_size_leave_series = pd.Series(_switch_group_size['L'])
+
+        t_dataframe = switch_update_count
+        t_dataframe['updates'] = 1.0 * t_dataframe['updates'] / pd.concat(
+            [_switch_group_size_join_series,
+             _switch_group_size_leave_series,
+             _switch_group_size_join_series,
+             _switch_group_size_leave_series,
+             _switch_group_size_join_series,
+             _switch_group_size_leave_series])
+
+        if self.log_dir:
+            t_dataframe.to_csv(self.log_dir + "/switch_update_count_normalized.csv")
+
+        return t_dataframe
+
+    def log(self):
+        t_dataframe = self.switch_update_count()
+        self.switch_update_count_normalized(t_dataframe)

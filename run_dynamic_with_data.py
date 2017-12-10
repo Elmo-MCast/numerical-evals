@@ -11,81 +11,99 @@ if len(sys.argv) > 1:
     LOG_FILE_PREFIX = sys.argv[3]
 
     _TEMP = DATA_FILE.split('.')
-    CLOUD_PARAMS = _TEMP[-2].split('_')
-    NUM_TENANTS = int(CLOUD_PARAMS[3])
-    NUM_HOSTS_PER_LEAF = int(CLOUD_PARAMS[1])
-    MIN_GROUP_SIZE = int(CLOUD_PARAMS[8])
-    SEED = int(CLOUD_PARAMS[14])
+    CLOUD_PARAMS = _TEMP[1].split('_')
+    NUM_PODS = int(CLOUD_PARAMS[0])
+    NUM_LEAFS_PER_POD = int(CLOUD_PARAMS[1])
+    NUM_HOSTS_PER_LEAF = int(CLOUD_PARAMS[2])
+    NUM_TENANTS = int(CLOUD_PARAMS[4])
+    MIN_GROUP_SIZE = int(CLOUD_PARAMS[9])
+    SEED = int(CLOUD_PARAMS[15])
 
-    OPTIMIZER_PARAMS = _TEMP[-1].split('_')
-    ALGORITHM = OPTIMIZER_PARAMS[1]
-    NUM_BITMAPS = int(OPTIMIZER_PARAMS[2])
-    NUM_LEAFS_PER_BITMAP = int(OPTIMIZER_PARAMS[3])
-    REDUNDANCY_PER_BITMAP = int(OPTIMIZER_PARAMS[4])
-    NUM_RULES_PER_LEAF = int(OPTIMIZER_PARAMS[5])
-    PROBABILITY_DIVIDEND = int(OPTIMIZER_PARAMS[6])
-    PROBABILITY_DIVISOR = int(OPTIMIZER_PARAMS[7])
+    PODS_OPTIMIZER_PARAMS = _TEMP[2].split('_')
+    PODS_ALGORITHM = PODS_OPTIMIZER_PARAMS[0]
+    PODS_NUM_BITMAPS = int(PODS_OPTIMIZER_PARAMS[1])
+    PODS_NUM_NODES_PER_BITMAP = int(PODS_OPTIMIZER_PARAMS[2])
+    PODS_REDUNDANCY_PER_BITMAP = int(PODS_OPTIMIZER_PARAMS[3])
+    PODS_NUM_RULES = int(PODS_OPTIMIZER_PARAMS[4])
+    PODS_PROBABILITY_DIVIDEND = int(PODS_OPTIMIZER_PARAMS[5])
+    PODS_PROBABILITY_DIVISOR = int(PODS_OPTIMIZER_PARAMS[6])
+
+    LEAFS_OPTIMIZER_PARAMS = _TEMP[3].split('_')
+    LEAFS_ALGORITHM = LEAFS_OPTIMIZER_PARAMS[0]
+    LEAFS_NUM_BITMAPS = int(LEAFS_OPTIMIZER_PARAMS[1])
+    LEAFS_NUM_NODES_PER_BITMAP = int(LEAFS_OPTIMIZER_PARAMS[2])
+    LEAFS_REDUNDANCY_PER_BITMAP = int(LEAFS_OPTIMIZER_PARAMS[3])
+    LEAFS_NUM_RULES = int(LEAFS_OPTIMIZER_PARAMS[4])
+    LEAFS_PROBABILITY_DIVIDEND = int(LEAFS_OPTIMIZER_PARAMS[5])
+    LEAFS_PROBABILITY_DIVISOR = int(LEAFS_OPTIMIZER_PARAMS[6])
+elif True:
+    NUM_EVENTS = 10000
+    DATA_FILE = 'output/optimizer.12_48_48_20_30_10_5000_expon_1000_5_uniform_colocate-colocate-uniform_48_True_5_0.random-fuzzy-match_1_1_0_5_2_3_pods.random-fuzzy-match_5_2_6_100_2_3_leafs'
+    LOG_FILE_PREFIX = 'output/dynamic-logs'
+
+    _TEMP = DATA_FILE.split('.')
+    CLOUD_PARAMS = _TEMP[1].split('_')
+    NUM_PODS = int(CLOUD_PARAMS[0])
+    NUM_LEAFS_PER_POD = int(CLOUD_PARAMS[1])
+    NUM_HOSTS_PER_LEAF = int(CLOUD_PARAMS[2])
+    NUM_TENANTS = int(CLOUD_PARAMS[4])
+    MIN_GROUP_SIZE = int(CLOUD_PARAMS[9])
+    SEED = int(CLOUD_PARAMS[15])
+
+    PODS_OPTIMIZER_PARAMS = _TEMP[2].split('_')
+    PODS_ALGORITHM = PODS_OPTIMIZER_PARAMS[0]
+    PODS_NUM_BITMAPS = int(PODS_OPTIMIZER_PARAMS[1])
+    PODS_NUM_NODES_PER_BITMAP = int(PODS_OPTIMIZER_PARAMS[2])
+    PODS_REDUNDANCY_PER_BITMAP = int(PODS_OPTIMIZER_PARAMS[3])
+    PODS_NUM_RULES = int(PODS_OPTIMIZER_PARAMS[4])
+    PODS_PROBABILITY_DIVIDEND = int(PODS_OPTIMIZER_PARAMS[5])
+    PODS_PROBABILITY_DIVISOR = int(PODS_OPTIMIZER_PARAMS[6])
+
+    LEAFS_OPTIMIZER_PARAMS = _TEMP[3].split('_')
+    LEAFS_ALGORITHM = LEAFS_OPTIMIZER_PARAMS[0]
+    LEAFS_NUM_BITMAPS = int(LEAFS_OPTIMIZER_PARAMS[1])
+    LEAFS_NUM_NODES_PER_BITMAP = int(LEAFS_OPTIMIZER_PARAMS[2])
+    LEAFS_REDUNDANCY_PER_BITMAP = int(LEAFS_OPTIMIZER_PARAMS[3])
+    LEAFS_NUM_RULES = int(LEAFS_OPTIMIZER_PARAMS[4])
+    LEAFS_PROBABILITY_DIVIDEND = int(LEAFS_OPTIMIZER_PARAMS[5])
+    LEAFS_PROBABILITY_DIVISOR = int(LEAFS_OPTIMIZER_PARAMS[6])
 elif False:
     NUM_EVENTS = 10000
     DATA_FILE = 'output/optimizer..'
-    LOG_FILE_PREFIX = 'output/logs'
+    LOG_FILE_PREFIX = 'output/dynamic-logs'
 
     CLOUD_PARAMS = []
-    NUM_TENANTS = 30
+    NUM_PODS = 12
+    NUM_LEAFS_PER_POD = 48
     NUM_HOSTS_PER_LEAF = 48
+    NUM_TENANTS = 30
     MIN_GROUP_SIZE = 5
     SEED = 0
 
-    OPTIMIZER_PARAMS = []
-    ALGORITHM = 'exact-match'
-    NUM_BITMAPS = 10
-    NUM_LEAFS_PER_BITMAP = 3
-    REDUNDANCY_PER_BITMAP = 0
-    NUM_RULES_PER_LEAF = 100
-    PROBABILITY_DIVIDEND = 2
-    PROBABILITY_DIVISOR = 3
+    PODS_OPTIMIZER_PARAMS = []
+    PODS_ALGORITHM = 'exact-match'
+    PODS_NUM_BITMAPS = 2
+    PODS_NUM_NODES_PER_BITMAP = 3
+    PODS_REDUNDANCY_PER_BITMAP = 0
+    PODS_NUM_RULES = 100
+    PODS_PROBABILITY_DIVIDEND = 2
+    PODS_PROBABILITY_DIVISOR = 3
+
+    LEAFS_OPTIMIZER_PARAMS = []
+    LEAFS_ALGORITHM = 'exact-match'
+    LEAFS_NUM_BITMAPS = 10
+    LEAFS_NUM_NODES_PER_BITMAP = 3
+    LEAFS_REDUNDANCY_PER_BITMAP = 0
+    LEAFS_NUM_RULES = 100
+    LEAFS_PROBABILITY_DIVIDEND = 2
+    LEAFS_PROBABILITY_DIVISOR = 3
 else:
     raise (Exception('invalid parameters'))
 
-print("""
--> optimizer (
-     num_events=%s,
-     data_file=%s, 
-     dump_file_prefix=%s,
-     num_tenants=%s,
-     num_hosts_per_leaf=%s,
-     min_group_size=%s,
-     seed=%s,
-     algorithm=%s,
-     num_bitmaps=%s,
-     num_leafs_per_bitmap=%s,
-     redundancy_per_bitmap=%s,
-     num_rules_per_leaf=%s,
-     probability_dividend=%s,
-     probability_divisor=%s,
-     cloud_params=[%s],
-     optimizer_params=[%s])
-""" % (NUM_EVENTS,
-       DATA_FILE,
-       LOG_FILE_PREFIX,
-       NUM_TENANTS,
-       NUM_HOSTS_PER_LEAF,
-       MIN_GROUP_SIZE,
-       SEED,
-       ALGORITHM,
-       NUM_BITMAPS,
-       NUM_LEAFS_PER_BITMAP,
-       REDUNDANCY_PER_BITMAP,
-       NUM_RULES_PER_LEAF,
-       PROBABILITY_DIVIDEND,
-       PROBABILITY_DIVISOR,
-       ','.join(CLOUD_PARAMS),
-       ','.join(OPTIMIZER_PARAMS)))
-
 random.seed(SEED)
 
-log_dir = LOG_FILE_PREFIX + "." + "_".join(CLOUD_PARAMS) + "." + "_".join(OPTIMIZER_PARAMS) \
-          + "." + "_".join(sys.argv[1:-2])
+log_dir = LOG_FILE_PREFIX + "." + "_".join(CLOUD_PARAMS) + "." + "_".join(PODS_OPTIMIZER_PARAMS) \
+          + "." + "_".join(LEAFS_OPTIMIZER_PARAMS) + "." + "_".join(sys.argv[1:-2])
 
 if os.path.isdir(log_dir):
     print('%s, already exists.' % log_dir)
@@ -93,13 +111,18 @@ if os.path.isdir(log_dir):
 
 os.system('mkdir -p %s' % log_dir)
 
-# data = pickle_load_obj(DATA_FILE)
 data = marshal_load_obj(DATA_FILE)
 
-dynamic = Dynamic(data, num_tenants=NUM_TENANTS, num_events=NUM_EVENTS, algorithm=ALGORITHM, num_bitmaps=NUM_BITMAPS,
-                  num_leafs_per_bitmap=NUM_LEAFS_PER_BITMAP, redundancy_per_bitmap=REDUNDANCY_PER_BITMAP,
-                  num_rules_per_leaf=NUM_RULES_PER_LEAF, probability=1.0 * PROBABILITY_DIVIDEND / PROBABILITY_DIVISOR,
-                  min_group_size=MIN_GROUP_SIZE, num_hosts_per_leaf=NUM_HOSTS_PER_LEAF, debug=False)
+dynamic = Dynamic(data, num_events=NUM_EVENTS, num_pods=NUM_PODS, num_leafs_per_pod=NUM_LEAFS_PER_POD,
+                  num_hosts_per_leaf=NUM_HOSTS_PER_LEAF, num_tenants=NUM_TENANTS, min_group_size=MIN_GROUP_SIZE,
+                  pods_algorithm=PODS_ALGORITHM, pods_num_bitmaps=PODS_NUM_BITMAPS,
+                  pods_num_nodes_per_bitmap=PODS_NUM_NODES_PER_BITMAP,
+                  pods_redundancy_per_bitmap=PODS_REDUNDANCY_PER_BITMAP, pods_num_rules=PODS_NUM_RULES,
+                  pods_probability=1.0 * PODS_PROBABILITY_DIVIDEND / PODS_PROBABILITY_DIVISOR,
+                  leafs_algorithm=LEAFS_ALGORITHM, leafs_num_bitmaps=LEAFS_NUM_BITMAPS,
+                  leafs_num_nodes_per_bitmap=LEAFS_NUM_NODES_PER_BITMAP,
+                  leafs_redundancy_per_bitmap=LEAFS_REDUNDANCY_PER_BITMAP, leafs_num_rules=LEAFS_NUM_RULES,
+                  leafs_probability=1.0 * LEAFS_PROBABILITY_DIVIDEND / LEAFS_PROBABILITY_DIVISOR, debug=False)
 
 data = DynamicData(data, log_dir=log_dir)
 data.log()
