@@ -20,7 +20,7 @@ if len(sys.argv) > 1:
     NUM_PODS = int(CLOUD_PARAMS[0])
     NUM_LEAFS_PER_POD = int(CLOUD_PARAMS[1])
     NUM_TENANTS = int(CLOUD_PARAMS[4])
-    SEED = int(CLOUD_PARAMS[13])
+    SEED = int(CLOUD_PARAMS[15])
 elif False:
     ALGORITHM = 'random-fuzzy-match'
     NUM_BITMAPS = 2

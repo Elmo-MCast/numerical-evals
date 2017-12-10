@@ -11,6 +11,8 @@ VM_DIST = 'expon'  # options: expon
 NUM_GROUPS = 1000000
 MIN_GROUP_SIZE = 5
 GROUP_SIZE_DIST = 'uniform'  # options: uniform and wve
+PLACEMENT_DIST = "colocate-uniform"  # options: colocate-uniform, colocate-colocate-uniform
+PLACEMENT_NUM_HOSTS_PER_LEAF = 48
 MULTI_THREADED = True
 NUM_JOBS = 5
 SEED = 0
@@ -21,6 +23,35 @@ PYTHON = "pypy3"  # options: pypy3 or python or python3
 
 def run_cloud(params):
     local('%s run_cloud.py %s' % (PYTHON, ' '.join(map(str, params))))
+
+
+def kill():
+    local('pkill -f run_cloud')
+
+
+def test_small():
+    DUMP_FILE_PREFIX = 'output/cloud'
+    NUM_TENANTS = 30
+    NUM_GROUPS = 1000
+    PLACEMENT_DIST = "colocate-colocate-uniform"
+
+    run_cloud([NUM_PODS,
+               NUM_LEAFS_PER_POD,
+               NUM_HOSTS_PER_LEAF,
+               MAX_VMS_PER_HOST,
+               NUM_TENANTS,
+               MIN_VMS_PER_TENANT,
+               MAX_VMS_PER_TENANT,
+               VM_DIST,
+               NUM_GROUPS,
+               MIN_GROUP_SIZE,
+               GROUP_SIZE_DIST,
+               PLACEMENT_DIST,
+               PLACEMENT_NUM_HOSTS_PER_LEAF,
+               MULTI_THREADED,
+               NUM_JOBS,
+               SEED,
+               DUMP_FILE_PREFIX])
 
 
 def test():
@@ -37,6 +68,8 @@ def test():
                NUM_GROUPS,
                MIN_GROUP_SIZE,
                GROUP_SIZE_DIST,
+               PLACEMENT_DIST,
+               PLACEMENT_NUM_HOSTS_PER_LEAF,
                MULTI_THREADED,
                NUM_JOBS,
                SEED,
@@ -57,6 +90,8 @@ def run():
                        NUM_GROUPS,
                        MIN_GROUP_SIZE,
                        group_size_dist,
+                       PLACEMENT_DIST,
+                       PLACEMENT_NUM_HOSTS_PER_LEAF,
                        MULTI_THREADED,
                        NUM_JOBS,
                        seed,

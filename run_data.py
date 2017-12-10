@@ -15,7 +15,7 @@ if len(sys.argv) > 1:
     NUM_LEAFS_PER_POD = int(CLOUD_PARAMS[1])
     NUM_HOSTS_PER_LEAF = int(CLOUD_PARAMS[2])
     NUM_TENANTS = int(CLOUD_PARAMS[4])
-    SEED = int(CLOUD_PARAMS[13])
+    SEED = int(CLOUD_PARAMS[15])
 
     OPTIMIZER_PARAMS = _TEMP[-1].split('_')
     NUM_BITMAPS = int(OPTIMIZER_PARAMS[1])
@@ -68,7 +68,7 @@ else:
 
 random.seed(SEED)
 
-log_dir = LOG_DIR + "." + "_".join(CLOUD_PARAMS) + "." + "_".join(OPTIMIZER_PARAMS[:-1])
+log_dir = LOG_DIR + "." + "_".join(CLOUD_PARAMS) + "." + "_".join(OPTIMIZER_PARAMS)
 
 # if os.path.isdir(log_dir):
 #     print('%s, already exists.' % log_dir)

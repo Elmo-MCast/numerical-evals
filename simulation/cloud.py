@@ -15,6 +15,8 @@ class Cloud:
                  num_groups=100000,
                  min_group_size=5,
                  group_size_dist='uniform',  # options: uniform and wve
+                 placement_dist='colocate-uniform',
+                 placement_num_hosts_per_leaf=48,
                  multi_threaded=True,
                  num_jobs=10):
         self.data = dict()
@@ -26,5 +28,6 @@ class Cloud:
 
         Placement(data=self.data,
                   num_pods=num_pods, num_leafs_per_pod=num_leafs_per_pod, num_hosts_per_leaf=num_hosts_per_leaf,
-                  num_tenants=num_tenants, max_vms_per_host=max_vms_per_host, multi_threaded=multi_threaded,
+                  num_tenants=num_tenants, max_vms_per_host=max_vms_per_host, dist=placement_dist,
+                  allocate_num_hosts_per_leaf=placement_num_hosts_per_leaf, multi_threaded=multi_threaded,
                   num_jobs=num_jobs)

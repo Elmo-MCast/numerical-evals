@@ -16,11 +16,13 @@ if len(sys.argv) > 1:
     NUM_GROUPS = int(sys.argv[9])
     MIN_GROUP_SIZE = int(sys.argv[10])
     GROUP_SIZE_DIST = sys.argv[11]  # options: uniform and wve
-    MULTI_THREADED = True if sys.argv[12] == 'True' else False
-    NUM_JOBS = int(sys.argv[13])
-    SEED = int(sys.argv[14])
-    DUMP_FILE_PREFIX = sys.argv[15]
-elif False:
+    PLACEMENT_DIST = sys.argv[12]
+    PLACEMENT_NUM_HOSTS_PER_LEAF = int(sys.argv[13])
+    MULTI_THREADED = True if sys.argv[14] == 'True' else False
+    NUM_JOBS = int(sys.argv[15])
+    SEED = int(sys.argv[16])
+    DUMP_FILE_PREFIX = sys.argv[17]
+elif True:
     NUM_PODS = 12
     NUM_LEAFS_PER_POD = 48
     NUM_HOSTS_PER_LEAF = 48
@@ -32,6 +34,8 @@ elif False:
     NUM_GROUPS = 100000
     MIN_GROUP_SIZE = 5
     GROUP_SIZE_DIST = "uniform"  # options: uniform and wve
+    PLACEMENT_DIST = "colocate-colocate-uniform"
+    PLACEMENT_NUM_HOSTS_PER_LEAF = 48
     MULTI_THREADED = True
     NUM_JOBS = 5
     SEED = 0
@@ -48,6 +52,8 @@ elif False:
     NUM_GROUPS = 1000
     MIN_GROUP_SIZE = 5
     GROUP_SIZE_DIST = "wve"  # options: uniform and wve
+    PLACEMENT_DIST = "colocate-uniform"
+    PLACEMENT_NUM_HOSTS_PER_LEAF = 48
     MULTI_THREADED = True
     NUM_JOBS = 5
     SEED = 0
@@ -74,6 +80,8 @@ cloud = Cloud(num_pods=NUM_PODS,
               num_groups=NUM_GROUPS,
               min_group_size=MIN_GROUP_SIZE,
               group_size_dist=GROUP_SIZE_DIST,
+              placement_dist=PLACEMENT_DIST,
+              placement_num_hosts_per_leaf=PLACEMENT_NUM_HOSTS_PER_LEAF,
               multi_threaded=MULTI_THREADED,
               num_jobs=NUM_JOBS)
 

@@ -10,13 +10,16 @@ def unwrap_tenant_groups_pods_and_leafs_to_bitmap_map(args, **kwargs):
 
 class Placement:
     def __init__(self, data, num_pods=12, num_leafs_per_pod=48, num_hosts_per_leaf=48, num_tenants=3000,
-                 max_vms_per_host=20, multi_threaded=False, num_jobs=4):
+                 max_vms_per_host=20, dist='colocate-uniform', allocate_num_hosts_per_leaf=48, multi_threaded=False,
+                 num_jobs=4):
         self.data = data
         self.num_pods = num_pods
         self.num_leafs_per_pod = num_leafs_per_pod
         self.num_hosts_per_leaf = num_hosts_per_leaf
         self.num_tenants = num_tenants
         self.max_vms_per_host = max_vms_per_host
+        self.dist = dist
+        self.allocate_num_hosts_per_leaf = allocate_num_hosts_per_leaf
         self.multi_threaded = multi_threaded
         self.num_jobs = num_jobs
 
@@ -40,7 +43,7 @@ class Placement:
         else:
             self._run_tenant_groups_pods_and_leafs_to_bitmap_map()
 
-    def _colocate_pods_with_uniform_hosts(self):
+    def _colocate_pods__uniform_hosts(self):
         available_pods = list(range(self.num_pods))
         available_hosts_per_pod = [None] * self.num_pods
         available_hosts_count_per_pod = [None] * self.num_pods
@@ -60,27 +63,96 @@ class Placement:
 
             while vm_count > 0:
                 selected_pod = random.sample(available_pods, 1)[0]
-                selected_hosts_per_pod = available_hosts_per_pod[selected_pod]
-                selected_hosts_count_per_pod = available_hosts_count_per_pod[selected_pod]
+                selected_pod_index = available_pods.index(selected_pod)
+                selected_hosts = available_hosts_per_pod[selected_pod_index]
+                selected_hosts_count = available_hosts_count_per_pod[selected_pod_index]
 
-                sampled_hosts = random.sample(selected_hosts_per_pod, min(len(selected_hosts_per_pod), vm_count))
+                sampled_hosts = random.sample(selected_hosts, min(len(selected_hosts), vm_count))
                 for h in sampled_hosts:
                     vm_to_host_map[vm_index] = h
-                    selected_hosts_count_per_pod[selected_hosts_per_pod.index(h)] += 1
+                    selected_hosts_count[selected_hosts.index(h)] += 1
                     vm_index += 1
                 vm_count -= len(sampled_hosts)
 
-                removed_hosts_indexes = [i for i, c in enumerate(selected_hosts_count_per_pod)
-                                         if c == self.max_vms_per_host]
+                removed_hosts_indexes = [i for i, c in enumerate(selected_hosts_count) if c == self.max_vms_per_host]
                 for i in sorted(removed_hosts_indexes, reverse=True):
-                    del selected_hosts_per_pod[i]
-                    del selected_hosts_count_per_pod[i]
+                    del selected_hosts[i]
+                    del selected_hosts_count[i]
 
-                    if len(selected_hosts_per_pod) == 0:
-                        available_pods.remove(selected_pod)
+                if len(selected_hosts) == 0:
+                    del available_pods[selected_pod_index]
+                    del available_hosts_per_pod[selected_pod_index]
+                    del available_hosts_count_per_pod[selected_pod_index]
+
+    def _colocate_pods__colocate_leafs__uniform_hosts(self):
+        available_pods = list(range(self.num_pods))
+        available_leafs_per_pod = [None] * self.num_pods
+        available_hosts_per_leaf_per_pod = [None] * self.num_pods
+        available_hosts_count_per_leaf_per_pod = [None] * self.num_pods
+
+        for p in range(self.num_pods):
+            available_leafs_per_pod[p] = [(p * self.num_leafs_per_pod) + l for l in range(self.num_leafs_per_pod)]
+            available_hosts_per_leaf_per_pod[p] = [None] * self.num_leafs_per_pod
+            available_hosts_count_per_leaf_per_pod[p] = [None] * self.num_leafs_per_pod
+
+            available_leafs = available_leafs_per_pod[p]
+            available_hosts_per_leaf = available_hosts_per_leaf_per_pod[p]
+            available_hosts_count_per_leaf = available_hosts_count_per_leaf_per_pod[p]
+            for l in range(self.num_leafs_per_pod):
+                available_hosts_per_leaf[l] = [(available_leafs[l] * self.num_hosts_per_leaf) + h
+                                               for h in range(self.num_hosts_per_leaf)]
+                available_hosts_count_per_leaf[l] = [0] * self.num_hosts_per_leaf
+
+        tenants_maps = self.tenants_maps
+        for t in bar_range(self.num_tenants, desc='placement:vms->host'):
+            tenant_maps = tenants_maps[t]
+            vm_to_host_map = tenant_maps['vm_to_host_map']
+            vm_index = 0
+            vm_count = tenant_maps['vm_count']
+
+            while vm_count > 0:
+                selected_pod = random.sample(available_pods, 1)[0]
+                selected_pod_index = available_pods.index(selected_pod)
+                selected_leafs = available_leafs_per_pod[selected_pod_index]
+                selected_hosts_per_leaf = available_hosts_per_leaf_per_pod[selected_pod_index]
+                selected_hosts_count_per_leaf = available_hosts_count_per_leaf_per_pod[selected_pod_index]
+
+                while vm_count > 0 and len(selected_leafs) > 0:
+                    selected_leaf = random.sample(selected_leafs, 1)[0]
+                    selected_leaf_index = selected_leafs.index(selected_leaf)
+                    selected_hosts = selected_hosts_per_leaf[selected_leaf_index]
+                    selected_hosts_count = selected_hosts_count_per_leaf[selected_leaf_index]
+
+                    sampled_hosts = random.sample(selected_hosts, min(len(selected_hosts), vm_count))
+                    for h in sampled_hosts:
+                        vm_to_host_map[vm_index] = h
+                        selected_hosts_count[selected_hosts.index(h)] += 1
+                        vm_index += 1
+                    vm_count -= len(sampled_hosts)
+
+                    removed_hosts_indexes = [i for i, c in enumerate(selected_hosts_count) if c == self.max_vms_per_host]
+                    for i in sorted(removed_hosts_indexes, reverse=True):
+                        del selected_hosts[i]
+                        del selected_hosts_count[i]
+
+                    if len(selected_hosts) == 0:
+                        del selected_leafs[selected_leaf_index]
+                        del selected_hosts_per_leaf[selected_leaf_index]
+                        del selected_hosts_count_per_leaf[selected_leaf_index]
+
+                if len(selected_leafs) == 0:
+                    del available_pods[selected_pod_index]
+                    del available_leafs_per_pod[selected_pod_index]
+                    del available_hosts_per_leaf_per_pod[selected_pod_index]
+                    del available_hosts_count_per_leaf_per_pod[selected_pod_index]
 
     def _get_tenant_vms_to_host_map(self):
-        self._colocate_pods_with_uniform_hosts()
+        if self.dist == 'colocate-uniform':
+            self._colocate_pods__uniform_hosts()
+        elif self.dist == 'colocate-colocate-uniform':
+            self._colocate_pods__colocate_leafs__uniform_hosts()
+        else:
+            raise(Exception('invalid dist parameter for vm to host allocation'))
 
     def _get_tenant_groups_pods_and_leafs_to_bitmap_map(self):
         for t in bar_range(self.num_tenants, desc='placement:leafs->bitmap'):

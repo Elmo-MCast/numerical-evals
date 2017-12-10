@@ -12,6 +12,10 @@ def run_data(params):
     local('%s run_data.py %s' % (PYTHON, ' '.join(map(str, params))))
 
 
+def kill():
+    local('pkill -f run_data')
+
+
 def test_pods():
     DATA_FILE_PREFIX = 'output/optimizer.*_pods'
     LOG_DIR = 'output/logs'
