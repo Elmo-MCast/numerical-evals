@@ -33,7 +33,7 @@ def test_small():
     DUMP_FILE_PREFIX = 'output/cloud'
     NUM_TENANTS = 30
     NUM_GROUPS = 1000
-    PLACEMENT_DIST = "colocate-colocate-uniform"
+    PLACEMENT_DIST = "colocate-uniform"
 
     run_cloud([NUM_PODS,
                NUM_LEAFS_PER_POD,
@@ -58,7 +58,7 @@ def test_large():
     DUMP_FILE_PREFIX = 'output/cloud'
     NUM_TENANTS = 3000
     NUM_GROUPS = 100000
-    PLACEMENT_DIST = "colocate-colocate-uniform"
+    PLACEMENT_DIST = "colocate-uniform"
 
     run_cloud([NUM_PODS,
                NUM_LEAFS_PER_POD,
