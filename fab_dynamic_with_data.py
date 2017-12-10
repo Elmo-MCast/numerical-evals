@@ -1,7 +1,7 @@
 from fabric.api import *
 from glob import glob
 
-NUM_EVENTS=10000
+NUM_EVENTS=1000000
 DATA_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/12-2-2017/output-1M-random/optimizer.*"
 LOG_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/12-2-2017/output-1M-random/dynamic"
 
@@ -16,7 +16,18 @@ def kill():
     local('pkill -f run_dynamic_with_data')
 
 
-def test():
+def test_small():
+    NUM_EVENTS = 10000
+    DATA_FILE_PREFIX = 'output/optimizer.*_pods.*_leafs'
+    LOG_FILE_PREFIX = 'output/dynamic-logs'
+
+    files = glob(DATA_FILE_PREFIX)
+    for file in files:
+        run_dynamic_with_data([NUM_EVENTS, file, LOG_FILE_PREFIX])
+
+
+def test_large():
+    NUM_EVENTS = 1000000
     DATA_FILE_PREFIX = 'output/optimizer.*_pods.*_leafs'
     LOG_FILE_PREFIX = 'output/dynamic-logs'
 
