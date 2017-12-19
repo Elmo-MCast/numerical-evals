@@ -2,8 +2,8 @@ from fabric.api import *
 from glob import glob
 
 LOG_CLOUD_STATS="True"
-DATA_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/output/optimizer.*"
-LOG_DIR="/mnt/sdb1/baseerat/numerical-evals/logs"
+DATA_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/12-11-2017/output-1M/optimizer.*"
+LOG_DIR="/mnt/sdb1/baseerat/numerical-evals/12-11-2017/logs-1M/logs"
 
 PYTHON = 'pypy3'  # options: pypy3 or python or python3
 
@@ -42,3 +42,8 @@ def test():
     files = glob(DATA_FILE_PREFIX)
     for file in files:
         run_data([LOG_CLOUD_STATS, file, LOG_DIR])
+
+
+def run_with_args(file, log_cloud_stats='True'):
+    run_data([True if log_cloud_stats == 'True' else False, file, LOG_DIR])
+

@@ -9,9 +9,9 @@ NUM_RULES = 10000
 PROBABILITY_DIVIDEND = 2
 PROBABILITY_DIVISOR = 3
 NODE_TYPE = 'pods'
-LOG_CLOUD_STATS = True
-DATA_FILE_PREFIX = '/mnt/sdb1/baseerat/numerical-evals/12-9-2017/output-100K-random/cloud.*'
-LOG_FILE_PREFIX = '/mnt/sdb1/baseerat/numerical-evals/12-9-2017/logs-100K-uniform/logs'
+LOG_CLOUD_STATS = False
+DATA_FILE_PREFIX = '/mnt/sdb1/baseerat/numerical-evals/12-11-2017/output-1M/cloud.*'
+LOG_FILE_PREFIX = '/mnt/sdb1/baseerat/numerical-evals/12-11-2017/logs-1M/logs'
 
 PYTHON = 'pypy3'  # options: pypy3 or python or python3
 
@@ -144,3 +144,17 @@ def run_leafs():
                                                  LOG_CLOUD_STATS,
                                                  file,
                                                  LOG_FILE_PREFIX])
+
+
+def run_with_args(node_type, file, num_rules, num_bitmaps, num_nodes_per_bitmap, redundancy_per_bitmap, algorithm):
+    run_optimizer_with_data([algorithm,
+                             num_bitmaps,
+                             num_nodes_per_bitmap,
+                             redundancy_per_bitmap,
+                             num_rules,
+                             PROBABILITY_DIVIDEND,
+                             PROBABILITY_DIVISOR,
+                             node_type,
+                             LOG_CLOUD_STATS,
+                             file,
+                             LOG_FILE_PREFIX])

@@ -9,8 +9,8 @@ NUM_RULES = 10000
 PROBABILITY_DIVIDEND = 2
 PROBABILITY_DIVISOR = 3
 NODE_TYPE = 'pods'
-DATA_FILE_PREFIX = '/mnt/sdb1/baseerat/numerical-evals/12-9-2017/output-100K-random/cloud.*'
-DUMP_FILE_PREFIX = '/mnt/sdb1/baseerat/numerical-evals/12-9-2017/output-100K-random/optimizer'
+DATA_FILE_PREFIX = '/mnt/sdb1/baseerat/numerical-evals/12-11-2017/output-1M/cloud.*'
+DUMP_FILE_PREFIX = '/mnt/sdc1/baseerat/numerical-evals/12-11-2017/output-1M/optimizer'
 
 PYTHON = 'pypy3'  # options: pypy3 or python or python3
 
@@ -128,7 +128,7 @@ def test_leafs_large():
 
 
 def run_pods():
-    NOTE_TYPE = 'pods'
+    NODE_TYPE = 'pods'
 
     files = glob(DATA_FILE_PREFIX)
     for file in files:
@@ -142,7 +142,7 @@ def run_pods():
                                    num_rules,
                                    PROBABILITY_DIVIDEND,
                                    PROBABILITY_DIVISOR,
-                                   NOTE_TYPE,
+                                   NODE_TYPE,
                                    file,
                                    DUMP_FILE_PREFIX])
 
@@ -154,13 +154,13 @@ def run_pods():
                                        num_rules,
                                        PROBABILITY_DIVIDEND,
                                        PROBABILITY_DIVISOR,
-                                       NOTE_TYPE,
+                                       NODE_TYPE,
                                        file,
                                        DUMP_FILE_PREFIX])
 
 
 def run_leafs():
-    NOTE_TYPE = 'leafs'
+    NODE_TYPE = 'leafs'
 
     files = glob(DATA_FILE_PREFIX)
     for file in files:
@@ -174,7 +174,7 @@ def run_leafs():
                                    num_rules,
                                    PROBABILITY_DIVIDEND,
                                    PROBABILITY_DIVISOR,
-                                   NOTE_TYPE,
+                                   NODE_TYPE,
                                    file,
                                    DUMP_FILE_PREFIX])
 
@@ -186,6 +186,19 @@ def run_leafs():
                                        num_rules,
                                        PROBABILITY_DIVIDEND,
                                        PROBABILITY_DIVISOR,
-                                       NOTE_TYPE,
+                                       NODE_TYPE,
                                        file,
                                        DUMP_FILE_PREFIX])
+
+
+def run_with_args(node_type, file, num_rules, num_bitmaps, num_nodes_per_bitmap, redundancy_per_bitmap, algorithm):
+    run_optimizer([algorithm,
+                   num_bitmaps,
+                   num_nodes_per_bitmap,
+                   redundancy_per_bitmap,
+                   num_rules,
+                   PROBABILITY_DIVIDEND,
+                   PROBABILITY_DIVISOR,
+                   node_type,
+                   file,
+                   DUMP_FILE_PREFIX])
