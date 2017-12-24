@@ -294,7 +294,8 @@ class Event:
                     if remove_leaf_from_pod:
                         self._process_leave_for_pods(vm_leaf, vm_pod, group_map, pod_switch_update_count_map)
 
-                    virtual_switch_update_count_map[-1] += 1
+                    if vm_type == 'S':
+                        virtual_switch_update_count_map[-1] += 1
                     virtual_switch_update_count_map[-1] += sum(
                         [1 for vm in vms if vms_types[vm] == 'P' or vms_types[vm] == 'B'])
 
