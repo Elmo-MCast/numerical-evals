@@ -1,9 +1,9 @@
 from fabric.api import *
 from glob import glob
 
-NUM_EVENTS=1000000
-DATA_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/12-2-2017/output-1M-random/optimizer.*"
-LOG_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/12-2-2017/output-1M-random/dynamic"
+NUM_EVENTS = 1000000
+DATA_FILE_PREFIX = "/mnt/sdb1/baseerat/numerical-evals/12-24-2017/output-1M/optimizer.*_leafs_*"
+LOG_FILE_PREFIX = "/mnt/sdb1/baseerat/numerical-evals/12-24-2017/logs-1M/dynamic-logs"
 
 PYTHON = 'pypy3'  # options: pypy3 or python or python3
 
@@ -34,3 +34,7 @@ def test_large():
     files = glob(DATA_FILE_PREFIX)
     for file in files:
         run_dynamic_with_data([NUM_EVENTS, file, LOG_FILE_PREFIX])
+
+
+def run_with_args(file):
+    run_dynamic_with_data([NUM_EVENTS, file, LOG_FILE_PREFIX])
