@@ -16,7 +16,7 @@ PLACEMENT_NUM_HOSTS_PER_LEAF = 48
 MULTI_THREADED = True
 NUM_JOBS = 5
 SEED = 0
-DUMP_FILE_PREFIX = "/mnt/sdb1/baseerat/numerical-evals/12-11-2017/output-1M/cloud"
+DUMP_FILE_PREFIX = "/mnt/sdb1/baseerat/numerical-evals/1-10-2018/output-1M/cloud"
 
 PYTHON = "pypy3"  # options: pypy3 or python or python3
 

@@ -9,8 +9,8 @@ NUM_RULES = 10000
 PROBABILITY_DIVIDEND = 2
 PROBABILITY_DIVISOR = 3
 NODE_TYPE = 'pods'
-DATA_FILE_PREFIX = '/mnt/sdb1/baseerat/numerical-evals/12-24-2017/output-1M/cloud.*'
-DUMP_FILE_PREFIX = '/mnt/sdb1/baseerat/numerical-evals/12-24-2017/output-1M/optimizer'
+DATA_FILE_PREFIX = '/mnt/sdb1/baseerat/numerical-evals/1-10-2018/output-1M/cloud.*'
+DUMP_FILE_PREFIX = '/mnt/sdb1/baseerat/numerical-evals/1-10-2018/output-1M/optimizer'
 
 PYTHON = 'pypy3'  # options: pypy3 or python or python3
 

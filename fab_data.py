@@ -3,7 +3,7 @@ from glob import glob
 
 LOG_CLOUD_STATS="True"
 DATA_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/12-11-2017/output-1M/optimizer.*"
-LOG_DIR="/mnt/sdb1/baseerat/numerical-evals/12-11-2017/logs-1M/logs"
+LOG_DIR="/mnt/sdb1/baseerat/numerical-evals/1-10-2018/logs-1M/logs"
 
 PYTHON = 'pypy3'  # options: pypy3 or python or python3
 

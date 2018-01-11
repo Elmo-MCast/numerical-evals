@@ -256,6 +256,74 @@ class Data:
 
         return traffic_per_group_per_tenant_for_overlay
 
+    def traffic_per_group_per_tenant_for_overlay_corrected(self):
+        traffic_per_group_per_tenant_for_overlay_corrected = []
+
+        for t in bar_range(self.num_tenants, desc='data:traffic_per_group_per_tenant_for_overlay_corrected:'):
+            tenant_maps = self.tenants_maps[t]
+            group_count = tenant_maps['group_count']
+            groups_map = tenant_maps['groups_map']
+
+            for g in range(group_count):
+                group_map = groups_map[g]
+                leafs_map = group_map['leafs_map']
+                pods_map = group_map['pods_map']
+                pods_traffic = 0
+                leafs_traffic = 0
+
+                for p in pods_map:
+                    pod_map = pods_map[p]
+                    pod_leaf_count = popcount(pod_map['bitmap'])
+                    pods_traffic += 4 * (pod_leaf_count - 1)
+
+                for l in leafs_map:
+                    leaf_map = leafs_map[l]
+                    leaf_host_count = popcount(leaf_map['bitmap'])
+                    leafs_traffic += 2 * (leaf_host_count - 1)
+
+                traffic_per_group_per_tenant_for_overlay_corrected += [(6 * len(pods_map)) + pods_traffic + leafs_traffic]
+
+        traffic_per_group_per_tenant_for_overlay_corrected = \
+            pd.Series(traffic_per_group_per_tenant_for_overlay_corrected)
+
+        return traffic_per_group_per_tenant_for_overlay_corrected
+
+    def traffic_per_group_per_tenant_for_overlay_corrected_params(self):
+        traffic_per_group_per_tenant_for_overlay_pods = []
+        traffic_per_group_per_tenant_for_overlay_leafs = []
+        traffic_per_group_per_tenant_for_overlay_pods_traffic = []
+
+        for t in bar_range(self.num_tenants, desc='data:traffic_per_group_per_tenant_for_overlay_corrected_params:'):
+            tenant_maps = self.tenants_maps[t]
+            group_count = tenant_maps['group_count']
+            groups_map = tenant_maps['groups_map']
+
+            for g in range(group_count):
+                group_map = groups_map[g]
+                leafs_map = group_map['leafs_map']
+                pods_map = group_map['pods_map']
+                pods_traffic = 0
+
+                for p in pods_map:
+                    pod_map = pods_map[p]
+                    pod_leaf_count = popcount(pod_map['bitmap'])
+                    pods_traffic += 4 * (pod_leaf_count - 1)
+
+                traffic_per_group_per_tenant_for_overlay_pods += [len(pods_map)]
+                traffic_per_group_per_tenant_for_overlay_leafs += [len(leafs_map)]
+                traffic_per_group_per_tenant_for_overlay_pods_traffic += [pods_traffic]
+
+        traffic_per_group_per_tenant_for_overlay_pods = \
+            pd.Series(traffic_per_group_per_tenant_for_overlay_pods)
+        traffic_per_group_per_tenant_for_overlay_leafs = \
+            pd.Series(traffic_per_group_per_tenant_for_overlay_leafs)
+        traffic_per_group_per_tenant_for_overlay_pods_traffic = \
+            pd.Series(traffic_per_group_per_tenant_for_overlay_pods_traffic)
+
+        return traffic_per_group_per_tenant_for_overlay_pods, \
+               traffic_per_group_per_tenant_for_overlay_leafs, \
+               traffic_per_group_per_tenant_for_overlay_pods_traffic
+
     def traffic_per_group_per_tenant_for_baseerat(self):
         _traffic_per_group_per_tenant_for_baseerat = []
 
@@ -297,10 +365,20 @@ class Data:
     def traffic_per_group_per_tenant(self):
         if self.log_dir:
             t_dataframe = pd.DataFrame()
-            t_dataframe['multicast'] = self.traffic_per_group_per_tenant_for_multicast()
-            t_dataframe['unicast'] = self.traffic_per_group_per_tenant_for_unicast()
-            t_dataframe['overlay'] = self.traffic_per_group_per_tenant_for_overlay()
-            t_dataframe['baseerat'] = self.traffic_per_group_per_tenant_for_baseerat()
+            # t_dataframe['multicast'] = self.traffic_per_group_per_tenant_for_multicast()
+            # t_dataframe['unicast'] = self.traffic_per_group_per_tenant_for_unicast()
+            # t_dataframe['overlay'] = self.traffic_per_group_per_tenant_for_overlay()
+            # t_dataframe['overlay_corrected'] = self.traffic_per_group_per_tenant_for_overlay_corrected()
+
+            traffic_per_group_per_tenant_for_overlay_pods, \
+            traffic_per_group_per_tenant_for_overlay_leafs, \
+            traffic_per_group_per_tenant_for_overlay_pods_traffic = \
+                self.traffic_per_group_per_tenant_for_overlay_corrected_params()
+            t_dataframe['overlay_corrected_params:pods'] = traffic_per_group_per_tenant_for_overlay_pods
+            t_dataframe['overlay_corrected_params:leafs'] = traffic_per_group_per_tenant_for_overlay_leafs
+            t_dataframe['overlay_corrected_params:pods_traffic'] = traffic_per_group_per_tenant_for_overlay_pods_traffic
+
+            # t_dataframe['baseerat'] = self.traffic_per_group_per_tenant_for_baseerat()
             t_dataframe.to_csv(self.log_dir + "/traffic_per_group_per_tenant.csv", index=False)
 
     def _log_cloud_stats(self):
@@ -324,10 +402,11 @@ class Data:
             self.traffic_per_group_per_tenant()
 
     def log_stats(self, log_cloud_stats=True):
-        if log_cloud_stats:
-            self._log_cloud_stats()
-        self._log_optimizer_stats()
+        # if log_cloud_stats:
+        #     self._log_cloud_stats()
+        # self._log_optimizer_stats()
 
+        self.traffic_per_group_per_tenant()
 
 class DynamicData:
     def __init__(self, data, log_dir=None):
