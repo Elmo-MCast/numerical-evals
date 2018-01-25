@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-DATA_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/12-24-2017/output-1M/optimizer.*_leafs"
+DATA_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/1-25-2018/output-1M/optimizer.*_leafs"
 
 #declare -i i=1
 for file in ${DATA_FILE_PREFIX}

@@ -2,8 +2,8 @@ from fabric.api import *
 from glob import glob
 
 NUM_EVENTS = 1000000
-DATA_FILE_PREFIX = "/mnt/sdb1/baseerat/numerical-evals/12-24-2017/output-1M/optimizer.*_leafs_*"
-LOG_FILE_PREFIX = "/mnt/sdb1/baseerat/numerical-evals/12-24-2017/logs-1M/dynamic-logs"
+DATA_FILE_PREFIX = "/mnt/sdb1/baseerat/numerical-evals/1-25-2018/output-1M/optimizer.*_leafs_*"
+LOG_FILE_PREFIX = "/mnt/sdb1/baseerat/numerical-evals/1-25-2018/logs-1M/dynamic-logs"
 
 PYTHON = 'pypy3'  # options: pypy3 or python or python3
 

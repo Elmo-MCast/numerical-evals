@@ -68,7 +68,7 @@
 #    done
 #done
 
-DATA_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/12-24-2017/output-1M/optimizer.*_pods"
+DATA_FILE_PREFIX="/mnt/sdb1/baseerat/numerical-evals/1-25-2018/output-1M/optimizer.*_pods"
 NODE_TYPE="leafs"
 
 for file in ${DATA_FILE_PREFIX}
@@ -79,15 +79,15 @@ do
         do
             for num_nodes_per_bitmap in 3
             do
-                fab -f fab_optimizer.py \
-                       run_with_args:${NODE_TYPE},${file},${num_rules},${num_bitmaps},${num_nodes_per_bitmap},0,"exact-match" &
+#                fab -f fab_optimizer.py \
+#                       run_with_args:${NODE_TYPE},${file},${num_rules},${num_bitmaps},${num_nodes_per_bitmap},0,"exact-match" &
 
-                for redundancy_per_bitmap in 48
+                for redundancy_per_bitmap in 12
                 do
                     fab -f fab_optimizer.py \
                            run_with_args:${NODE_TYPE},${file},${num_rules},${num_bitmaps},${num_nodes_per_bitmap},${redundancy_per_bitmap},"random-fuzzy-match" &
                 done
-                wait
+#                wait
             done
         done
     done
