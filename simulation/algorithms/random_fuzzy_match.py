@@ -4,12 +4,15 @@ from simulation.algorithms.common import min_k_union_random as min_k_union
 
 
 def run(nodes_map, max_bitmaps, max_nodes_per_bitmap, redundancy_per_bitmap, rules_count_map, max_rules,
-        probability=1.0 * 2 / 3):
+        probability=1.0 * 2 / 3, num_ports_per_node=48, node_id_width=4):
     if len(nodes_map) <= max_bitmaps:
-        return
+        header_size = (len(nodes_map) * (num_ports_per_node + node_id_width + 2))
+        return header_size, 0
 
     unassigned_nodes = [n for n in nodes_map]
     num_unassigned_bitmaps = max_bitmaps
+
+    header_size = 0
 
     # Assign nodes to bitmaps
     for i in range(max_bitmaps):
@@ -22,6 +25,7 @@ def run(nodes_map, max_bitmaps, max_nodes_per_bitmap, redundancy_per_bitmap, rul
                     node = nodes_map[n]
                     node['has_bitmap'] = i
                     node['~bitmap'] = min_k_bitmap ^ node['bitmap']
+                header_size += (num_ports_per_node + 1) + (k * (node_id_width + 1))
                 break
             else:
                 unassigned_nodes += min_k_nodes
@@ -43,4 +47,7 @@ def run(nodes_map, max_bitmaps, max_nodes_per_bitmap, redundancy_per_bitmap, rul
         if 'has_rule' not in node:
             node['~bitmap'] = default_bitmap ^ node['bitmap']
 
-    return default_bitmap
+    if default_bitmap != 0:
+        header_size += num_ports_per_node
+
+    return header_size, default_bitmap

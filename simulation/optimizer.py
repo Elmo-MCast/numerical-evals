@@ -1,12 +1,14 @@
 from timeit import default_timer as timer
 import numpy as np
+from math import ceil, log2
 from simulation.algorithms import algorithms
 from simulation.utils import bar_range
 
 
 class Optimizer:
     def __init__(self, data, algorithm='single-match', num_bitmaps=10, num_nodes_per_bitmap=3, redundancy_per_bitmap=20,
-                 num_rules=64000, num_nodes=576, num_tenants=3000, probability=1.0 * 2 / 3, node_type='leafs'):
+                 num_rules=64000, num_nodes=576, num_tenants=3000, probability=1.0 * 2 / 3,
+                 node_type='leafs', num_ports_per_node=48):
         self.data = data
         self.algorithm = algorithm
         self.num_bitmaps = num_bitmaps
@@ -16,6 +18,8 @@ class Optimizer:
         self.num_nodes = num_nodes
         self.num_tenants = num_tenants
         self.probability = probability
+        self.num_ports_per_node = num_ports_per_node
+        self.node_id_width = ceil(log2(num_nodes))
         self.node_type = node_type
 
         self.algorithm_elapse_time = []
@@ -47,7 +51,7 @@ class Optimizer:
                 nodes_map = group_map['leafs_map'] if self.node_type == 'leafs' else group_map['pods_map']
 
                 start = timer()
-                default_bitmap = algorithms.run(
+                header_size, default_bitmap = algorithms.run(
                     algorithm=self.algorithm,
                     nodes_map=nodes_map,
                     max_bitmaps=self.num_bitmaps,
@@ -55,8 +59,10 @@ class Optimizer:
                     redundancy_per_bitmap=self.redundancy_per_bitmap,
                     rules_count_map=self.rules_count_map,
                     max_rules=self.num_rules,
-                    probability=self.probability)
-                if default_bitmap:
-                    group_map['%s_default_bitmap' % self.node_type] = default_bitmap
+                    probability=self.probability,
+                    num_ports_per_node=self.num_ports_per_node,
+                    node_id_width=self.node_id_width)
+                group_map['%s_header_size' % self.node_type] = header_size
+                group_map['%s_default_bitmap' % self.node_type] = default_bitmap
                 end = timer()
                 self.algorithm_elapse_time += [end - start]

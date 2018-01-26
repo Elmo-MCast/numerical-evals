@@ -6,7 +6,7 @@ import simulation.algorithms.random_fuzzy_match as random_fuzzy_match
 
 
 def run(algorithm, nodes_map, max_bitmaps, max_nodes_per_bitmap, redundancy_per_bitmap, rules_count_map,
-        max_rules, probability):
+        max_rules, probability, num_ports_per_node, node_id_width):
     if algorithm == 'single-match':
         return single_match.run(nodes_map, max_bitmaps, rules_count_map, max_rules)
     elif algorithm == 'random-single-match':
@@ -18,7 +18,6 @@ def run(algorithm, nodes_map, max_bitmaps, max_nodes_per_bitmap, redundancy_per_
                                max_rules)
     elif algorithm == 'random-fuzzy-match':
         return random_fuzzy_match.run(nodes_map, max_bitmaps, max_nodes_per_bitmap, redundancy_per_bitmap,
-                                      rules_count_map,
-                                      max_rules, probability)
+                                      rules_count_map, max_rules, probability, num_ports_per_node, node_id_width)
     else:
         raise (Exception("invalid algorithm"))

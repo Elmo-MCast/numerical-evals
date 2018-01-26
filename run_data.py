@@ -46,8 +46,8 @@ elif False:
     OPTIMIZER_PARAMS_1 = []
     NODE_TYPE_1 = None
 elif False:
-    LOG_CLOUD_STATS = True
-    DATA_FILE = 'output/_optimizer..'
+    LOG_CLOUD_STATS = False
+    DATA_FILE = 'output/optimizer...'
     LOG_DIR = 'output/logs'
 
     CLOUD_PARAMS = []

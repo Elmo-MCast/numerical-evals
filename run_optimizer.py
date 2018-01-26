@@ -20,6 +20,7 @@ if len(sys.argv) > 1:
     CLOUD_PARAMS = _TEMP[1].split('_')
     NUM_PODS = int(CLOUD_PARAMS[0])
     NUM_LEAFS_PER_POD = int(CLOUD_PARAMS[1])
+    NUM_HOSTS_PER_LEAF = int(CLOUD_PARAMS[2])
     NUM_TENANTS = int(CLOUD_PARAMS[4])
     SEED = int(CLOUD_PARAMS[15])
 
@@ -27,12 +28,11 @@ if len(sys.argv) > 1:
         OPTIMIZER_PARAMS = _TEMP[2].split('_')
     else:
         OPTIMIZER_PARAMS = []
-
 elif False:
     ALGORITHM = 'random-fuzzy-match'
     NUM_BITMAPS = 2
-    NUM_NODES_PER_BITMAP = 2
-    REDUNDANCY_PER_BITMAP = 0
+    NUM_NODES_PER_BITMAP = 3
+    REDUNDANCY_PER_BITMAP = 6
     NUM_RULES = 100
     PROBABILITY_DIVIDEND = 2
     PROBABILITY_DIVISOR = 3
@@ -43,25 +43,27 @@ elif False:
     CLOUD_PARAMS = []
     NUM_PODS = 12
     NUM_LEAFS_PER_POD = 48
+    NUM_HOSTS_PER_LEAF = 48
     NUM_TENANTS = 3000
     SEED = 0
 
     OPTIMIZER_PARAMS = []
 elif False:
     ALGORITHM = 'random-fuzzy-match'
-    NUM_BITMAPS = 20
+    NUM_BITMAPS = 10
     NUM_NODES_PER_BITMAP = 3
-    REDUNDANCY_PER_BITMAP = 0
-    NUM_RULES = 5000
+    REDUNDANCY_PER_BITMAP = 12
+    NUM_RULES = 10
     PROBABILITY_DIVIDEND = 2
     PROBABILITY_DIVISOR = 3
     NODE_TYPE = 'leafs'
     DATA_FILE = 'output/optimizer..'
-    DUMP_FILE_PREFIX = 'output/_optimizer'
+    DUMP_FILE_PREFIX = 'output/optimizer.'
 
     CLOUD_PARAMS = []
     NUM_PODS = 12
     NUM_LEAFS_PER_POD = 48
+    NUM_HOSTS_PER_LEAF = 48
     NUM_TENANTS = 3000
     SEED = 0
 
@@ -81,6 +83,7 @@ elif False:
     CLOUD_PARAMS = []
     NUM_PODS = 12
     NUM_LEAFS_PER_POD = 48
+    NUM_HOSTS_PER_LEAF = 48
     NUM_TENANTS = 30
     SEED = 0
 
@@ -106,6 +109,7 @@ optimizer = Optimizer(data, algorithm=ALGORITHM, num_bitmaps=NUM_BITMAPS, num_no
                       redundancy_per_bitmap=REDUNDANCY_PER_BITMAP, num_rules=NUM_RULES,
                       num_nodes=(NUM_PODS * NUM_LEAFS_PER_POD) if NODE_TYPE == 'leafs' else NUM_PODS,
                       num_tenants=NUM_TENANTS,
-                      probability=1.0 * PROBABILITY_DIVIDEND / PROBABILITY_DIVISOR, node_type=NODE_TYPE)
+                      probability=1.0 * PROBABILITY_DIVIDEND / PROBABILITY_DIVISOR, node_type=NODE_TYPE,
+                      num_ports_per_node=NUM_HOSTS_PER_LEAF if NODE_TYPE == 'leafs' else NUM_LEAFS_PER_POD)
 
 marshal_dump_obj(optimizer.data, dump_file)

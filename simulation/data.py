@@ -4,10 +4,12 @@ from simulation.utils import bar_range, popcount
 
 
 class Data:
-    def __init__(self, data, num_tenants=3000, num_pods=12, num_leafs_per_pod=48, num_hosts_per_leaf=48,
-                 log_dir=None, node_type_0='pods', node_type_1=None):
+    def __init__(self, data, num_tenants=3000, num_cores=4, num_pods=12, num_spines_per_pod=4, num_leafs_per_pod=48,
+                 num_hosts_per_leaf=48, log_dir=None, node_type_0='pods', node_type_1=None):
         self.num_tenants = num_tenants
+        self.num_cores = num_cores
         self.num_pods = num_pods
+        self.num_spines_per_pod = num_spines_per_pod
         self.num_leafs_per_pod = num_leafs_per_pod
         self.num_hosts_per_leaf = num_hosts_per_leaf
         self.log_dir = log_dir
@@ -96,7 +98,6 @@ class Data:
             _algorithm_elapse_time.to_csv(self.log_dir + "/%s_algorithm_elapse_time.csv" % node_type, index=False)
 
         return _algorithm_elapse_time
-
 
     # def percentage_of_groups_covered_with_varying_bitmaps(self, num_bitmaps):
     #     categories = pd.cut(self.leafs_for_all_groups_for_all_tenants(), [i for i in range(-1, num_bitmaps + 1)],
@@ -281,7 +282,8 @@ class Data:
                     leaf_host_count = popcount(leaf_map['bitmap'])
                     leafs_traffic += 2 * (leaf_host_count - 1)
 
-                traffic_per_group_per_tenant_for_overlay_corrected += [(6 * len(pods_map)) + pods_traffic + leafs_traffic]
+                traffic_per_group_per_tenant_for_overlay_corrected += [
+                    (6 * len(pods_map)) + pods_traffic + leafs_traffic]
 
         traffic_per_group_per_tenant_for_overlay_corrected = \
             pd.Series(traffic_per_group_per_tenant_for_overlay_corrected)
@@ -355,30 +357,92 @@ class Data:
                         leafs_traffic += popcount(leaf_map['~bitmap'])
 
                 _traffic_per_group_per_tenant_for_baseerat += [3 + len(pods_map) + len(leafs_map) + leafs_traffic +
-                                                                  redundant_leafs + redundant_leafs_traffic]
+                                                               redundant_leafs + redundant_leafs_traffic]
 
         _traffic_per_group_per_tenant_for_baseerat = \
             pd.Series(_traffic_per_group_per_tenant_for_baseerat)
 
         return _traffic_per_group_per_tenant_for_baseerat
 
+    def traffic_per_group_per_tenant_for_baseerat_bytes(self):
+        _traffic_per_group_per_tenant_for_baseerat_bytes = []
+
+        for t in bar_range(self.num_tenants, desc='data:traffic_per_group_per_tenant_for_baseerat_bytes:'):
+            tenant_maps = self.tenants_maps[t]
+            group_count = tenant_maps['group_count']
+            groups_map = tenant_maps['groups_map']
+
+            for g in range(group_count):
+                group_map = groups_map[g]
+                leafs_map = group_map['leafs_map']
+                pods_map = group_map['pods_map']
+                leafs_traffic = 0
+                redundant_leafs = 0
+                redundant_leafs_traffic = 0
+
+                for p in pods_map:
+                    pod_map = pods_map[p]
+                    if '~bitmap' in pod_map:
+                        redundant_leafs += popcount(pod_map['~bitmap'])
+
+                if 'leafs_default_bitmap' in group_map:
+                    redundant_leafs_traffic = redundant_leafs * popcount(group_map['leafs_default_bitmap'])
+
+                for l in leafs_map:
+                    leaf_map = leafs_map[l]
+                    leafs_traffic += popcount(leaf_map['bitmap'])
+                    if '~bitmap' in leaf_map:
+                        leafs_traffic += popcount(leaf_map['~bitmap'])
+
+                upstream_leaf_bits = self.num_hosts_per_leaf + self.num_spines_per_pod
+                upstream_spine_bits = self.num_leafs_per_pod + self.num_cores
+                core_bits = self.num_pods
+                downstream_spine_bits = group_map['pods_header_size']
+                downstream_leaf_bits = group_map['leafs_header_size']
+
+                header_size_bits = (upstream_leaf_bits + upstream_spine_bits + core_bits +
+                                    downstream_spine_bits + downstream_leaf_bits)
+
+                host_to_leaf_edge_bits = header_size_bits
+                leaf_to_spine_edge_bits = host_to_leaf_edge_bits - upstream_leaf_bits
+                spine_to_core_edge_bits = leaf_to_spine_edge_bits - upstream_spine_bits
+                core_to_spine_edge_bits = spine_to_core_edge_bits - core_bits
+                spine_to_leaf_edge_bits = core_to_spine_edge_bits - downstream_spine_bits
+
+                _traffic_per_group_per_tenant_for_baseerat_bytes += \
+                    [(host_to_leaf_edge_bits +
+                      leaf_to_spine_edge_bits +
+                      spine_to_core_edge_bits +
+                      (len(pods_map) * core_to_spine_edge_bits) +
+                      (len(leafs_map) * spine_to_leaf_edge_bits) +
+                      (redundant_leafs * spine_to_leaf_edge_bits)) / 8]
+
+        _traffic_per_group_per_tenant_for_baseerat_bytes = \
+            pd.Series(_traffic_per_group_per_tenant_for_baseerat_bytes)
+
+        if self.log_dir is not None:
+            _traffic_per_group_per_tenant_for_baseerat_bytes.to_csv(
+                self.log_dir + "/traffic_per_group_per_tenant_for_baseerat_bytes.csv", index=False)
+
+        return _traffic_per_group_per_tenant_for_baseerat_bytes
+
     def traffic_per_group_per_tenant(self):
         if self.log_dir:
             t_dataframe = pd.DataFrame()
-            # t_dataframe['multicast'] = self.traffic_per_group_per_tenant_for_multicast()
-            # t_dataframe['unicast'] = self.traffic_per_group_per_tenant_for_unicast()
-            # t_dataframe['overlay'] = self.traffic_per_group_per_tenant_for_overlay()
-            # t_dataframe['overlay_corrected'] = self.traffic_per_group_per_tenant_for_overlay_corrected()
+            t_dataframe['multicast'] = self.traffic_per_group_per_tenant_for_multicast()
+            t_dataframe['unicast'] = self.traffic_per_group_per_tenant_for_unicast()
+            t_dataframe['overlay'] = self.traffic_per_group_per_tenant_for_overlay()
+            t_dataframe['overlay_corrected'] = self.traffic_per_group_per_tenant_for_overlay_corrected()
 
-            traffic_per_group_per_tenant_for_overlay_pods, \
-            traffic_per_group_per_tenant_for_overlay_leafs, \
-            traffic_per_group_per_tenant_for_overlay_pods_traffic = \
-                self.traffic_per_group_per_tenant_for_overlay_corrected_params()
-            t_dataframe['overlay_corrected_params:pods'] = traffic_per_group_per_tenant_for_overlay_pods
-            t_dataframe['overlay_corrected_params:leafs'] = traffic_per_group_per_tenant_for_overlay_leafs
-            t_dataframe['overlay_corrected_params:pods_traffic'] = traffic_per_group_per_tenant_for_overlay_pods_traffic
+            # traffic_per_group_per_tenant_for_overlay_pods, \
+            # traffic_per_group_per_tenant_for_overlay_leafs, \
+            # traffic_per_group_per_tenant_for_overlay_pods_traffic = \
+            #     self.traffic_per_group_per_tenant_for_overlay_corrected_params()
+            # t_dataframe['overlay_corrected_params:pods'] = traffic_per_group_per_tenant_for_overlay_pods
+            # t_dataframe['overlay_corrected_params:leafs'] = traffic_per_group_per_tenant_for_overlay_leafs
+            # t_dataframe['overlay_corrected_params:pods_traffic'] = traffic_per_group_per_tenant_for_overlay_pods_traffic
 
-            # t_dataframe['baseerat'] = self.traffic_per_group_per_tenant_for_baseerat()
+            t_dataframe['baseerat'] = self.traffic_per_group_per_tenant_for_baseerat()
             t_dataframe.to_csv(self.log_dir + "/traffic_per_group_per_tenant.csv", index=False)
 
     def _log_cloud_stats(self):
@@ -389,24 +453,26 @@ class Data:
         self.pod_count_per_group_per_tenant()
 
     def _log_optimizer_stats(self):
-        self.algorithm_elapse_time(self.node_type_0)
-        self.groups_covered_with_bitmaps_only(self.node_type_0)
-        self.rule_count(self.node_type_0)
-        self.traffic_overhead_per_group_per_tenant(self.node_type_0)
+        # self.algorithm_elapse_time(self.node_type_0)
+        # self.groups_covered_with_bitmaps_only(self.node_type_0)
+        # self.rule_count(self.node_type_0)
+        # self.traffic_overhead_per_group_per_tenant(self.node_type_0)
 
         if self.node_type_1:
-            self.algorithm_elapse_time(self.node_type_1)
-            self.groups_covered_with_bitmaps_only(self.node_type_1)
-            self.rule_count(self.node_type_1)
-            self.traffic_overhead_per_group_per_tenant(self.node_type_1)
-            self.traffic_per_group_per_tenant()
+            # self.algorithm_elapse_time(self.node_type_1)
+            # self.groups_covered_with_bitmaps_only(self.node_type_1)
+            # self.rule_count(self.node_type_1)
+            # self.traffic_overhead_per_group_per_tenant(self.node_type_1)
+            # self.traffic_per_group_per_tenant()
+
+            self.traffic_per_group_per_tenant_for_baseerat_bytes()
 
     def log_stats(self, log_cloud_stats=True):
         # if log_cloud_stats:
         #     self._log_cloud_stats()
-        # self._log_optimizer_stats()
+        self._log_optimizer_stats()
 
-        self.traffic_per_group_per_tenant()
+
 
 class DynamicData:
     def __init__(self, data, log_dir=None):
