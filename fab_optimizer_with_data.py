@@ -9,9 +9,11 @@ NUM_RULES = 10000
 PROBABILITY_DIVIDEND = 2
 PROBABILITY_DIVISOR = 3
 NODE_TYPE = 'pods'
-LOG_CLOUD_STATS = False
-DATA_FILE_PREFIX = '/mnt/sdb1/baseerat/numerical-evals/12-11-2017/output-1M/cloud.*'
-LOG_FILE_PREFIX = '/mnt/sdb1/baseerat/numerical-evals/12-11-2017/logs-1M/logs'
+LOG_CLOUD_STATS = True
+NUM_CORES = 4
+NUM_SPINES_PER_POD = 4
+DATA_FILE_PREFIX = '/mnt/sdc1/baseerat/numerical-evals/1-26-2018/output-1M/cloud.*'
+LOG_FILE_PREFIX = '/mnt/sdc1/baseerat/numerical-evals/1-26-2018/logs-1M/logs'
 
 PYTHON = 'pypy3'  # options: pypy3 or python or python3
 
@@ -47,6 +49,8 @@ def test_pods_small():
                                  PROBABILITY_DIVISOR,
                                  NODE_TYPE,
                                  LOG_CLOUD_STATS,
+                                 NUM_CORES,
+                                 NUM_SPINES_PER_POD,
                                  file,
                                  LOG_FILE_PREFIX])
 
@@ -74,6 +78,8 @@ def test_leafs_small():
                                  PROBABILITY_DIVISOR,
                                  NODE_TYPE,
                                  LOG_CLOUD_STATS,
+                                 NUM_CORES,
+                                 NUM_SPINES_PER_POD,
                                  file,
                                  LOG_FILE_PREFIX])
 
@@ -95,6 +101,8 @@ def run_pods():
                                              PROBABILITY_DIVISOR,
                                              NOTE_TYPE,
                                              LOG_CLOUD_STATS,
+                                             NUM_CORES,
+                                             NUM_SPINES_PER_POD,
                                              file,
                                              LOG_FILE_PREFIX])
 
@@ -108,6 +116,8 @@ def run_pods():
                                                  PROBABILITY_DIVISOR,
                                                  NOTE_TYPE,
                                                  LOG_CLOUD_STATS,
+                                                 NUM_CORES,
+                                                 NUM_SPINES_PER_POD,
                                                  file,
                                                  LOG_FILE_PREFIX])
 
@@ -129,6 +139,8 @@ def run_leafs():
                                              PROBABILITY_DIVISOR,
                                              NOTE_TYPE,
                                              LOG_CLOUD_STATS,
+                                             NUM_CORES,
+                                             NUM_SPINES_PER_POD,
                                              file,
                                              LOG_FILE_PREFIX])
 
@@ -142,11 +154,14 @@ def run_leafs():
                                                  PROBABILITY_DIVISOR,
                                                  NOTE_TYPE,
                                                  LOG_CLOUD_STATS,
+                                                 NUM_CORES,
+                                                 NUM_SPINES_PER_POD,
                                                  file,
                                                  LOG_FILE_PREFIX])
 
 
-def run_with_args(node_type, file, num_rules, num_bitmaps, num_nodes_per_bitmap, redundancy_per_bitmap, algorithm):
+def run_with_args(node_type, file, num_rules, num_bitmaps, num_nodes_per_bitmap, redundancy_per_bitmap, algorithm,
+                  num_cores, num_spines_per_pod, log_cloud_stats='True'):
     run_optimizer_with_data([algorithm,
                              num_bitmaps,
                              num_nodes_per_bitmap,
@@ -155,6 +170,8 @@ def run_with_args(node_type, file, num_rules, num_bitmaps, num_nodes_per_bitmap,
                              PROBABILITY_DIVIDEND,
                              PROBABILITY_DIVISOR,
                              node_type,
-                             LOG_CLOUD_STATS,
+                             True if log_cloud_stats == 'True' else False,
+                             num_cores,
+                             num_spines_per_pod,
                              file,
                              LOG_FILE_PREFIX])

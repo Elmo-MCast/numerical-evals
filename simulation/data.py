@@ -453,23 +453,22 @@ class Data:
         self.pod_count_per_group_per_tenant()
 
     def _log_optimizer_stats(self):
-        # self.algorithm_elapse_time(self.node_type_0)
-        # self.groups_covered_with_bitmaps_only(self.node_type_0)
-        # self.rule_count(self.node_type_0)
-        # self.traffic_overhead_per_group_per_tenant(self.node_type_0)
+        self.algorithm_elapse_time(self.node_type_0)
+        self.groups_covered_with_bitmaps_only(self.node_type_0)
+        self.rule_count(self.node_type_0)
+        self.traffic_overhead_per_group_per_tenant(self.node_type_0)
 
         if self.node_type_1:
-            # self.algorithm_elapse_time(self.node_type_1)
-            # self.groups_covered_with_bitmaps_only(self.node_type_1)
-            # self.rule_count(self.node_type_1)
-            # self.traffic_overhead_per_group_per_tenant(self.node_type_1)
-            # self.traffic_per_group_per_tenant()
-
+            self.algorithm_elapse_time(self.node_type_1)
+            self.groups_covered_with_bitmaps_only(self.node_type_1)
+            self.rule_count(self.node_type_1)
+            self.traffic_overhead_per_group_per_tenant(self.node_type_1)
+            self.traffic_per_group_per_tenant()
             self.traffic_per_group_per_tenant_for_baseerat_bytes()
 
     def log_stats(self, log_cloud_stats=True):
-        # if log_cloud_stats:
-        #     self._log_cloud_stats()
+        if log_cloud_stats:
+            self._log_cloud_stats()
         self._log_optimizer_stats()
 
 

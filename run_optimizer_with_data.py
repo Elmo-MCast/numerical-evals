@@ -15,8 +15,10 @@ if len(sys.argv) > 1:
     PROBABILITY_DIVISOR = int(sys.argv[7])
     NODE_TYPE = sys.argv[8]
     LOG_CLOUD_STATS = True if sys.argv[9] == 'True' else False
-    DATA_FILE = sys.argv[10]
-    LOG_FILE_PREFIX = sys.argv[11]
+    NUM_CORES = int(sys.argv[10])
+    NUM_SPINES_PER_POD = int(sys.argv[11])
+    DATA_FILE = sys.argv[12]
+    LOG_FILE_PREFIX = sys.argv[13]
 
     _TEMP = DATA_FILE.split('.')
     CLOUD_PARAMS = _TEMP[1].split('_')
@@ -42,6 +44,8 @@ elif False:
     PROBABILITY_DIVISOR = 3
     NODE_TYPE = 'pods'
     LOG_CLOUD_STATS = True
+    NUM_CORES = 4
+    NUM_SPINES_PER_POD = 4
     DATA_FILE = 'output/cloud.'
     LOG_FILE_PREFIX = 'output/logs'
 
@@ -64,6 +68,8 @@ elif False:
     PROBABILITY_DIVISOR = 3
     NODE_TYPE = 'leafs'
     LOG_CLOUD_STATS = True
+    NUM_CORES = 4
+    NUM_SPINES_PER_POD = 4
     DATA_FILE = 'output/optimizer..'
     LOG_FILE_PREFIX = 'output/logs'
 
@@ -86,6 +92,8 @@ elif False:
     PROBABILITY_DIVISOR = 3
     NODE_TYPE = 'leafs'
     LOG_CLOUD_STATS = True
+    NUM_CORES = 4
+    NUM_SPINES_PER_POD = 4
     DATA_FILE = 'output/cloud.'
     LOG_FILE_PREFIX = 'output/logs'
 
@@ -121,13 +129,16 @@ optimizer = Optimizer(data, algorithm=ALGORITHM, num_bitmaps=NUM_BITMAPS, num_no
                       redundancy_per_bitmap=REDUNDANCY_PER_BITMAP, num_rules=NUM_RULES,
                       num_nodes=(NUM_PODS * NUM_LEAFS_PER_POD) if NODE_TYPE == 'leafs' else NUM_PODS,
                       num_tenants=NUM_TENANTS,
-                      probability=1.0 * PROBABILITY_DIVIDEND / PROBABILITY_DIVISOR, node_type=NODE_TYPE)
+                      probability=1.0 * PROBABILITY_DIVIDEND / PROBABILITY_DIVISOR, node_type=NODE_TYPE,
+                      num_ports_per_node=NUM_HOSTS_PER_LEAF if NODE_TYPE == 'leafs' else NUM_LEAFS_PER_POD)
 
 if NODE_TYPE_0:
-    data = Data(data, num_tenants=NUM_TENANTS, num_pods=NUM_PODS, num_leafs_per_pod=NUM_LEAFS_PER_POD,
+    data = Data(data, num_tenants=NUM_TENANTS, num_cores=NUM_CORES, num_pods=NUM_PODS,
+                num_spines_per_pod=NUM_SPINES_PER_POD, num_leafs_per_pod=NUM_LEAFS_PER_POD,
                 num_hosts_per_leaf=NUM_HOSTS_PER_LEAF, log_dir=log_dir, node_type_0=NODE_TYPE_0, node_type_1=NODE_TYPE)
 else:
-    data = Data(data, num_tenants=NUM_TENANTS, num_pods=NUM_PODS, num_leafs_per_pod=NUM_LEAFS_PER_POD,
+    data = Data(data, num_tenants=NUM_TENANTS, num_cores=NUM_CORES, num_pods=NUM_PODS,
+                num_spines_per_pod=NUM_SPINES_PER_POD, num_leafs_per_pod=NUM_LEAFS_PER_POD,
                 num_hosts_per_leaf=NUM_HOSTS_PER_LEAF, log_dir=log_dir, node_type_0=NODE_TYPE, node_type_1=None)
 
 data.log_stats(log_cloud_stats=LOG_CLOUD_STATS)

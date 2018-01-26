@@ -6,8 +6,10 @@ from simulation.utils import marshal_load_obj
 
 if len(sys.argv) > 1:
     LOG_CLOUD_STATS = True if sys.argv[1] == 'True' else False
-    DATA_FILE = sys.argv[2]
-    LOG_DIR = sys.argv[3]
+    NUM_CORES = int(sys.argv[2])
+    NUM_SPINES_PER_POD = int(sys.argv[3])
+    DATA_FILE = sys.argv[4]
+    LOG_DIR = sys.argv[5]
 
     _TEMP = DATA_FILE.split('.')
     CLOUD_PARAMS = _TEMP[1].split('_')
@@ -29,6 +31,8 @@ if len(sys.argv) > 1:
 
 elif False:
     LOG_CLOUD_STATS = True
+    NUM_CORES = 4
+    NUM_SPINES_PER_POD = 4
     DATA_FILE = 'output/optimizer..'
     LOG_DIR = 'output/logs'
 
@@ -47,6 +51,8 @@ elif False:
     NODE_TYPE_1 = None
 elif False:
     LOG_CLOUD_STATS = False
+    NUM_CORES = 4
+    NUM_SPINES_PER_POD = 4
     DATA_FILE = 'output/optimizer...'
     LOG_DIR = 'output/logs'
 
@@ -64,6 +70,8 @@ elif False:
     NODE_TYPE_1 = None
 elif False:
     LOG_CLOUD_STATS = True
+    NUM_CORES = 4
+    NUM_SPINES_PER_POD = 4
     DATA_FILE = 'output/optimizer..'
     LOG_DIR = 'output/logs'
 
@@ -98,7 +106,8 @@ os.system('mkdir -p %s' % log_dir)
 
 data = marshal_load_obj(DATA_FILE)
 
-data = Data(data, num_tenants=NUM_TENANTS, num_pods=NUM_PODS, num_leafs_per_pod=NUM_LEAFS_PER_POD,
+data = Data(data, num_tenants=NUM_TENANTS, num_cores=NUM_CORES, num_pods=NUM_PODS,
+            num_spines_per_pod=NUM_SPINES_PER_POD, num_leafs_per_pod=NUM_LEAFS_PER_POD,
             num_hosts_per_leaf=NUM_HOSTS_PER_LEAF, log_dir=log_dir, node_type_0=NODE_TYPE_0, node_type_1=NODE_TYPE_1)
 
 data.log_stats(log_cloud_stats=LOG_CLOUD_STATS)
