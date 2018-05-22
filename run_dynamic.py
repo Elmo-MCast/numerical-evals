@@ -35,9 +35,11 @@ if len(sys.argv) > 1:
     LEAFS_NUM_RULES = int(LEAFS_OPTIMIZER_PARAMS[4])
     LEAFS_PROBABILITY_DIVIDEND = int(LEAFS_OPTIMIZER_PARAMS[5])
     LEAFS_PROBABILITY_DIVISOR = int(LEAFS_OPTIMIZER_PARAMS[6])
+
+    DEBUG = True
 elif True:
     NUM_EVENTS = 10000
-    DATA_FILE = 'output/optimizer.12_48_48_20_30_10_5000_expon_1000_5_uniform_colocate-colocate-uniform_48_True_5_0.random-fuzzy-match_1_1_0_5_2_3_pods.random-fuzzy-match_5_2_6_100_2_3_leafs'
+    DATA_FILE = 'output/optimizer.12_48_48_20_30_10_5000_expon_1000_5_uniform_colocate-uniform_48_True_5_0.random-fuzzy-match_1_1_0_5_2_3_pods.random-fuzzy-match_5_2_6_100_2_3_leafs'
     DUMP_FILE_PREFIX = 'output/dynamic'
 
     _TEMP = DATA_FILE.split('.')
@@ -66,6 +68,8 @@ elif True:
     LEAFS_NUM_RULES = int(LEAFS_OPTIMIZER_PARAMS[4])
     LEAFS_PROBABILITY_DIVIDEND = int(LEAFS_OPTIMIZER_PARAMS[5])
     LEAFS_PROBABILITY_DIVISOR = int(LEAFS_OPTIMIZER_PARAMS[6])
+
+    DEBUG = True
 elif False:
     NUM_EVENTS = 10000
     DATA_FILE = 'output/optimizer..'
@@ -96,6 +100,8 @@ elif False:
     LEAFS_NUM_RULES = 100
     LEAFS_PROBABILITY_DIVIDEND = 2
     LEAFS_PROBABILITY_DIVISOR = 3
+
+    DEBUG = True
 else:
     raise (Exception('invalid parameters'))
 
@@ -119,6 +125,6 @@ dynamic = Dynamic(data, num_events=NUM_EVENTS, num_pods=NUM_PODS, num_leafs_per_
                   leafs_algorithm=LEAFS_ALGORITHM, leafs_num_bitmaps=LEAFS_NUM_BITMAPS,
                   leafs_num_nodes_per_bitmap=LEAFS_NUM_NODES_PER_BITMAP,
                   leafs_redundancy_per_bitmap=LEAFS_REDUNDANCY_PER_BITMAP, leafs_num_rules=LEAFS_NUM_RULES,
-                  leafs_probability=1.0 * LEAFS_PROBABILITY_DIVIDEND / LEAFS_PROBABILITY_DIVISOR, debug=False)
+                  leafs_probability=1.0 * LEAFS_PROBABILITY_DIVIDEND / LEAFS_PROBABILITY_DIVISOR, debug=DEBUG)
 
 marshal_dump_obj(dynamic.data, dump_file)

@@ -540,6 +540,29 @@ class DynamicData:
 
         return t_dataframe
 
+    def per_switch_update_count(self):
+        _per_switch_update_count = self.dynamic['per_switch_update_count']
+
+        virtual_switch_dataframe = pd.DataFrame()
+        virtual_switch_dataframe['updates'] = _per_switch_update_count['virtual']
+        virtual_switch_dataframe['switch'] = 'virtual'
+
+        leaf_switch_dataframe = pd.DataFrame()
+        leaf_switch_dataframe['updates'] = _per_switch_update_count['leaf']
+        leaf_switch_dataframe['switch'] = 'leaf'
+
+        pod_switch_dataframe = pd.DataFrame()
+        pod_switch_dataframe['updates'] = _per_switch_update_count['pod']
+        pod_switch_dataframe['switch'] = 'pod'
+
+        t_dataframe = pd.concat([virtual_switch_dataframe, leaf_switch_dataframe, pod_switch_dataframe])
+
+        if self.log_dir:
+            t_dataframe.to_csv(self.log_dir + "/per_switch_update_count.csv", index=False)
+
+        return t_dataframe
+
     def log(self):
         t_dataframe = self.switch_update_count()
         self.switch_update_count_normalized(t_dataframe)
+        self.per_switch_update_count()
