@@ -562,7 +562,23 @@ class DynamicData:
 
         return t_dataframe
 
+    def with_failures(self):
+        _with_failures = self.dynamic['with_failures']
+
+        group_count = pd.Series(_with_failures['group_count'])
+
+        per_switch_update_count = pd.DataFrame()
+        per_switch_update_count['updates'] = _with_failures['per_virtual_switch_update_count']
+        per_switch_update_count['switch'] = 'virtual'
+
+        if self.log_dir:
+            group_count.to_csv(self.log_dir + "/group_count.csv")
+            per_switch_update_count.to_csv(self.log_dir + "/per_switch_update_count.csv", index=False)
+
+        return group_count, per_switch_update_count
+
     def log(self):
         t_dataframe = self.switch_update_count()
         self.switch_update_count_normalized(t_dataframe)
         self.per_switch_update_count()
+        self.with_failures()

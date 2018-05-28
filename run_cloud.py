@@ -22,7 +22,7 @@ if len(sys.argv) > 1:
     NUM_JOBS = int(sys.argv[15])
     SEED = int(sys.argv[16])
     DUMP_FILE_PREFIX = sys.argv[17]
-elif True:
+elif False:
     NUM_PODS = 12
     NUM_LEAFS_PER_POD = 48
     NUM_HOSTS_PER_LEAF = 48
@@ -40,7 +40,7 @@ elif True:
     NUM_JOBS = 5
     SEED = 0
     DUMP_FILE_PREFIX = 'output/cloud'
-elif False:
+elif True:
     NUM_PODS = 12
     NUM_LEAFS_PER_POD = 48
     NUM_HOSTS_PER_LEAF = 48

@@ -17,7 +17,7 @@ class Event:
                  pods_num_bitmaps, pods_num_nodes_per_bitmap, pods_redundancy_per_bitmap, pods_num_rules,
                  pods_probability, pods_node_id_width, leafs_algorithm, leafs_rules_count_map, leafs_num_bitmaps,
                  leafs_num_nodes_per_bitmap, leafs_redundancy_per_bitmap, leafs_num_rules, leafs_probability,
-                 leafs_node_id_width):
+                 leafs_node_id_width, failed_node_type='spine', num_spines_per_pod=None, with_failures_map=None):
         self.virtual_switch_update_count_map = switch_update_count_map['virtual']
         self.leaf_switch_update_count_map = switch_update_count_map['leaf']
         self.pod_switch_update_count_map = switch_update_count_map['pod']
@@ -28,6 +28,7 @@ class Event:
         self.num_pods = num_pods
         self.num_leafs_per_pod = num_leafs_per_pod
         self.num_hosts_per_leaf = num_hosts_per_leaf
+        self.num_leafs = num_pods * num_leafs_per_pod
         self.min_group_size = min_group_size
         self.pods_algorithm = pods_algorithm
         self.pods_rules_count_map = pods_rules_count_map
@@ -45,6 +46,9 @@ class Event:
         self.leafs_num_rules = leafs_num_rules
         self.leafs_probability = leafs_probability
         self.leafs_node_id_width = leafs_node_id_width
+        self.failed_node_type = failed_node_type
+        self.num_spines_per_pod = num_spines_per_pod
+        self.with_failures_map = with_failures_map
 
     def _process_join_for_leafs(self, vm_host, vm_leaf, group_map, leaf_switch_update_count_map,
                                 per_leaf_switch_update_count_map):
@@ -347,3 +351,80 @@ class Event:
                             virtual_switch_update_count_map[-1] += 1
                             self.per_virtual_switch_update_count_map[vm_host] += 1
 
+    def process_with_failures(self, failed_node, vm_to_host_map, group_map):
+        leafs_map = group_map['leafs_map']
+        pods_map = group_map['pods_map']
+        vms = group_map['vms']
+        vms_types = group_map['vms_types']
+
+        per_virtual_switch_update_count = self.with_failures_map['per_virtual_switch_update_count']
+
+        if self.failed_node_type == 'spine':
+            if len(leafs_map) <= 1:
+                pass
+            else:
+                pubs = {'local': [], 'foreign': []}
+                has_local_subs_per_leaf = [False] * self.num_leafs
+                failed_pod = int(failed_node / self.num_spines_per_pod)
+
+                for vm in vms:
+                    vm_host = vm_to_host_map[vm]
+                    vm_type = vms_types[vm]
+                    vm_leaf = int(vm_host / self.num_hosts_per_leaf)
+                    vm_pod = int(vm_leaf / self.num_leafs_per_pod)
+
+                    if vm_type == 'P' or vm_type == 'B':
+                        if vm_pod == failed_pod:
+                            pubs['local'].append(vm)
+                        else:
+                            pubs['foreign'].append(vm)
+
+                    if vm_type == 'S' or vm_type == 'B':
+                        if vm_pod == failed_pod:
+                            has_local_subs_per_leaf[vm_leaf] = True
+
+                for vm in pubs['local']:
+                    vm_host = vm_to_host_map[vm]
+                    vm_leaf = int(vm_host / self.num_hosts_per_leaf)
+
+                    if any([v for l, v in enumerate(has_local_subs_per_leaf) if l != vm_leaf]):
+                        per_virtual_switch_update_count[vm_host] += 1
+
+                has_local_subs = any(has_local_subs_per_leaf)
+
+                if has_local_subs:
+                    for vm in pubs['foreign']:
+                        vm_host = vm_to_host_map[vm]
+                        per_virtual_switch_update_count[vm_host] += 1
+
+                if len(pubs['local']) != 0 or (has_local_subs and len(pubs['foreign']) != 0):
+                    self.with_failures_map['group_count'] += 1
+        elif self.failed_node_type == 'core':
+            if len(pods_map) <= 1:
+                pass
+            else:
+                pubs = []
+                has_local_subs_per_pod = [False] * self.num_pods
+
+                for vm in vms:
+                    vm_host = vm_to_host_map[vm]
+                    vm_type = vms_types[vm]
+                    vm_leaf = int(vm_host / self.num_hosts_per_leaf)
+                    vm_pod = int(vm_leaf / self.num_leafs_per_pod)
+
+                    if vm_type == 'P' or vm_type == 'B':
+                        pubs.append(vm)
+
+                    if vm_type == 'S' or vm_type == 'B':
+                        has_local_subs_per_pod[vm_pod] = True
+
+                for vm in pubs:
+                    vm_host = vm_to_host_map[vm]
+                    vm_leaf = int(vm_host / self.num_hosts_per_leaf)
+                    vm_pod = int(vm_leaf / self.num_leafs_per_pod)
+
+                    if any([v for p, v in enumerate(has_local_subs_per_pod) if p != vm_pod]):
+                        per_virtual_switch_update_count[vm_host] += 1
+
+                if len(pubs) != 0:
+                    self.with_failures_map['group_count'] += 1
